@@ -250,6 +250,60 @@
 
 
   
+    <article id="post-Baby XSS" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/01/Baby XSS/" class="article-date">
+  	<time datetime="2016-06-01T15:51:28.004Z" itemprop="datePublished">2016-06-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>对于XSS的学习过程，已经更新在CSDN博客</strong></p>
+<h1 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h1><p>这道题目告诉我们flag在admin.php中，只有admin才能获取它，我们点击进去之后发现并没有flag，这是为什么呢？因为我们不是admin，因此，我们必须伪装成admin。<br>         题目的下面有一行代码，substr((md5(‘proof of work’),0,6) === ‘4b3392’)<br>         这一行代码的意思是截取经过MD5编码的工作量的前6个数字。<br>         proof  of  work百度的是区块链中的工作量证明：在区块链中，Pow代表的是一种运作机制，这种机制强制要求财富的获取方式只能是通过劳动所得，也就是算力运算-挖矿。我的理解就是得到的结果是通过大量的运算得来的。<br>         这块也是参考了很多的资料，因为对这一部分不是特别的理解。<br><img src="https://img-blog.csdnimg.cn/2019043019133363.png" alt="在这里插入图片描述"><br>这块是随机的，我们接下里破解一下</p>
+<ul>
+<li>尝试使用proofofwork这个软件破解来着，但是没有安装成功。（明天更新了python在试一下）</li>
+<li>itertools暴力解决</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line">from itertools import count</span><br><span class="line"></span><br><span class="line">mes = &apos;admin&apos;</span><br><span class="line">for i in count():</span><br><span class="line">    md = hashlib.md5()</span><br><span class="line">    str1 = str(i)</span><br><span class="line">    md.update(str1.encode(&apos;utf-8&apos;))</span><br><span class="line">    hashid = md.hexdigest()</span><br><span class="line">    if hashid.startswith(&apos;384216&apos;):</span><br><span class="line">        print(str1)</span><br><span class="line">        break</span><br></pre></td></tr></table></figure>
+<p>将跟随机产生的字符串能匹配上的字符串打印出来，输入到MD5的输入框里面<br>就显示，提交成功了。<br>但是点击之后是空白的界面。<br><img src="https://img-blog.csdnimg.cn/20190430195354879.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>token了解<br> token的意思是“令牌”，是服务端生成的一串字符串，作为客户端进行请求的一个标识。<br>当用户第一次登录后，服务器生成一个token并将此token返回给客户端，以后客户端只需带上这个token前来请求数据即可，无需再次带上用户名和密码。<br>简单token的组成；uid(用户唯一的身份标识)、time(当前时间的时间戳)、sign（签名，token的前几位以哈希算法压缩成的一定长度的十六进制字符串。为防止token泄露）。</li>
+<li>获取token<br>通过在线注册XSS平台，在怀疑会出现XSS的地方植入代码，获得token信息。</li>
+<li>假冒admin,更改cookie的信息</li>
+<li></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
@@ -260,7 +314,7 @@
   <div class="outer">
     <div id="footer-info">
       <div class="footer-left">
-        &copy; 2019 Gorge
+        &copy; 2016 Gorge
       </div>
         <div class="footer-right">
           <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
