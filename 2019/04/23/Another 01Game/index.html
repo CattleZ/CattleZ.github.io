@@ -3,27 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>Forensics2 | Gorge</title>
+  <title>Another 01Game | Gorge</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="题目分析wireshark about file 解题过程 首先是下载文件之后发现是pcap结尾的文件。然后用Wireshark打开进行分析。 进入之后先是理解了10.0.0.22作为客户端与10.0.0.2作为服务器三次握手的过程。 浏览全部协议主要有TCP/SSHv2/NFS/MOUNT/ICMP/ARP  TCP   传输控制协议（Transmission Control Protocol，">
+  <meta name="description" content="题目分析 题目是由1369个01组成的01串&amp;lt;正确思路：0和1的数量很关键，首先统计0和1的数量：1369.0/7 = 195.571428571428581369.0/8 = 171.1251369.0 ** 0.5 = 37.01369不是7和8的倍数，说明很可能和ASCII没关系。1369 是 37 的平方，说明可以由0和1正好组成一个正方形（二维码，QR code）。可以使用Pyth">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Forensics2">
-<meta property="og:url" content="http://yoursite.com/2019/04/22/Forensics2/index.html">
+<meta property="og:title" content="Another 01Game">
+<meta property="og:url" content="http://yoursite.com/2019/04/23/Another 01Game/index.html">
 <meta property="og:site_name" content="Gorge">
-<meta property="og:description" content="题目分析wireshark about file 解题过程 首先是下载文件之后发现是pcap结尾的文件。然后用Wireshark打开进行分析。 进入之后先是理解了10.0.0.22作为客户端与10.0.0.2作为服务器三次握手的过程。 浏览全部协议主要有TCP/SSHv2/NFS/MOUNT/ICMP/ARP  TCP   传输控制协议（Transmission Control Protocol，">
+<meta property="og:description" content="题目分析 题目是由1369个01组成的01串&amp;lt;正确思路：0和1的数量很关键，首先统计0和1的数量：1369.0/7 = 195.571428571428581369.0/8 = 171.1251369.0 ** 0.5 = 37.01369不是7和8的倍数，说明很可能和ASCII没关系。1369 是 37 的平方，说明可以由0和1正好组成一个正方形（二维码，QR code）。可以使用Pyth">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019042220002630.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190422200342278.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190422200549755.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-04-22T12:11:44.680Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019042309575393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-04-23T03:09:49.170Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Forensics2">
-<meta name="twitter:description" content="题目分析wireshark about file 解题过程 首先是下载文件之后发现是pcap结尾的文件。然后用Wireshark打开进行分析。 进入之后先是理解了10.0.0.22作为客户端与10.0.0.2作为服务器三次握手的过程。 浏览全部协议主要有TCP/SSHv2/NFS/MOUNT/ICMP/ARP  TCP   传输控制协议（Transmission Control Protocol，">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019042220002630.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta name="twitter:title" content="Another 01Game">
+<meta name="twitter:description" content="题目分析 题目是由1369个01组成的01串&amp;lt;正确思路：0和1的数量很关键，首先统计0和1的数量：1369.0/7 = 195.571428571428581369.0/8 = 171.1251369.0 ** 0.5 = 37.01369不是7和8的倍数，说明很可能和ASCII没关系。1369 是 37 的平方，说明可以由0和1正好组成一个正方形（二维码，QR code）。可以使用Pyth">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019042309575393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
   
     <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
   
@@ -193,11 +191,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Forensics2" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Another 01Game" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/04/22/Forensics2/" class="article-date">
-  	<time datetime="2019-04-22T12:10:27.744Z" itemprop="datePublished">2019-04-22</time>
+      <a href="/2019/04/23/Another 01Game/" class="article-date">
+  	<time datetime="2019-04-23T02:52:41.844Z" itemprop="datePublished">2019-04-23</time>
 </a>
     </div>
   
@@ -210,7 +208,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Forensics2
+      Another 01Game
       
     </h1>
   
@@ -228,20 +226,41 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>wireshark about file</p>
-<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><ol>
-<li>首先是下载文件之后发现是pcap结尾的文件。然后用Wireshark打开进行分析。</li>
-<li>进入之后先是理解了10.0.0.22作为客户端与10.0.0.2作为服务器三次握手的过程。</li>
-<li><p>浏览全部协议主要有TCP/SSHv2/NFS/MOUNT/ICMP/ARP</p>
-<blockquote>
-<p>TCP   传输控制协议（Transmission Control Protocol，TCP）是一种面向连接的、可靠的、基于字节流的运输层通信协议,主要用于在主机间建立一个虚拟连接，以实现高可靠性的数据包交换。<br>SSHv2  为建立在应用层和传输层基础上的安全协议,是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议。利用 SSH 协议可以有效防止远程管理过程中的信息泄露问题.<br>NFS (Network File System)即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间通过TCP/IP网络共享资源。在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。<br>MOUNT 在linux系统下，此命令用来将其他文件系统(FAT32 NTFS 光驱)的分区挂接到系统的制定目录下使用。<br>ICMP 它是TCP/IP协议族的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用。<br>ARP 即地址解析协议，实现通过IP地址得知其物理地址。</p>
+        <h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><blockquote>
+<p>题目是由1369个01组成的01串&lt;<br>正确思路：<br>0和1的数量很关键，首先统计0和1的数量：<br>1369.0/7 = 195.57142857142858<br>1369.0/8 = 171.125<br>1369.0 ** 0.5 = 37.0<br>1369不是7和8的倍数，说明很可能和ASCII没关系。1369 是 37 的平方，说明可以由0和1正好组成一个正方形（二维码，QR code）。<br>可以使用Python、MATLAB 等编程生成图片。扫描得到 另一个01字符串。<br>统计字符串长度，可以当作 ASCII 编程解出 flag</p>
 </blockquote>
+<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><h3 id="先说一下错误的解题过程吧"><a href="#先说一下错误的解题过程吧" class="headerlink" title="先说一下错误的解题过程吧"></a>先说一下错误的解题过程吧</h3><p>简单明了的说，是应为对二维码的生成的错误理解，还有对题目的曲解</p>
+<ul>
+<li>首先下载下来txt文件之后，看到python生成二维码，立刻想到python里面的qrcode二维码生成库。</li>
+<li><code>import qrcode
+qr = qrcode.QRCode(
+ version=7,
+ error_correction=qrcode.constants.ERROR_CORRECT_L,
+ box_size=10,
+ border=4,
+)
+path=&quot;C:\\Users\\hp\\Desktop\\aa.png&quot;
+files = open(&quot;C:\\Users\\hp\\Desktop\\0and1.txt&quot;,&quot;r&quot;)
+data = files.readline()
+print(data);
+qr.add_data(data)
+qr.make(fit=True)
+img = qr.make_image()
+img.show()</code></li>
+<li>二维码生成是获取里面的内容，怎么想也没想明白，怎么没有的到想要的结果，01的输出也不是按照37*37的过程输出的。</li>
+<li>睡觉……<h3 id="正确解法"><a href="#正确解法" class="headerlink" title="正确解法"></a>正确解法</h3></li>
+<li>今天早晨醒来，重新梳理了一下思路，既然01能组成正方形了，换了一个想法，就是把这个01换成二维码的形式，然后又百度了二维码的内在含义。</li>
+<li><p>二维条码/二维码（2-dimensional bar code）是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息<br>`i=0;<br>for c in data:<br> i=i+1<br> if c==’0’:</p>
+<pre><code>print(&apos;██&apos;,end=&quot;&quot;)
+</code></pre><p> else:</p>
+<pre><code>print(&apos;    &apos;,end=&quot;&quot;)
+</code></pre><p> if i % 37 == 0:</p>
+<pre><code>print()`
+</code></pre><p>这儿刚开始二维码比较大，只能不断的缩小字体大小才先显示出来哦~~终于扫出来了一个新的01字符串<img src="https://img-blog.csdnimg.cn/2019042309575393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 </li>
-<li><p>综合分析上述因素，我们的重点应该放在NFS上面</p>
-</li>
-<li>过滤NFS的选项进行查看，发现有flag的txt文件</li>
-</ol>
-<p><img src="https://img-blog.csdnimg.cn/2019042220002630.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点击进入这一条之后，没有发现详细信息里面有特殊信息，于是向上找，<br>找到了Write写入字样的NFS,<br><img src="https://img-blog.csdnimg.cn/20190422200342278.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查找后可以看到如下截图：<br><img src="https://img-blog.csdnimg.cn/20190422200549755.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>对这一条数据进行右键——&gt;显示分组字节，将解码方式设置为压缩<br>EIS{Nfs_G00d_f0r_Trust3d_Netw0rk_0nly}</p>
+<li>根据题目提示，然后使用ASCII码进行解题，得到flag.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data = &apos;110011011011001100001110011111110111111001011000010101011011111100101110011101001111101011110111111100001110001001100001110101111010010111111110001101001010000110110000110010001100111111101&apos;</span><br><span class="line">i=0;</span><br><span class="line">s=&apos;0&apos;</span><br><span class="line">for c in data:</span><br><span class="line">    s=s+&apos;&apos;+c;</span><br><span class="line">    i=i+1</span><br><span class="line">    if i % 7 == 0:</span><br><span class="line">        a = int(s,2)</span><br><span class="line">        print(chr(a),end=&quot;&quot;)</span><br><span class="line">        s=&apos;0&apos;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -251,18 +270,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/04/23/Another 01Game/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">&lt;</strong>
-      <div class="article-nav-title">
-        
-          Another 01Game
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/04/22/InvisibleFlag/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Invisible Flag</div>
+    <a href="/2019/04/22/Forensics2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Forensics2</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -272,7 +282,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="Forensics2" data-title="Forensics2" data-url="http://yoursite.com/2019/04/22/Forensics2/" data-images="../../photo/head.jpg" data-content="Forensics2">
+<div class="ds-share share" data-thread-key="Another 01Game" data-title="Another 01Game" data-url="http://yoursite.com/2019/04/23/Another 01Game/" data-images="../../photo/head.jpg" data-content="Another 01Game">
     <div class="ds-share-inline">
       <ul class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
