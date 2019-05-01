@@ -18,7 +18,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/2019043019133363.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190430195354879.png">
-<meta property="og:updated_time" content="2016-06-01T15:50:41.486Z">
+<meta property="og:updated_time" content="2019-05-01T04:14:52.124Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gorge">
 <meta name="twitter:description" content="对于XSS的学习过程，已经更新在CSDN博客 题目分析这道题目告诉我们flag在admin.php中，只有admin才能获取它，我们点击进去之后发现并没有flag，这是为什么呢？因为我们不是admin，因此，我们必须伪装成admin。         题目的下面有一行代码，substr((md5(‘proof of work’),0,6) === ‘4b3392’)         这一行代码的意">
@@ -218,8 +218,7 @@
 <ul>
 <li>token了解<br> token的意思是“令牌”，是服务端生成的一串字符串，作为客户端进行请求的一个标识。<br>当用户第一次登录后，服务器生成一个token并将此token返回给客户端，以后客户端只需带上这个token前来请求数据即可，无需再次带上用户名和密码。<br>简单token的组成；uid(用户唯一的身份标识)、time(当前时间的时间戳)、sign（签名，token的前几位以哈希算法压缩成的一定长度的十六进制字符串。为防止token泄露）。</li>
 <li>获取token<br>通过在线注册XSS平台，在怀疑会出现XSS的地方植入代码，获得token信息。</li>
-<li>假冒admin,更改cookie的信息</li>
-<li></li>
+<li>假冒admin,更改cookie的信息<h1 id="通过使用burp抓包"><a href="#通过使用burp抓包" class="headerlink" title="通过使用burp抓包"></a>通过使用burp抓包</h1>使用过程简略，找到cookie之后，我们要在把token的值拼接上去，forward就可以了，在admin界面中就会出现Cookie的值。</li>
 </ul>
 
       
@@ -270,7 +269,7 @@
   <div class="outer">
     <div id="footer-info">
       <div class="footer-left">
-        &copy; 2016 Gorge
+        &copy; 2019 Gorge
       </div>
         <div class="footer-right">
           <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
