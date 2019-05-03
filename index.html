@@ -187,6 +187,86 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-汇编语言" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/05/02/汇编语言/" class="article-date">
+  	<time datetime="2019-05-02T05:56:12.886Z" itemprop="datePublished">2019-05-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/02/汇编语言/">
+        汇编语言--基础知识
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基础知识1"><a href="#基础知识1" class="headerlink" title="基础知识1"></a>基础知识1</h2><p>汇编语言是直接在硬件之上工作的编程语言，首先要了解硬件系统的结构，才能有效的应用汇编语言对编程。‘</p>
+<h2 id="机器语言"><a href="#机器语言" class="headerlink" title="机器语言"></a>机器语言</h2><p>   机器语言就是机器指令的集合<br>   机器指令展开来讲就是一台机器可以正确执行的指令</p>
+<h2 id="汇编语言"><a href="#汇编语言" class="headerlink" title="汇编语言"></a>汇编语言</h2><p>主体是汇编的指令，机器指令便于记忆的书写格式。<br><strong>汇编指令</strong>是机器指令的助记符<br><strong>寄存器</strong> 简单的说是CPU中可以存储数据的器件，一个CPU中有多个寄存器。</p>
+<h3 id="汇编语言的组成"><a href="#汇编语言的组成" class="headerlink" title="汇编语言的组成"></a>汇编语言的组成</h3><p>概念</p>
+<blockquote>
+<p>汇编语言由以下3类组成:</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>汇编指令（机器码的助记符）</li>
+<li>伪指令（由编译器执行）</li>
+<li>其他符号（由编译器识别）<br><strong> 汇编语言的核心是汇编指令</strong>它决定了汇编语言的特性</li>
+</ol>
+</blockquote>
+<p><strong>指令还有数据</strong><br>指令还有数据在内存或者磁盘上，指令还有数据是没有区别的，都是二进制的信息。<br><strong>存储单元</strong><br>存储器被划分为若干个单元，每个存储单元从0开始顺序编号；<br>对于大容量的存储器一还用以下单位来计量容量（以下用B来代表Byte）:<br>一个存储器单元可以存储8个bit,即8位二进制数。<br>    1kb = 1024B<br>    1MB = 1024KB<br>    1GB = 1024MB<br>    1TB = 1024GB<br>磁盘的容量单位同内存一样，实际上以上单位是微机中常用的计量单位。</p>
+<h3 id="CPU对存储器的读写"><a href="#CPU对存储器的读写" class="headerlink" title="CPU对存储器的读写"></a>CPU对存储器的读写</h3><p>要想进行数据的读写，必须和外部器件进行三类信息的交互：</p>
+<ol>
+<li>存储单元的地址</li>
+<li>器件的选择，读或者写的命令（控制信息）</li>
+<li>读或者写数据（数据信息）</li>
+</ol>
+<p>在计算机中有连接CPU和其它芯片的导线，通常称为总线。<br>物理上：一根根导线的集合<br>逻辑上划分为：地址总线、数据总线、控制总线<br><img src="https://img-blog.csdnimg.cn/20190502002818633.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>地址总线</strong><br>CPU是通过地址总线来指定存储单元的。<br>地址总线上能传送多少个不同的信息，CPU就可以对多个存储单元进行寻址。<br>地址总线的地址 由低到高排列。</p>
+<ol>
+<li>一个CPU有N根地址总线，则可以说这个CPU的地址总线的宽度为N。’<br>2.这样的CPU最多可以寻找2的N次方个内存单元。<br><strong>数据总线</strong><br>数据总线的宽度就决定了CPU和外界的数据传送的速度。<br>数据总线是从低位向高位索引的。<br><strong>控制总线</strong><br>CPU对外部器件的控制是通过控制总线来进行的。在这里控制总线是个总称，控制总线是一些不同控制线的集合。有多少根控制总线，就意味着CPU提供了对外部器件的多少种控制。<br>控制总线的宽度决定了CPU对外部器件的控制量。<h2 id="内存地址空间"><a href="#内存地址空间" class="headerlink" title="内存地址空间"></a>内存地址空间</h2><strong>主板</strong><br>在每一台PC机中，都有一个主板，主板上有核心器件和一些主要的器件。<br>这些器件通过总线相连。<br><strong>接口</strong><br>计算机系统中，所有可用程序控制其工作的设备，必须受到CPU的控制。<br>CPU对外部设备不能直接控制，如显示器，音响，打印机等。直接控制这些设备进行工作的是插在扩展插槽上的这些接口卡。<br><strong>各类存储器的芯片</strong><br>从读写属性上看分为两类：随机存储器（RAM）和只读存储器（ROM）<br>功能还有连接上分类：随机存储器RAM、装有BIOS的ROM、接口卡上的RAM</li>
+</ol>
+<p><strong>定义</strong><br>最终运行程序的是CPU，我们用汇编编程的时候，必须要从CPU的角度考虑，我们用其他语言进行编程的时候，要从汇编的角度考虑问题。<br>对于CPU来讲，系统中的所有存储器中的存储单元都处于一个统一的逻辑存储器中，特的容量搜CPU寻址能力的限制，这个逻辑存储器就是我们所说的内存地址空间。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Reverse sign in" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -773,65 +853,6 @@ img.show()</code></li>
 <h1 id="了解各个部分信息的含义"><a href="#了解各个部分信息的含义" class="headerlink" title="了解各个部分信息的含义"></a>了解各个部分信息的含义</h1><p><img src="../../photo/PK2.JPG" alt="在这里插入图片描述"></p>
 <h2 id="这道题目既然是跟图片长度有关系的-题目因此我们接下来更改一下图片的长宽信息："><a href="#这道题目既然是跟图片长度有关系的-题目因此我们接下来更改一下图片的长宽信息：" class="headerlink" title="这道题目既然是跟图片长度有关系的 题目因此我们接下来更改一下图片的长宽信息："></a>这道题目既然是跟图片长度有关系的 题目因此我们接下来更改一下图片的长宽信息：</h2><p><strong>图片很显然下面没有显示全</strong><br>             宽度为564像素<br>             高度为400像素<br> <strong>图片真实信息</strong><br>            宽度 00 00 02 34对应的十进制数字是564<br>            高度 00 00 01 90对应的十进制数字是400<br> <strong>增加高度</strong> ，<br>            只需要改变后两位就可以啦 </p>
 <h2 id="图片另存为"><a href="#图片另存为" class="headerlink" title="图片另存为"></a>图片另存为</h2><p>flag{bigger_than_you_can_imagine}</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Code" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/04/06/Code/" class="article-date">
-  	<time datetime="2019-04-06T03:37:02.336Z" itemprop="datePublished">2019-04-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/06/Code/">
-        Code&#39;s principle
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Hex编码"><a href="#Hex编码" class="headerlink" title="Hex编码"></a>Hex编码</h2><h3 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h3><p>Hex编码就是把一个8位的字节数据用两个十六进制数展示出来，编码的时候，将8位二进制码重新分组成两个4位字节，其中一个字节的低4位是原来字节的高4位，另外一个字节的低4位是原来数据的低四位，高4位都补零，然后输出这两个字节的对应16进制数字作为编码。Hexo编码后的长度是源数据的2倍。<br>C:\Users\hp\MyEclipse\Common\binary\com.sun.java.jdk.win32.x86_64_1.6.0.013\bin\javaw.exe</p>
-<ol>
-<li><strong>Hex编码的编码表</strong> ；<br> <img src="../../photo/2.JPG" alt="在这里插入图片描述"></li>
-<li>**ASCII码A的 Hex编码的过程<br><img src="../../photo/1.JPG" alt="在这里插入图片描述"><h1 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h1><h2 id="bin码"><a href="#bin码" class="headerlink" title="bin码"></a>bin码</h2>bin码就是二进制码，文件名的后缀为 .bin<h2 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h2>ASCII码就是把他们看成字符来对待，每8个bit位来存储一个字母，所以说一个字母占用一个字节，同样由于编码原因，一个汉字占用两个字节。<h2 id="BCD码"><a href="#BCD码" class="headerlink" title="BCD码"></a>BCD码</h2>BCD码就是从低位开始，每4个bit表示一个位数，BCD码就是十进制的二进制数。<h2 id="Base-64"><a href="#Base-64" class="headerlink" title="Base 64"></a>Base 64</h2>Base 64编码就是要求把3个8位字节，转化为4个6位字节，之后在6位的前面补两个0，形成8位一个字节的形式。<br>例如<br>11010101 11000101 00110011<br>转化后：<br>00110101 00011100 00010100 00110011<br>用十进制表示即为： 53 34 20 51<br>这个并不是最终的结果，还需要根据Base 64的编码表 查询转换后的值，<br>下面就是Base 64 的编码表：<br><img src="https://img-blog.csdnimg.cn/20190406111813267.png" alt="在这里插入图片描述"><br>以上一共是64个编码，这也是Base 64 的名称的由来，编码的编号对应的是得出的新字节的十进制值。因此，上例中字符串经过编码后就变成了字符串 “liuz”了。<br>当编码量不是3的整数倍的时候，代码量/3的余数就是2或者1了。转换的时候，结果不够6位的用 0 来补上相应的位置，之后在6位的前面补两个0。转换完空的结果就用“=”来补位了。</li>
-</ol>
 
       
     </div>

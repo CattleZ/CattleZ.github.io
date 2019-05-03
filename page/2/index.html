@@ -187,6 +187,65 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Code" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/06/Code/" class="article-date">
+  	<time datetime="2019-04-06T03:37:02.336Z" itemprop="datePublished">2019-04-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/06/Code/">
+        Code&#39;s principle
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Hex编码"><a href="#Hex编码" class="headerlink" title="Hex编码"></a>Hex编码</h2><h3 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h3><p>Hex编码就是把一个8位的字节数据用两个十六进制数展示出来，编码的时候，将8位二进制码重新分组成两个4位字节，其中一个字节的低4位是原来字节的高4位，另外一个字节的低4位是原来数据的低四位，高4位都补零，然后输出这两个字节的对应16进制数字作为编码。Hexo编码后的长度是源数据的2倍。<br>C:\Users\hp\MyEclipse\Common\binary\com.sun.java.jdk.win32.x86_64_1.6.0.013\bin\javaw.exe</p>
+<ol>
+<li><strong>Hex编码的编码表</strong> ；<br> <img src="../../photo/2.JPG" alt="在这里插入图片描述"></li>
+<li>**ASCII码A的 Hex编码的过程<br><img src="../../photo/1.JPG" alt="在这里插入图片描述"><h1 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h1><h2 id="bin码"><a href="#bin码" class="headerlink" title="bin码"></a>bin码</h2>bin码就是二进制码，文件名的后缀为 .bin<h2 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h2>ASCII码就是把他们看成字符来对待，每8个bit位来存储一个字母，所以说一个字母占用一个字节，同样由于编码原因，一个汉字占用两个字节。<h2 id="BCD码"><a href="#BCD码" class="headerlink" title="BCD码"></a>BCD码</h2>BCD码就是从低位开始，每4个bit表示一个位数，BCD码就是十进制的二进制数。<h2 id="Base-64"><a href="#Base-64" class="headerlink" title="Base 64"></a>Base 64</h2>Base 64编码就是要求把3个8位字节，转化为4个6位字节，之后在6位的前面补两个0，形成8位一个字节的形式。<br>例如<br>11010101 11000101 00110011<br>转化后：<br>00110101 00011100 00010100 00110011<br>用十进制表示即为： 53 34 20 51<br>这个并不是最终的结果，还需要根据Base 64的编码表 查询转换后的值，<br>下面就是Base 64 的编码表：<br><img src="https://img-blog.csdnimg.cn/20190406111813267.png" alt="在这里插入图片描述"><br>以上一共是64个编码，这也是Base 64 的名称的由来，编码的编号对应的是得出的新字节的十进制值。因此，上例中字符串经过编码后就变成了字符串 “liuz”了。<br>当编码量不是3的整数倍的时候，代码量/3的余数就是2或者1了。转换的时候，结果不够6位的用 0 来补上相应的位置，之后在6位的前面补两个0。转换完空的结果就用“=”来补位了。</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Exif" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
