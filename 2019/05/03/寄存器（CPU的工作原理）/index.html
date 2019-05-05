@@ -3,27 +3,23 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>Real wifi | Gorge</title>
+  <title>寄存器（CPU的工作原理） | Gorge</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="题目 先用wireshrk 软件打开之后观察里面的数据信息，发现协议是802.11协议，这个协议wifi以这个协议作为其网络层以下的协议。 aircrack-ng打开安装aircrack-ng在官网上下载安装包，然后拖动到Linux的桌面上，双击安装使用命令行用aircrack打开数据包。命令：aricrack-ng realwife.pcap可以查看都ESSID以及加密的类型。题目中 有说wif">
+  <meta name="description" content="通用寄存器8086CPU有14个寄存器，他们的名字称为诶：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。8086CPU所有的寄存器都是16位的，可以存放两个字节。为了保证兼容性，这四个寄存器都可以分为两个独立的8位寄存器使用。AX可以分为 AH还有AL； AH还有AL寄存器是可以独立使用的8位寄存器。BX可以分为BH还有BL；CX可以分为CH还有CL；DX可">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Real wifi">
-<meta property="og:url" content="http://yoursite.com/2019/05/03/Real wifi/index.html">
+<meta property="og:title" content="寄存器（CPU的工作原理）">
+<meta property="og:url" content="http://yoursite.com/2019/05/03/寄存器（CPU的工作原理）/index.html">
 <meta property="og:site_name" content="Gorge">
-<meta property="og:description" content="题目 先用wireshrk 软件打开之后观察里面的数据信息，发现协议是802.11协议，这个协议wifi以这个协议作为其网络层以下的协议。 aircrack-ng打开安装aircrack-ng在官网上下载安装包，然后拖动到Linux的桌面上，双击安装使用命令行用aircrack打开数据包。命令：aricrack-ng realwife.pcap可以查看都ESSID以及加密的类型。题目中 有说wif">
+<meta property="og:description" content="通用寄存器8086CPU有14个寄存器，他们的名字称为诶：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。8086CPU所有的寄存器都是16位的，可以存放两个字节。为了保证兼容性，这四个寄存器都可以分为两个独立的8位寄存器使用。AX可以分为 AH还有AL； AH还有AL寄存器是可以独立使用的8位寄存器。BX可以分为BH还有BL；CX可以分为CH还有CL；DX可">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190503124355555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190503124840390.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190503130025650.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-05-03T05:08:09.766Z">
+<meta property="og:updated_time" content="2019-05-05T16:31:13.003Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Real wifi">
-<meta name="twitter:description" content="题目 先用wireshrk 软件打开之后观察里面的数据信息，发现协议是802.11协议，这个协议wifi以这个协议作为其网络层以下的协议。 aircrack-ng打开安装aircrack-ng在官网上下载安装包，然后拖动到Linux的桌面上，双击安装使用命令行用aircrack打开数据包。命令：aricrack-ng realwife.pcap可以查看都ESSID以及加密的类型。题目中 有说wif">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190503124355555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta name="twitter:title" content="寄存器（CPU的工作原理）">
+<meta name="twitter:description" content="通用寄存器8086CPU有14个寄存器，他们的名字称为诶：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。8086CPU所有的寄存器都是16位的，可以存放两个字节。为了保证兼容性，这四个寄存器都可以分为两个独立的8位寄存器使用。AX可以分为 AH还有AL； AH还有AL寄存器是可以独立使用的8位寄存器。BX可以分为BH还有BL；CX可以分为CH还有CL；DX可">
   
     <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
   
@@ -193,11 +189,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Real wifi" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-寄存器（CPU的工作原理）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/05/03/Real wifi/" class="article-date">
-  	<time datetime="2019-05-03T05:00:39.534Z" itemprop="datePublished">2019-05-03</time>
+      <a href="/2019/05/03/寄存器（CPU的工作原理）/" class="article-date">
+  	<time datetime="2019-05-03T13:20:44.060Z" itemprop="datePublished">2019-05-03</time>
 </a>
     </div>
   
@@ -210,7 +206,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Real wifi
+      寄存器（CPU的工作原理）
       
     </h1>
   
@@ -228,12 +224,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><img src="https://img-blog.csdnimg.cn/20190503124355555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="先用wireshrk-软件"><a href="#先用wireshrk-软件" class="headerlink" title="先用wireshrk 软件"></a>先用wireshrk 软件</h2><p>打开之后观察里面的数据信息，发现协议是802.11协议，这个协议wifi以这个协议作为其网络层以下的协议。</p>
-<h2 id="aircrack-ng打开"><a href="#aircrack-ng打开" class="headerlink" title="aircrack-ng打开"></a>aircrack-ng打开</h2><p><strong>安装aircrack-ng</strong>在官网上下载安装包，然后拖动到Linux的桌面上，双击安装<br><img src="https://img-blog.csdnimg.cn/20190503124840390.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>使用命令行用aircrack打开数据包。</strong><br>命令：aricrack-ng realwife.pcap<br>可以查看都ESSID以及加密的类型。题目中 有说wifi的密码比较弱，因此，我们可以使用弱口令字典暴力破解wifi的密码。<br>命令:ariack-ng - w rokoul.txt realwife.pcap<br>我们可以获得wifi的密码</p>
-<blockquote>
-<p>现在找到wifi的密码，但是wifi的密码并不是flag<br>我们还需要进一步的分析<br>通过ESSID还有wifi的密码解密原来的文件，得到解密后的新的文件<br>命令：airdecap-ng -e Blue-Whale -p 12345678 realwife.pcap<br>得到一个新的pcap文件，我们对http流进行追踪，就可以查看到flag.<br><img src="https://img-blog.csdnimg.cn/20190503130025650.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+        <h2 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h2><p>8086CPU有14个寄存器，他们的名字称为诶：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。<br>8086CPU所有的寄存器都是16位的，可以存放两个字节。<br>为了保证兼容性，这四个寄存器都可以分为两个独立的8位寄存器使用。<br>AX可以分为 AH还有AL； AH还有AL寄存器是可以独立使用的8位寄存器。<br>BX可以分为BH还有BL；<br>CX可以分为CH还有CL；<br>DX可以分为DH还有DL;</p>
+<h2 id="字在寄存器中的存储"><a href="#字在寄存器中的存储" class="headerlink" title="字在寄存器中的存储"></a>字在寄存器中的存储</h2><blockquote>
+<p>一个字可以存在一个16位的寄存器中，这个字的高位字节和低位字节自然就存在这个寄存器的高8位寄存器和低8位寄存器中。</p>
 </blockquote>
+<h2 id="几条汇编指令"><a href="#几条汇编指令" class="headerlink" title="几条汇编指令"></a>几条汇编指令</h2><p><strong>汇编指令是不区分大小写的</strong><br>mov AX,BX  的意思是将BX中的数据放在AX中<br>add AX,BX  的意思是将BX与AX相加，放在AX中</p>
+<p><strong>如果超过数据的存储范围，就会有数据的丢失</strong><br>这里的丢失，指的就是进位制不能在8位寄存器中保存，但是CPU不是真的丢弃这个进位值。</p>
+<h2 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h2><p>CPU访问内存单元的时候要给出内存单元的地址，所有的内存单元构成的存储空间是一个一维的线性空间。<br>我们将这个唯一的地址称为物理地址。<br><strong>决定一个CPU是多少位的，有以下三方面的特点</strong></p>
+<ul>
+<li>运算器一次最多可以处理16位的数据。</li>
+<li>寄存器的最大宽度为16位。</li>
+<li><p>寄存器和运算器之间的通路是16位的。<br>8086CPU在读写内存的时候，发生了一些事情：</p>
+</li>
+<li><p>CPU中的相关部件提供两个16位的地址，一个称为段地址，另一称为偏移地址</p>
+</li>
+<li>段地址和偏移地址通过内部总线送入一个称为地址加法器的部件；</li>
+<li>地址加法器将两个16位地址合并成一个20位的地址。<br>地址加法器合成物理地址的方法：<pre><code>物理地址=段地址×16+偏移地址
+</code></pre><h2 id="段的概念"><a href="#段的概念" class="headerlink" title="段的概念"></a>段的概念</h2>内存并没有分段，段的划分来自于CPU，由于8086CPU用“段地址*16”+偏移地址=物理地址的方式。实际上，内存并没有划分成一个一个的段。<br>以后在编程的时候，根据需要将若干个地址连续的内存单元看作一个段，用段地址X16定位段的起始地址（基础地址），用偏移地址定位段中的内存单元。<br>段的起始地址一定是16的倍数。<br>偏移地址为16位，所以一个段的长度最大为64k。<blockquote>
+<p>CPU可以用不同的段地址还有偏移地址来形成同一个物理地址。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h2><p>段寄存器就是用来提供段地址的。8086CPU有4个段寄存器：CS、DS、SS、ES<br>当8086CPU要访问内存的时候，由这4个段寄存器提供内存单元的段地址。</p>
+<h2 id="CS和IP"><a href="#CS和IP" class="headerlink" title="CS和IP"></a>CS和IP</h2><p>CS和IP是8086CPU中最关键的寄存器，他们指示了CPU当前要读取的指令的地址。<br>CS为代码段寄存器。用来存放指令的段地址。<br>IP为指令指针寄存器。用来存放指令的偏移地址。<br><strong>转移指令</strong><br>修改CS、IP的内容不能使用MOV指令，而是通过使用 <strong>JMP</strong>进行的。<br>jmp 段地址：偏移地址<br>功能：用指令中给出的段地址修改CS，偏移地址修改IP<br>jmp 1000:3  表示CS= 1000,IP=3</p>
+<h2 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h2><p>可以将长度为N（N&lt;=64KB）的一组代码，存在一组地址连续、起始地址为16的倍数的内存单元中，这段内存是用来存放代码的，从而定义了一个代码段。<br>CPU只认被CS：IP指向的内存单元中的内容为指令。</p>
 
       
     </div>
@@ -243,18 +257,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/05/03/寄存器（CPU的工作原理）/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/05/寄存器（内存访问01）/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">&lt;</strong>
       <div class="article-nav-title">
         
-          寄存器（CPU的工作原理）
+          �Ĵ������ڴ����01��
         
       </div>
     </a>
   
   
-    <a href="/2019/05/02/汇编语言/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">汇编语言--基础知识</div>
+    <a href="/2019/05/03/Real wifi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Real wifi</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -264,7 +278,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="Real wifi" data-title="Real wifi" data-url="http://yoursite.com/2019/05/03/Real wifi/" data-images="../../photo/head.jpg" data-content="Real wifi">
+<div class="ds-share share" data-thread-key="寄存器（CPU的工作原理）" data-title="寄存器（CPU的工作原理）" data-url="http://yoursite.com/2019/05/03/寄存器（CPU的工作原理）/" data-images="../../photo/head.jpg" data-content="寄存器（CPU的工作原理）">
     <div class="ds-share-inline">
       <ul class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
