@@ -187,6 +187,81 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-寄存器（内存访问02）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/05/08/寄存器（内存访问02）/" class="article-date">
+  	<time datetime="2019-05-08T03:33:19.328Z" itemprop="datePublished">2019-05-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/08/寄存器（内存访问02）/">
+        寄存器（内存访问02）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="mov-指令"><a href="#mov-指令" class="headerlink" title="mov 指令"></a>mov 指令</h1><blockquote>
+<p>mov 寄存器，数据<br>  mov 寄存器，寄存器<br>  mov 寄存器，内存单元<br>  mov 内存单元，寄存器<br>  mov 段寄存器，寄存器<br>  mov 寄存器，段寄存器</p>
+</blockquote>
+<h1 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h1><p>我们可以根据需要将一组内存单元定义为一个段。<br>我们可以将一组长度为N（N&lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。</p>
+<p>mov指令要访问内存单元，可以在mov指令中只给出单元的偏移地址，此时，段地址默认在DS寄存器中。</p>
+<p>[add] 表示一个偏移地址为add的内存单元。</p>
+<p>在内存和寄存器之间传送字型数据的时候，高地址单元和高8位寄存器、低地址单元和低8位寄存器相对应。</p>
+<p>mov、add、sub是具有两个操作对象的指令。jmp是具有一个操作对象的指令。</p>
+<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>栈是一种具有特殊的访问方式的存储空间，他的特殊性就在与先进的后出，后进的先出。</p>
+<p>栈的两个基本的操作:入栈还有出栈。<br>8086CPU中提供的入栈还有出栈的操作。<br>PUSH ax：将寄存器ax中的数据送入栈中。<br>POP ax: 从栈顶取出数据送入ax中。<br>8086CPU中的入栈和出栈操作都是以字为单位进行的。</p>
+<blockquote>
+<p>CPU如何指导当前要执行的指令所在的位置？<br>因为：寄存器CS和IP中存放着当前指令的段地址和偏移地址。</p>
+</blockquote>
+<p>8086CPU中，有两个寄存器;<br>   段寄存器SS  存放栈顶的段地址<br>   寄存器SP    存放栈顶的偏移地址<br>任意时刻，SS和SP指向栈顶元素。</p>
+<p>执行PUS的时候，sp偏移地址-2</p>
+<h2 id="pop-ax的过程"><a href="#pop-ax的过程" class="headerlink" title="pop ax的过程"></a>pop ax的过程</h2><p>（1）将SS：SP指向的内存单元处的数据送入ax中<br>（2）SP = SP+2，SS：SP指向当前的栈顶下面的单元，以当前栈顶下面的单元为新的栈顶。</p>
+<h2 id="栈顶越界的问题"><a href="#栈顶越界的问题" class="headerlink" title="栈顶越界的问题"></a>栈顶越界的问题</h2><p>SS和SP 只是记录了栈顶的地址，当栈顶越界的时候是非常危险的，栈顶溢出，溢出攻击。</p>
+<p>我们既然将一段空间安排为栈，那么在栈空间之外的空间里面很可能是存放有其他用途的数据，代码等。将这些数据，代码意外地改写，将会引发一连串的错误。<br>CPU可以解决这个问题。</p>
+<h2 id="栈与内存"><a href="#栈与内存" class="headerlink" title="栈与内存"></a>栈与内存</h2><p>栈空间当然也是内存空间的一部分，它只是一段可以以一种特殊的方式进行访问的内存空间。</p>
+<p>PUSH/POP  寄存器dx、段寄存器ds、内存单元[0]</p>
+<p>0607</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-寄存器（内存访问01）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -767,75 +842,6 @@
 <ul>
 <li>这个题目似乎跟网速也有关系，我执行了好几次才成功</li>
 </ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-PlaintextAttack" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/04/24/PlaintextAttack/" class="article-date">
-  	<time datetime="2019-04-24T05:27:29.443Z" itemprop="datePublished">2019-04-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/24/PlaintextAttack/">
-        Invisible Flag
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>@<a href="Zip明文攻击">TOC</a></p>
-<h1 id="明文攻击"><a href="#明文攻击" class="headerlink" title="明文攻击"></a>明文攻击</h1><p>明文攻击是一种较为高效的攻击手段，大致原理是当你不知道一个zip的密码，但是你有一个zip里面的已经知道的文件或者已经通过其他手段知道zip加密文件中的某些内容的时候，因为同一个zip压缩包里面的所有文件都是使用同一个加密的密钥来加密的，所以可以利用已知文件来找加密的密钥，利用密钥来解锁其他加密文件。一般不知道密码的具体长度以及知不知道组成密码的成分，想办法用明文攻击是最快的方式。</p>
-<h1 id="zip加密文件的三种破解方式"><a href="#zip加密文件的三种破解方式" class="headerlink" title="zip加密文件的三种破解方式"></a>zip加密文件的三种破解方式</h1><ol>
-<li><strong>暴力破解</strong> ，这是最花时间的一种破解方式，力破解就是不断的去尝试所有可能的密码。如果密码比较短，或许在短时间内可以找到正确的密码。但是如果比较长，比如说用64个字符长的字符串来做密码的话，可能你重生十次后发现依然未能找到答案。</li>
-<li><strong>字典攻击</strong>，相比于暴力破解这种弱智儿童，字典攻击大概就是三岁小孩的智商。它使用了一个字典文件，然后一一尝试文件中的每个密码。现在在网络上有很多的人相互共享自己的字典文件，这使得字典攻击比暴力破解有效率得多。尤其是当目标文件是用一个弱密码进行保护的时候，字典攻击效率较高。但是，由于字典攻击没有囊括所有可能的密码，所以对于强密码保护的zip文件，字典攻击毫无办法。</li>
-<li><strong>明文攻击</strong>，这是到目前为止最智能的一种攻击方法。眼见为实，你可以亲自尝试一下。但是首先，你需要一些前提条件：<ul>
-<li>一个加密的压缩文件</li>
-<li>了解压缩文件的zip版本（比如加密平台、zip版本号等，可以通过文件属性了解。如果是linux平台，用unzip -v命令可以查看一个zip包的详细信息，包括加密算法等。）</li>
-<li>知道压缩包里某个文件的部分连续内容（至少12字节）</li>
-<li>运气<h1 id="破解过程"><a href="#破解过程" class="headerlink" title="破解过程"></a>破解过程</h1>工具有PKCrack (LINUX) 还有Advanced Zip Passwword Recory<br>我这里选择使用AZPR<br>明文攻击使用Plain_text attack<img src="https://img-blog.csdnimg.cn/20190424132319213.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>最后保存一下新的文件就是已经破解出来的文件啦</li>
-</ul>
-</li>
-</ol>
-<p>作者：Gorge</p>
-<hr>
 
       
     </div>

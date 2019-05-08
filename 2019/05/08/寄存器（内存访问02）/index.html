@@ -3,23 +3,23 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>寄存器（内存访问01） | Gorge</title>
+  <title>寄存器（内存访问02） | Gorge</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="内存中字的存储在0地址位置开始存放20000（4E20H）:注意：0号单元是低地址，1号单元是高地址。4E会存放在高地址，20会存放在低地址。结论：任何两个地址连续的内存单元，N号单元和N+1号单元，可以将他们看作是两个内存单元，也可以将他们看作是一个地址为N的字单元中的高位字节单元和低位字节单元。 DS和[address]CPU要读取一个内存单元的时候，必须先给出这个内存单元的地址；在8086P">
+  <meta name="description" content="mov 指令 mov 寄存器，数据  mov 寄存器，寄存器  mov 寄存器，内存单元  mov 内存单元，寄存器  mov 段寄存器，寄存器  mov 寄存器，段寄存器  数据段我们可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N（N&amp;lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。 mov指令要访问内存单元，可以在m">
 <meta property="og:type" content="article">
-<meta property="og:title" content="寄存器（内存访问01）">
-<meta property="og:url" content="http://yoursite.com/2019/05/05/寄存器（内存访问01）/index.html">
+<meta property="og:title" content="寄存器（内存访问02）">
+<meta property="og:url" content="http://yoursite.com/2019/05/08/寄存器（内存访问02）/index.html">
 <meta property="og:site_name" content="Gorge">
-<meta property="og:description" content="内存中字的存储在0地址位置开始存放20000（4E20H）:注意：0号单元是低地址，1号单元是高地址。4E会存放在高地址，20会存放在低地址。结论：任何两个地址连续的内存单元，N号单元和N+1号单元，可以将他们看作是两个内存单元，也可以将他们看作是一个地址为N的字单元中的高位字节单元和低位字节单元。 DS和[address]CPU要读取一个内存单元的时候，必须先给出这个内存单元的地址；在8086P">
+<meta property="og:description" content="mov 指令 mov 寄存器，数据  mov 寄存器，寄存器  mov 寄存器，内存单元  mov 内存单元，寄存器  mov 段寄存器，寄存器  mov 寄存器，段寄存器  数据段我们可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N（N&amp;lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。 mov指令要访问内存单元，可以在m">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-06T00:07:04.155Z">
+<meta property="og:updated_time" content="2019-05-07T15:41:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="寄存器（内存访问01）">
-<meta name="twitter:description" content="内存中字的存储在0地址位置开始存放20000（4E20H）:注意：0号单元是低地址，1号单元是高地址。4E会存放在高地址，20会存放在低地址。结论：任何两个地址连续的内存单元，N号单元和N+1号单元，可以将他们看作是两个内存单元，也可以将他们看作是一个地址为N的字单元中的高位字节单元和低位字节单元。 DS和[address]CPU要读取一个内存单元的时候，必须先给出这个内存单元的地址；在8086P">
+<meta name="twitter:title" content="寄存器（内存访问02）">
+<meta name="twitter:description" content="mov 指令 mov 寄存器，数据  mov 寄存器，寄存器  mov 寄存器，内存单元  mov 内存单元，寄存器  mov 段寄存器，寄存器  mov 寄存器，段寄存器  数据段我们可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N（N&amp;lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。 mov指令要访问内存单元，可以在m">
   
     <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
   
@@ -189,11 +189,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-寄存器（内存访问01）" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-寄存器（内存访问02）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/05/05/寄存器（内存访问01）/" class="article-date">
-  	<time datetime="2019-05-05T15:35:49.104Z" itemprop="datePublished">2019-05-05</time>
+      <a href="/2019/05/08/寄存器（内存访问02）/" class="article-date">
+  	<time datetime="2019-05-08T03:33:19.328Z" itemprop="datePublished">2019-05-08</time>
 </a>
     </div>
   
@@ -206,7 +206,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      寄存器（内存访问01）
+      寄存器（内存访问02）
       
     </h1>
   
@@ -224,12 +224,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="内存中字的存储"><a href="#内存中字的存储" class="headerlink" title="内存中字的存储"></a>内存中字的存储</h1><p>在0地址位置开始存放20000（4E20H）:<br>注意：0号单元是低地址，1号单元是高地址。4E会存放在高地址，20会存放在低地址。<br>结论：任何两个地址连续的内存单元，N号单元和N+1号单元，可以将他们看作是两个内存单元，也可以将他们看作是一个地址为N<br>的字单元中的高位字节单元和低位字节单元。</p>
-<h1 id="DS和-address"><a href="#DS和-address" class="headerlink" title="DS和[address]"></a>DS和[address]</h1><p>CPU要读取一个内存单元的时候，必须先给出这个内存单元的地址；<br>在8086PC中，内存地址由段地址和偏移地址组成。<br>8086CPU中有一个DS寄存器，通常用来存放要访问的数据的段地址。</p>
-<blockquote>
-<p>已经知道的Mov指令可以完成两种传送的功能<br>(1)将数据直接送入寄存器<br>(2)将一个寄存器中的内容送入另一个寄存器中。<br>除此之外，mov指令还可以将一个内存单元中的内容送入一个寄存器中。<br><strong>mov</strong><br> mov指令的格式：<br>     mov  寄存器名，内存单元地址<br>     “[…]”表示一个内存单元，“[…]”中的0表示内存单元的偏移地址。<br><strong>内存中的段地址是多少呢？</strong><br>    1、执行指令的时候，8086CPU自动读取DS中的数据为内存单元的段地址。<br><strong>如何利用mov指令从10000H中读取数据呢？<br>    1、10000H表示为1000：0(段地址：偏移地址)<br>    2、将段地址1000H放入ds中<br>    3、用MOV al,[0]完成传送（MOv指令中的[]说明操作对象是一个内存单元，[]中的0说明这个内存单元的偏移地址是0 ，他的段地址默认<br>    放在ds中。）
-    </strong>8086CPU不支持将数据直接送入段寄存器的操作，ds是一个段寄存器。要先放入通用寄存器。**</p>
+        <h1 id="mov-指令"><a href="#mov-指令" class="headerlink" title="mov 指令"></a>mov 指令</h1><blockquote>
+<p>mov 寄存器，数据<br>  mov 寄存器，寄存器<br>  mov 寄存器，内存单元<br>  mov 内存单元，寄存器<br>  mov 段寄存器，寄存器<br>  mov 寄存器，段寄存器</p>
 </blockquote>
+<h1 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h1><p>我们可以根据需要将一组内存单元定义为一个段。<br>我们可以将一组长度为N（N&lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。</p>
+<p>mov指令要访问内存单元，可以在mov指令中只给出单元的偏移地址，此时，段地址默认在DS寄存器中。</p>
+<p>[add] 表示一个偏移地址为add的内存单元。</p>
+<p>在内存和寄存器之间传送字型数据的时候，高地址单元和高8位寄存器、低地址单元和低8位寄存器相对应。</p>
+<p>mov、add、sub是具有两个操作对象的指令。jmp是具有一个操作对象的指令。</p>
+<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>栈是一种具有特殊的访问方式的存储空间，他的特殊性就在与先进的后出，后进的先出。</p>
+<p>栈的两个基本的操作:入栈还有出栈。<br>8086CPU中提供的入栈还有出栈的操作。<br>PUSH ax：将寄存器ax中的数据送入栈中。<br>POP ax: 从栈顶取出数据送入ax中。<br>8086CPU中的入栈和出栈操作都是以字为单位进行的。</p>
+<blockquote>
+<p>CPU如何指导当前要执行的指令所在的位置？<br>因为：寄存器CS和IP中存放着当前指令的段地址和偏移地址。</p>
+</blockquote>
+<p>8086CPU中，有两个寄存器;<br>   段寄存器SS  存放栈顶的段地址<br>   寄存器SP    存放栈顶的偏移地址<br>任意时刻，SS和SP指向栈顶元素。</p>
+<p>执行PUS的时候，sp偏移地址-2</p>
+<h2 id="pop-ax的过程"><a href="#pop-ax的过程" class="headerlink" title="pop ax的过程"></a>pop ax的过程</h2><p>（1）将SS：SP指向的内存单元处的数据送入ax中<br>（2）SP = SP+2，SS：SP指向当前的栈顶下面的单元，以当前栈顶下面的单元为新的栈顶。</p>
+<h2 id="栈顶越界的问题"><a href="#栈顶越界的问题" class="headerlink" title="栈顶越界的问题"></a>栈顶越界的问题</h2><p>SS和SP 只是记录了栈顶的地址，当栈顶越界的时候是非常危险的，栈顶溢出，溢出攻击。</p>
+<p>我们既然将一段空间安排为栈，那么在栈空间之外的空间里面很可能是存放有其他用途的数据，代码等。将这些数据，代码意外地改写，将会引发一连串的错误。<br>CPU可以解决这个问题。</p>
+<h2 id="栈与内存"><a href="#栈与内存" class="headerlink" title="栈与内存"></a>栈与内存</h2><p>栈空间当然也是内存空间的一部分，它只是一段可以以一种特殊的方式进行访问的内存空间。</p>
+<p>PUSH/POP  寄存器dx、段寄存器ds、内存单元[0]</p>
+<p>0607</p>
 
       
     </div>
@@ -239,18 +254,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/05/08/寄存器（内存访问02）/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">&lt;</strong>
-      <div class="article-nav-title">
-        
-          寄存器（内存访问02）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/05/03/寄存器（CPU的工作原理）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">寄存器（CPU的工作原理）</div>
+    <a href="/2019/05/05/寄存器（内存访问01）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">寄存器（内存访问01）</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -260,7 +266,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="寄存器（内存访问01）" data-title="寄存器（内存访问01）" data-url="http://yoursite.com/2019/05/05/寄存器（内存访问01）/" data-images="../../photo/head.jpg" data-content="寄存器（内存访问01）">
+<div class="ds-share share" data-thread-key="寄存器（内存访问02）" data-title="寄存器（内存访问02）" data-url="http://yoursite.com/2019/05/08/寄存器（内存访问02）/" data-images="../../photo/head.jpg" data-content="寄存器（内存访问02）">
     <div class="ds-share-inline">
       <ul class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
