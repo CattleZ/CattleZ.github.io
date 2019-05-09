@@ -3,23 +3,26 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>寄存器（内存访问02） | Gorge</title>
+  <title>Gorge</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="mov 指令 mov 寄存器，数据  mov 寄存器，寄存器  mov 寄存器，内存单元  mov 内存单元，寄存器  mov 段寄存器，寄存器  mov 寄存器，段寄存器  数据段我们可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N（N&amp;lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。 mov指令要访问内存单元，可以在m">
+  <meta name="description" content="题目01（单步跟踪）内存中的情况如下图，写出下面指令执行后的寄存器ax,bx,cx中的值ax  = 1123bx  = 8833cx = 8833 题目2 存放值-e 1000:0 23 11 22 11-r  指令用来显示内存中各个值的情况-a 1386:100  -t 为单步跟踪">
 <meta property="og:type" content="article">
-<meta property="og:title" content="寄存器（内存访问02）">
-<meta property="og:url" content="http://yoursite.com/2019/05/08/寄存器（内存访问02）/index.html">
+<meta property="og:title" content="Gorge">
+<meta property="og:url" content="http://yoursite.com/2019/05/09/寄存器（内存访问03）/index.html">
 <meta property="og:site_name" content="Gorge">
-<meta property="og:description" content="mov 指令 mov 寄存器，数据  mov 寄存器，寄存器  mov 寄存器，内存单元  mov 内存单元，寄存器  mov 段寄存器，寄存器  mov 寄存器，段寄存器  数据段我们可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N（N&amp;lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。 mov指令要访问内存单元，可以在m">
+<meta property="og:description" content="题目01（单步跟踪）内存中的情况如下图，写出下面指令执行后的寄存器ax,bx,cx中的值ax  = 1123bx  = 8833cx = 8833 题目2 存放值-e 1000:0 23 11 22 11-r  指令用来显示内存中各个值的情况-a 1386:100  -t 为单步跟踪">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-07T15:41:58.000Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019050608393421.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190506085251104.png">
+<meta property="og:updated_time" content="2019-05-08T03:42:42.135Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="寄存器（内存访问02）">
-<meta name="twitter:description" content="mov 指令 mov 寄存器，数据  mov 寄存器，寄存器  mov 寄存器，内存单元  mov 内存单元，寄存器  mov 段寄存器，寄存器  mov 寄存器，段寄存器  数据段我们可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N（N&amp;lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。 mov指令要访问内存单元，可以在m">
+<meta name="twitter:title" content="Gorge">
+<meta name="twitter:description" content="题目01（单步跟踪）内存中的情况如下图，写出下面指令执行后的寄存器ax,bx,cx中的值ax  = 1123bx  = 8833cx = 8833 题目2 存放值-e 1000:0 23 11 22 11-r  指令用来显示内存中各个值的情况-a 1386:100  -t 为单步跟踪">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019050608393421.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
   
     <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
   
@@ -189,11 +192,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-寄存器（内存访问02）" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-寄存器（内存访问03）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/05/08/寄存器（内存访问02）/" class="article-date">
-  	<time datetime="2019-05-08T03:33:19.328Z" itemprop="datePublished">2019-05-08</time>
+      <a href="/2019/05/09/寄存器（内存访问03）/" class="article-date">
+  	<time datetime="2019-05-09T01:17:54.503Z" itemprop="datePublished">2019-05-09</time>
 </a>
     </div>
   
@@ -202,49 +205,13 @@
       <input type="hidden" class="isFancy">
     
     
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      寄存器（内存访问02）
-      
-    </h1>
-  
-
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-        
-
-        
-        <div class="clearfix"></div>
-      </div>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="mov-指令"><a href="#mov-指令" class="headerlink" title="mov 指令"></a>mov 指令</h1><blockquote>
-<p>mov 寄存器，数据<br>  mov 寄存器，寄存器<br>  mov 寄存器，内存单元<br>  mov 内存单元，寄存器<br>  mov 段寄存器，寄存器<br>  mov 寄存器，段寄存器</p>
-</blockquote>
-<h1 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h1><p>我们可以根据需要将一组内存单元定义为一个段。<br>我们可以将一组长度为N（N&lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。</p>
-<p>mov指令要访问内存单元，可以在mov指令中只给出单元的偏移地址，此时，段地址默认在DS寄存器中。</p>
-<p>[add] 表示一个偏移地址为add的内存单元。</p>
-<p>在内存和寄存器之间传送字型数据的时候，高地址单元和高8位寄存器、低地址单元和低8位寄存器相对应。</p>
-<p>mov、add、sub是具有两个操作对象的指令。jmp是具有一个操作对象的指令。</p>
-<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>栈是一种具有特殊的访问方式的存储空间，他的特殊性就在与先进的后出，后进的先出。</p>
-<p>栈的两个基本的操作:入栈还有出栈。<br>8086CPU中提供的入栈还有出栈的操作。<br>PUSH ax：将寄存器ax中的数据送入栈中。<br>POP ax: 从栈顶取出数据送入ax中。<br>8086CPU中的入栈和出栈操作都是以字为单位进行的。</p>
-<blockquote>
-<p>CPU如何指导当前要执行的指令所在的位置？<br>因为：寄存器CS和IP中存放着当前指令的段地址和偏移地址。</p>
-</blockquote>
-<p>8086CPU中，有两个寄存器;<br>   段寄存器SS  存放栈顶的段地址<br>   寄存器SP    存放栈顶的偏移地址<br>任意时刻，SS和SP指向栈顶元素。</p>
-<p>执行PUS的时候，sp偏移地址-2</p>
-<h2 id="pop-ax的过程"><a href="#pop-ax的过程" class="headerlink" title="pop ax的过程"></a>pop ax的过程</h2><p>（1）将SS：SP指向的内存单元处的数据送入ax中<br>（2）SP = SP+2，SS：SP指向当前的栈顶下面的单元，以当前栈顶下面的单元为新的栈顶。</p>
-<h2 id="栈顶越界的问题"><a href="#栈顶越界的问题" class="headerlink" title="栈顶越界的问题"></a>栈顶越界的问题</h2><p>SS和SP 只是记录了栈顶的地址，当栈顶越界的时候是非常危险的，栈顶溢出，溢出攻击。</p>
-<p>我们既然将一段空间安排为栈，那么在栈空间之外的空间里面很可能是存放有其他用途的数据，代码等。将这些数据，代码意外地改写，将会引发一连串的错误。<br>CPU可以解决这个问题。</p>
-<h2 id="栈与内存"><a href="#栈与内存" class="headerlink" title="栈与内存"></a>栈与内存</h2><p>栈空间当然也是内存空间的一部分，它只是一段可以以一种特殊的方式进行访问的内存空间。</p>
-<p>PUSH/POP  寄存器dx、段寄存器ds、内存单元[0]</p>
-<p>0607</p>
+        <h2 id="题目01（单步跟踪）"><a href="#题目01（单步跟踪）" class="headerlink" title="题目01（单步跟踪）"></a>题目01（单步跟踪）</h2><p>内存中的情况如下图，写出下面指令执行后的寄存器ax,bx,cx中的值<br><img src="https://img-blog.csdnimg.cn/2019050608393421.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>ax  = 1123<br>bx  = 8833<br>cx = 8833</p>
+<h2 id="题目2"><a href="#题目2" class="headerlink" title="题目2"></a>题目2</h2><ol>
+<li>存放值<br><img src="https://img-blog.csdnimg.cn/20190506085251104.png" alt="在这里插入图片描述"><br>-e 1000:0 23 11 22 11<br>-r  指令用来显示内存中各个值的情况<br>-a 1386:100</li>
+</ol>
+<p>-t 为单步跟踪</p>
 
       
     </div>
@@ -254,18 +221,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/05/08/寄存器（内存控制04）/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">&lt;</strong>
-      <div class="article-nav-title">
-        
-          �Ĵ������ڴ����04��
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/05/05/寄存器（内存访问01）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">寄存器（内存访问01）</div>
+    <a href="/2019/05/08/寄存器（内存控制04）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">�Ĵ������ڴ����04��</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -275,7 +233,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="寄存器（内存访问02）" data-title="寄存器（内存访问02）" data-url="http://yoursite.com/2019/05/08/寄存器（内存访问02）/" data-images="../../photo/head.jpg" data-content="寄存器（内存访问02）">
+<div class="ds-share share" data-thread-key="寄存器（内存访问03）" data-title data-url="http://yoursite.com/2019/05/09/寄存器（内存访问03）/" data-images="../../photo/head.jpg" data-content>
     <div class="ds-share-inline">
       <ul class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
