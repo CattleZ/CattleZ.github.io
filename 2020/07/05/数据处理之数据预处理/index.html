@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>数据预处理（一） | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这部分的工作主要是对数据进行预处理。我们在处理数据的时候一般会面对不同格式的数据，这样每次用数据的时候就需要重复执行或编写一些代码，这样就浪费了不少时间。这里先把数据（以DeSheng Zhang 老师提供的数据为例）进行第一步的预处理。 我的工作流程计划是：1234graph LRA[数据预处理]  --&amp;gt; B[数据清洗]B--&amp;gt;C[数据统计]C--&amp;gt;D[数据可视化]  在数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据预处理（一）">
+<meta property="og:url" content="http://yoursite.com/2020/07/05/数据处理之数据预处理/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="这部分的工作主要是对数据进行预处理。我们在处理数据的时候一般会面对不同格式的数据，这样每次用数据的时候就需要重复执行或编写一些代码，这样就浪费了不少时间。这里先把数据（以DeSheng Zhang 老师提供的数据为例）进行第一步的预处理。 我的工作流程计划是：1234graph LRA[数据预处理]  --&amp;gt; B[数据清洗]B--&amp;gt;C[数据统计]C--&amp;gt;D[数据可视化]  在数据">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200702184602696.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2020-07-05T05:42:46.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据预处理（一）">
+<meta name="twitter:description" content="这部分的工作主要是对数据进行预处理。我们在处理数据的时候一般会面对不同格式的数据，这样每次用数据的时候就需要重复执行或编写一些代码，这样就浪费了不少时间。这里先把数据（以DeSheng Zhang 老师提供的数据为例）进行第一步的预处理。 我的工作流程计划是：1234graph LRA[数据预处理]  --&amp;gt; B[数据清洗]B--&amp;gt;C[数据统计]C--&amp;gt;D[数据可视化]  在数据">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200702184602696.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-数据处理之数据预处理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/05/数据处理之数据预处理/" class="article-date">
+  	<time datetime="2020-07-05T05:41:13.854Z" itemprop="datePublished">2020-07-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据预处理（一）
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/07/05/数据处理之数据预处理/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="数据预处理（一）">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这部分的工作主要是对数据进行预处理。<br>我们在处理数据的时候一般会面对不同格式的数据，这样每次用数据的时候就需要重复执行或编写一些代码，这样就浪费了不少时间。这里先把数据（<a href="https://www.cs.rutgers.edu/~dz220/data.html" target="_blank" rel="noopener">以DeSheng Zhang 老师提供的数据为例</a>）进行第一步的预处理。</p>
+<h2 id="我的工作流程计划是："><a href="#我的工作流程计划是：" class="headerlink" title="我的工作流程计划是："></a>我的工作流程计划是：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[数据预处理]  --&gt; B[数据清洗]</span><br><span class="line">B--&gt;C[数据统计]</span><br><span class="line">C--&gt;D[数据可视化]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在数据预处理阶段，主要进行的工作是对数据进行格式化，将所获得数据统一格式，这样方便后续工作。</li>
+<li>数据清洗阶段，将要进行的是对已经存储数据的质量进行分析，比如在收集的数据中，会存在一些数据值的缺失，数据乱序，或者一些重复数据的处理问题。</li>
+<li>数据统计阶段，是根据实际的需要对数据应用一些统计方法，进行分析，这部分是最重要的，也是需要我们花费更多的时间去学习的。</li>
+<li>数据可视化阶段是对数据以图的形式更直观的展现出来。会提供一些图的模版。<br>最终实现的效果是，只需要上传数据就可以将数据映射到图中。</li>
+</ul>
+<h2 id="文件的读取"><a href="#文件的读取" class="headerlink" title="文件的读取"></a>文件的读取</h2><p>首先，将文件进行读取到系统中，这里仅是一个txt文件的实例。<br>对于xml等表格文件，还会继续学习。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileRead</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; readFILE() &#123;</span><br><span class="line">		File file = <span class="keyword">new</span> File(<span class="string">"文件路径"</span>);</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		List&lt;List&lt;String&gt;&gt; allList = <span class="keyword">new</span> ArrayList&lt;List&lt;String&gt;&gt;();</span><br><span class="line">		BufferedReader reader = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Reader inputStream = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">			reader = <span class="keyword">new</span> BufferedReader(inputStream);</span><br><span class="line">			String line = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">while</span>((line = reader.readLine())!=<span class="keyword">null</span>) &#123;</span><br><span class="line">				String liString [] = line.split(<span class="string">","</span>);</span><br><span class="line">				List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">				<span class="keyword">for</span>(String s:liString) &#123;</span><br><span class="line">					list.add(s);</span><br><span class="line">				&#125;</span><br><span class="line">				allList.add(list);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> allList;</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="数据的存储与格式化"><a href="#数据的存储与格式化" class="headerlink" title="数据的存储与格式化"></a>数据的存储与格式化</h2><p>将数据进行格式化，统一存储在数据库中，方便我们后续对数据进行存取操作，也易于数据的保存。</p>
+<ol>
+<li>先是创建程序与数据库的连接操作，这里使用的是C3P0的连接方式，当然还有JDBC的连接方式。掌握一种就可以。<br>这个类里面定义的是数据库连接所需要的一些基本的连接与关闭方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcUtils</span> </span>&#123;</span><br><span class="line">  <span class="comment">//初始化连接池</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> DataSource dataSource;</span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		dataSource = <span class="keyword">new</span> ComboPooledDataSource();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DataSource <span class="title">getDataSource</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> dataSource;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//创建dbutil 常用工具类对象</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> QueryRunner <span class="title">getQueryRunner</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> QueryRunner(dataSource);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 获取数据库连接对象</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = dataSource.getConnection();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	 </span><br><span class="line">		<span class="comment">// 关闭数据库连接</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">(Connection conn,PreparedStatement ps)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (conn != <span class="keyword">null</span> &amp;&amp; conn.isClosed()) &#123;</span><br><span class="line">					conn.close();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(ps!=<span class="keyword">null</span>) &#123;</span><br><span class="line">					ps.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li>用户自定义需要存储数据的表名，以及列名。标记列名是为了方便我们对数据的理解。实际上，我们取值的时候只需要根据表的行号以及列号进行取值就可以。<br>下面的这个类是一个工具类，用来生成在数据库中需要执行的sql语句。实现自动化处理。这里要求在<strong>为列取名字的时候尽量使用英文</strong>，因为中文可能会出现编码格式不一样的问题。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataBaseTool</span> </span>&#123;</span><br><span class="line"><span class="comment">//根据用户定义的 数据库的表名，列名 来创建一个基本的数据库 (名称要选取英文字母)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">createDataBase</span><span class="params">(List&lt;String&gt; lie)</span> </span>&#123;</span><br><span class="line">		String sql = <span class="string">"CREATE TABLE "</span>;</span><br><span class="line">		<span class="comment">//计算列的长度并遍历</span></span><br><span class="line">		<span class="keyword">if</span>(lie.size()!=<span class="number">0</span>) &#123;</span><br><span class="line">			sql+=(lie.get(<span class="number">0</span>)+<span class="string">"( "</span>);</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>;i&lt;lie.size()-<span class="number">1</span>;i++) &#123;</span><br><span class="line">				sql+=(lie.get(i)+<span class="string">" VARCHAR(50),"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			sql+=(lie.get(lie.size()-<span class="number">1</span>)+<span class="string">" VARCHAR(50));"</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sql;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">// 往数据库中插入数据 数据库的表名  返回插入数据的sql语句</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">InsertData</span><span class="params">(List&lt;String&gt; lie)</span></span>&#123;</span><br><span class="line">		String sql = <span class="string">"INSERT INTO "</span>+lie.get(<span class="number">0</span>)+<span class="string">"("</span>;</span><br><span class="line">		String valueString = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">if</span>(lie.size()!=<span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> len = lie.size();</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;len-<span class="number">1</span>;i++) &#123;</span><br><span class="line">				sql+=(lie.get(i)+<span class="string">","</span>);</span><br><span class="line">				valueString+=<span class="string">"?,"</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			sql+=(lie.get(len-<span class="number">1</span>)+<span class="string">") value("</span>+valueString+<span class="string">"?);"</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sql;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>最后，我们要执行的是将我们缓存在系统中的数据存储在我们自定义的数据库中，保存成统一的格式。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseOperate</span> </span>&#123;</span><br><span class="line">	DataBaseTool tool = <span class="keyword">new</span> DataBaseTool();</span><br><span class="line">	Connection conn = <span class="keyword">null</span>;</span><br><span class="line">	PreparedStatement ps = <span class="keyword">null</span>;</span><br><span class="line">	Result rs = <span class="keyword">null</span>;</span><br><span class="line">	<span class="comment">//根据相关数据在数据库中，创建一个数据表，用来存储数据</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createTable</span><span class="params">(List&lt;String&gt; lie)</span> </span>&#123;</span><br><span class="line">		String sql = tool.createDataBase(lie);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			JdbcUtils.getQueryRunner().update(sql);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//批量导入数据到数据表中</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">INSERTDate</span><span class="params">(List&lt;String&gt; lie)</span> </span>&#123;</span><br><span class="line">		FileRead toolFileRead  = <span class="keyword">new</span> FileRead();</span><br><span class="line">		 List&lt;List&lt;String&gt;&gt;	 mapList = toolFileRead.readFILE();</span><br><span class="line">		 String sql = tool.InsertData(lie);</span><br><span class="line">		 conn = JdbcUtils.getConnection();</span><br><span class="line">		 <span class="keyword">try</span> &#123;</span><br><span class="line">			 <span class="comment">//设置不自动提交执行</span></span><br><span class="line">			conn.setAutoCommit(<span class="keyword">false</span>);</span><br><span class="line">			ps = conn.prepareStatement(sql);</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mapList.size(); i++) &#123;</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j&lt;mapList.get(<span class="number">0</span>).size();j++) &#123;</span><br><span class="line">				ps.setString(j+<span class="number">1</span>,mapList.get(i).get(j));</span><br><span class="line">				&#125;</span><br><span class="line">				ps.addBatch();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">int</span>[] a = ps.executeBatch();</span><br><span class="line">			ps.clearBatch();</span><br><span class="line">			conn.commit();</span><br><span class="line">			System.out.println(a.length);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn.rollback();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e1) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e1.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			JdbcUtils.close(conn, ps);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4、实现的效果为下图所示,这样我们就可以对数据的每一行或者每一列进行分析，，更加直观，可以只关注我们要关注的那部分：<br><img src="https://img-blog.csdnimg.cn/20200702184602696.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/05/百度地图-散点图（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          百度地图-散点图（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/28/JS轨迹图（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">轨迹图（一）</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="数据处理之数据预处理" data-title="数据预处理（一）" data-url="http://yoursite.com/2020/07/05/数据处理之数据预处理/" data-images="../../photo/head.jpg" data-content="数据预处理（一）">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

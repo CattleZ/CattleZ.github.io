@@ -191,6 +191,167 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-百度地图-散点图（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/05/百度地图-散点图（一）/" class="article-date">
+  	<time datetime="2020-07-05T05:41:13.866Z" itemprop="datePublished">2020-07-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/05/百度地图-散点图（一）/">
+        百度地图-散点图（一）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们使用数据（<a href="https://www.cs.rutgers.edu/~dz220/data.html" target="_blank" rel="noopener">以DeSheng Zhang 老师提供的数据为例</a>）中的PhoneData部分数据进行简单的测试，对于这部分数据，我们已经经过数据预处理的阶段。下面是对数据的直接使用。</p>
+<h2 id="构造所需要的SQL语句"><a href="#构造所需要的SQL语句" class="headerlink" title="构造所需要的SQL语句"></a>构造所需要的SQL语句</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">InsertData</span><span class="params">(List&lt;String&gt; lie)</span></span>&#123;</span><br><span class="line">		String sql = <span class="string">"INSERT INTO "</span>+lie.get(<span class="number">0</span>)+<span class="string">"("</span>;</span><br><span class="line">		String valueString = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">if</span>(lie.size()!=<span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> len = lie.size();</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;len-<span class="number">1</span>;i++) &#123;</span><br><span class="line">				sql+=(lie.get(i)+<span class="string">","</span>);</span><br><span class="line">				valueString+=<span class="string">"?,"</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			sql+=(lie.get(len-<span class="number">1</span>)+<span class="string">") value("</span>+valueString+<span class="string">"?);"</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sql;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h2><p>将我们存储好的格式数据，读取到系统空间中。<br>这个方法中，我们是暂时存储在list集合中的。<br>这个方法传入的参数是我们自定义的需要统计的数据的名称。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; getDATA(List&lt;String&gt; lie) &#123;</span><br><span class="line">		conn = JdbcUtils.getConnection();</span><br><span class="line">		String sql = tool.selectData(lie);</span><br><span class="line">		List&lt;List&lt;String&gt;&gt; ls = <span class="keyword">new</span> ArrayList&lt;List&lt;String&gt;&gt;(); </span><br><span class="line">		List&lt;String&gt; line = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			ps = conn.prepareStatement(sql);</span><br><span class="line">			rs= ps.executeQuery();</span><br><span class="line">			<span class="keyword">while</span>(rs.next()) &#123;</span><br><span class="line">				line = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">				line.add(rs.getString(<span class="number">1</span>));</span><br><span class="line">				line.add(rs.getString(<span class="number">2</span>));</span><br><span class="line">				line.add(rs.getString(<span class="number">3</span>));</span><br><span class="line">				ls.add(line);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> ls;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="格式转换与统计"><a href="#格式转换与统计" class="headerlink" title="格式转换与统计"></a>格式转换与统计</h2><p>对于每一个图所需要的数据的输入格式可能是不同的，对于小部分数据我们可以使用手动输入的方式，但是对于批量的数据，我们要尽可能的交给程序处理。因此，在接下来的学习中，会针对每一个图形模板提供一个数据格式。下面是将我们的数据处理成适合我们散点图的格式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String [] getInput(List&lt;List&lt;String&gt;&gt; ls) &#123;</span><br><span class="line">		<span class="comment">//这里主要进行两部分的拼接，</span></span><br><span class="line">		String[] data = <span class="keyword">new</span> String[<span class="number">2</span>];</span><br><span class="line">		data[<span class="number">0</span>] = <span class="string">"var data =["</span>;</span><br><span class="line">		data[<span class="number">1</span>] =<span class="string">"var geoCoordMap = &#123;"</span>;</span><br><span class="line">		<span class="keyword">int</span> value =<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;ls.size();i++) &#123;</span><br><span class="line">			String jing =ls.get(i-<span class="number">1</span>).get(<span class="number">1</span>);</span><br><span class="line">			String wei = ls.get(i-<span class="number">1</span>).get(<span class="number">2</span>);</span><br><span class="line">			<span class="keyword">if</span>(ls.get(i).get(<span class="number">1</span>).equals(jing)&amp;&amp;ls.get(i).get(<span class="number">2</span>).equals(wei)&amp;&amp;ls.get(i).get(<span class="number">0</span>).equals(ls.get(i-<span class="number">1</span>).get(<span class="number">0</span>))) &#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">double</span> a = (Math.random()*<span class="number">50</span>)+<span class="number">10</span>;</span><br><span class="line">			<span class="keyword">int</span> b = (<span class="keyword">int</span>)a;</span><br><span class="line">			<span class="keyword">if</span>(ls.get(i).get(<span class="number">0</span>).equals(ls.get(i-<span class="number">1</span>).get(<span class="number">0</span>))) &#123;</span><br><span class="line">					value+=<span class="number">1</span>;</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				value =<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			data[<span class="number">0</span>]+=<span class="string">"&#123;name:'"</span>+ls.get(i-<span class="number">1</span>).get(<span class="number">0</span>)+<span class="string">"_"</span>+value+<span class="string">"', value:"</span>+b+<span class="string">"&#125;,"</span>;</span><br><span class="line">			data[<span class="number">1</span>]+=<span class="string">"'"</span>+ls.get(i-<span class="number">1</span>).get(<span class="number">0</span>)+<span class="string">"_"</span>+value+<span class="string">"':["</span>+ls.get(i-<span class="number">1</span>).get(<span class="number">1</span>)+<span class="string">","</span>+ls.get(i-<span class="number">1</span>).get(<span class="number">2</span>)+<span class="string">"],"</span>;</span><br><span class="line">		</span><br><span class="line">		&#125;</span><br><span class="line">		data[<span class="number">0</span>] +=<span class="string">"&#123;name:'"</span>+ls.get(ls.size()-<span class="number">1</span>).get(<span class="number">0</span>)+<span class="string">"f', value:"</span>+<span class="number">0</span>+<span class="string">"&#125;];"</span>;</span><br><span class="line">		data[<span class="number">1</span>] +=<span class="string">"'"</span>+ls.get(ls.size()-<span class="number">1</span>).get(<span class="number">0</span>)+<span class="string">"f':["</span>+ls.get(ls.size()-<span class="number">1</span>).get(<span class="number">1</span>)+<span class="string">","</span>+ls.get(ls.size()-<span class="number">1</span>).get(<span class="number">2</span>)+<span class="string">"]&#125;;"</span>;</span><br><span class="line">		<span class="keyword">return</span> data;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>对于上述代码以及数据，因为没有提供要关注的点。因此，每条数据的value值，我们使用随机生成函数，随机生成一些数值作为我们每条数据的value值，用来模拟一个完整的过程。</p>
+<h2 id="实现的效果"><a href="#实现的效果" class="headerlink" title="实现的效果"></a>实现的效果</h2><p>部分数据的效果展示<br><img src="https://img-blog.csdnimg.cn/20200703175440459.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="需要优化的地方"><a href="#需要优化的地方" class="headerlink" title="需要优化的地方"></a>需要优化的地方</h2><ul>
+<li>现在数据存储的位置是list，还应该继续优化到MAP集合中，这样在获取数据的时候就可以根据键拿值，而不是现在的get(0)没有意义。</li>
+<li>还需要编写一些经常用的统计函数。</li>
+<li>对于地图的界面展示还需要优化</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/07/05/百度地图-散点图（一）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="百度地图-散点图（一）">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-数据处理之数据预处理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/05/数据处理之数据预处理/" class="article-date">
+  	<time datetime="2020-07-05T05:41:13.854Z" itemprop="datePublished">2020-07-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/05/数据处理之数据预处理/">
+        数据预处理（一）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这部分的工作主要是对数据进行预处理。<br>我们在处理数据的时候一般会面对不同格式的数据，这样每次用数据的时候就需要重复执行或编写一些代码，这样就浪费了不少时间。这里先把数据（<a href="https://www.cs.rutgers.edu/~dz220/data.html" target="_blank" rel="noopener">以DeSheng Zhang 老师提供的数据为例</a>）进行第一步的预处理。</p>
+<h2 id="我的工作流程计划是："><a href="#我的工作流程计划是：" class="headerlink" title="我的工作流程计划是："></a>我的工作流程计划是：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[数据预处理]  --&gt; B[数据清洗]</span><br><span class="line">B--&gt;C[数据统计]</span><br><span class="line">C--&gt;D[数据可视化]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在数据预处理阶段，主要进行的工作是对数据进行格式化，将所获得数据统一格式，这样方便后续工作。</li>
+<li>数据清洗阶段，将要进行的是对已经存储数据的质量进行分析，比如在收集的数据中，会存在一些数据值的缺失，数据乱序，或者一些重复数据的处理问题。</li>
+<li>数据统计阶段，是根据实际的需要对数据应用一些统计方法，进行分析，这部分是最重要的，也是需要我们花费更多的时间去学习的。</li>
+<li>数据可视化阶段是对数据以图的形式更直观的展现出来。会提供一些图的模版。<br>最终实现的效果是，只需要上传数据就可以将数据映射到图中。</li>
+</ul>
+<h2 id="文件的读取"><a href="#文件的读取" class="headerlink" title="文件的读取"></a>文件的读取</h2><p>首先，将文件进行读取到系统中，这里仅是一个txt文件的实例。<br>对于xml等表格文件，还会继续学习。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileRead</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; readFILE() &#123;</span><br><span class="line">		File file = <span class="keyword">new</span> File(<span class="string">"文件路径"</span>);</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		List&lt;List&lt;String&gt;&gt; allList = <span class="keyword">new</span> ArrayList&lt;List&lt;String&gt;&gt;();</span><br><span class="line">		BufferedReader reader = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Reader inputStream = <span class="keyword">new</span> FileReader(file);</span><br><span class="line">			reader = <span class="keyword">new</span> BufferedReader(inputStream);</span><br><span class="line">			String line = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">while</span>((line = reader.readLine())!=<span class="keyword">null</span>) &#123;</span><br><span class="line">				String liString [] = line.split(<span class="string">","</span>);</span><br><span class="line">				List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">				<span class="keyword">for</span>(String s:liString) &#123;</span><br><span class="line">					list.add(s);</span><br><span class="line">				&#125;</span><br><span class="line">				allList.add(list);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> allList;</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="数据的存储与格式化"><a href="#数据的存储与格式化" class="headerlink" title="数据的存储与格式化"></a>数据的存储与格式化</h2><p>将数据进行格式化，统一存储在数据库中，方便我们后续对数据进行存取操作，也易于数据的保存。</p>
+<ol>
+<li>先是创建程序与数据库的连接操作，这里使用的是C3P0的连接方式，当然还有JDBC的连接方式。掌握一种就可以。<br>这个类里面定义的是数据库连接所需要的一些基本的连接与关闭方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcUtils</span> </span>&#123;</span><br><span class="line">  <span class="comment">//初始化连接池</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> DataSource dataSource;</span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		dataSource = <span class="keyword">new</span> ComboPooledDataSource();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DataSource <span class="title">getDataSource</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> dataSource;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//创建dbutil 常用工具类对象</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> QueryRunner <span class="title">getQueryRunner</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> QueryRunner(dataSource);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 获取数据库连接对象</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = dataSource.getConnection();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	 </span><br><span class="line">		<span class="comment">// 关闭数据库连接</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">(Connection conn,PreparedStatement ps)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (conn != <span class="keyword">null</span> &amp;&amp; conn.isClosed()) &#123;</span><br><span class="line">					conn.close();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(ps!=<span class="keyword">null</span>) &#123;</span><br><span class="line">					ps.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li>用户自定义需要存储数据的表名，以及列名。标记列名是为了方便我们对数据的理解。实际上，我们取值的时候只需要根据表的行号以及列号进行取值就可以。<br>下面的这个类是一个工具类，用来生成在数据库中需要执行的sql语句。实现自动化处理。这里要求在<strong>为列取名字的时候尽量使用英文</strong>，因为中文可能会出现编码格式不一样的问题。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataBaseTool</span> </span>&#123;</span><br><span class="line"><span class="comment">//根据用户定义的 数据库的表名，列名 来创建一个基本的数据库 (名称要选取英文字母)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">createDataBase</span><span class="params">(List&lt;String&gt; lie)</span> </span>&#123;</span><br><span class="line">		String sql = <span class="string">"CREATE TABLE "</span>;</span><br><span class="line">		<span class="comment">//计算列的长度并遍历</span></span><br><span class="line">		<span class="keyword">if</span>(lie.size()!=<span class="number">0</span>) &#123;</span><br><span class="line">			sql+=(lie.get(<span class="number">0</span>)+<span class="string">"( "</span>);</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>;i&lt;lie.size()-<span class="number">1</span>;i++) &#123;</span><br><span class="line">				sql+=(lie.get(i)+<span class="string">" VARCHAR(50),"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			sql+=(lie.get(lie.size()-<span class="number">1</span>)+<span class="string">" VARCHAR(50));"</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sql;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">// 往数据库中插入数据 数据库的表名  返回插入数据的sql语句</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">InsertData</span><span class="params">(List&lt;String&gt; lie)</span></span>&#123;</span><br><span class="line">		String sql = <span class="string">"INSERT INTO "</span>+lie.get(<span class="number">0</span>)+<span class="string">"("</span>;</span><br><span class="line">		String valueString = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">if</span>(lie.size()!=<span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> len = lie.size();</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;len-<span class="number">1</span>;i++) &#123;</span><br><span class="line">				sql+=(lie.get(i)+<span class="string">","</span>);</span><br><span class="line">				valueString+=<span class="string">"?,"</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			sql+=(lie.get(len-<span class="number">1</span>)+<span class="string">") value("</span>+valueString+<span class="string">"?);"</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sql;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>最后，我们要执行的是将我们缓存在系统中的数据存储在我们自定义的数据库中，保存成统一的格式。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseOperate</span> </span>&#123;</span><br><span class="line">	DataBaseTool tool = <span class="keyword">new</span> DataBaseTool();</span><br><span class="line">	Connection conn = <span class="keyword">null</span>;</span><br><span class="line">	PreparedStatement ps = <span class="keyword">null</span>;</span><br><span class="line">	Result rs = <span class="keyword">null</span>;</span><br><span class="line">	<span class="comment">//根据相关数据在数据库中，创建一个数据表，用来存储数据</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createTable</span><span class="params">(List&lt;String&gt; lie)</span> </span>&#123;</span><br><span class="line">		String sql = tool.createDataBase(lie);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			JdbcUtils.getQueryRunner().update(sql);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//批量导入数据到数据表中</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">INSERTDate</span><span class="params">(List&lt;String&gt; lie)</span> </span>&#123;</span><br><span class="line">		FileRead toolFileRead  = <span class="keyword">new</span> FileRead();</span><br><span class="line">		 List&lt;List&lt;String&gt;&gt;	 mapList = toolFileRead.readFILE();</span><br><span class="line">		 String sql = tool.InsertData(lie);</span><br><span class="line">		 conn = JdbcUtils.getConnection();</span><br><span class="line">		 <span class="keyword">try</span> &#123;</span><br><span class="line">			 <span class="comment">//设置不自动提交执行</span></span><br><span class="line">			conn.setAutoCommit(<span class="keyword">false</span>);</span><br><span class="line">			ps = conn.prepareStatement(sql);</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mapList.size(); i++) &#123;</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j&lt;mapList.get(<span class="number">0</span>).size();j++) &#123;</span><br><span class="line">				ps.setString(j+<span class="number">1</span>,mapList.get(i).get(j));</span><br><span class="line">				&#125;</span><br><span class="line">				ps.addBatch();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">int</span>[] a = ps.executeBatch();</span><br><span class="line">			ps.clearBatch();</span><br><span class="line">			conn.commit();</span><br><span class="line">			System.out.println(a.length);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn.rollback();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e1) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e1.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			JdbcUtils.close(conn, ps);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4、实现的效果为下图所示,这样我们就可以对数据的每一行或者每一列进行分析，，更加直观，可以只关注我们要关注的那部分：<br><img src="https://img-blog.csdnimg.cn/20200702184602696.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/07/05/数据处理之数据预处理/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="数据预处理（一）">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-JS轨迹图（一）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -769,166 +930,6 @@
         
 <div class="counter-tag counter">
     <span id="/2019/05/03/Real wifi/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Real wifi">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-汇编语言" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/02/汇编语言/" class="article-date">
-  	<time datetime="2019-05-02T05:56:12.886Z" itemprop="datePublished">2019-05-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/02/汇编语言/">
-        汇编语言--基础知识
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="基础知识1"><a href="#基础知识1" class="headerlink" title="基础知识1"></a>基础知识1</h2><p>汇编语言是直接在硬件之上工作的编程语言，首先要了解硬件系统的结构，才能有效的应用汇编语言对编程。‘</p>
-<h2 id="机器语言"><a href="#机器语言" class="headerlink" title="机器语言"></a>机器语言</h2><p>   机器语言就是机器指令的集合<br>   机器指令展开来讲就是一台机器可以正确执行的指令</p>
-<h2 id="汇编语言"><a href="#汇编语言" class="headerlink" title="汇编语言"></a>汇编语言</h2><p>主体是汇编的指令，机器指令便于记忆的书写格式。<br><strong>汇编指令</strong>是机器指令的助记符<br><strong>寄存器</strong> 简单的说是CPU中可以存储数据的器件，一个CPU中有多个寄存器。</p>
-<h3 id="汇编语言的组成"><a href="#汇编语言的组成" class="headerlink" title="汇编语言的组成"></a>汇编语言的组成</h3><p>概念</p>
-<blockquote>
-<p>汇编语言由以下3类组成:</p>
-</blockquote>
-<blockquote>
-<ol>
-<li>汇编指令（机器码的助记符）</li>
-<li>伪指令（由编译器执行）</li>
-<li>其他符号（由编译器识别）<br><strong> 汇编语言的核心是汇编指令</strong>它决定了汇编语言的特性</li>
-</ol>
-</blockquote>
-<p><strong>指令还有数据</strong><br>指令还有数据在内存或者磁盘上，指令还有数据是没有区别的，都是二进制的信息。<br><strong>存储单元</strong><br>存储器被划分为若干个单元，每个存储单元从0开始顺序编号；<br>对于大容量的存储器一还用以下单位来计量容量（以下用B来代表Byte）:<br>一个存储器单元可以存储8个bit,即8位二进制数。<br>    1kb = 1024B<br>    1MB = 1024KB<br>    1GB = 1024MB<br>    1TB = 1024GB<br>磁盘的容量单位同内存一样，实际上以上单位是微机中常用的计量单位。</p>
-<h3 id="CPU对存储器的读写"><a href="#CPU对存储器的读写" class="headerlink" title="CPU对存储器的读写"></a>CPU对存储器的读写</h3><p>要想进行数据的读写，必须和外部器件进行三类信息的交互：</p>
-<ol>
-<li>存储单元的地址</li>
-<li>器件的选择，读或者写的命令（控制信息）</li>
-<li>读或者写数据（数据信息）</li>
-</ol>
-<p>在计算机中有连接CPU和其它芯片的导线，通常称为总线。<br>物理上：一根根导线的集合<br>逻辑上划分为：地址总线、数据总线、控制总线<br><img src="https://img-blog.csdnimg.cn/20190502002818633.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>地址总线</strong><br>CPU是通过地址总线来指定存储单元的。<br>地址总线上能传送多少个不同的信息，CPU就可以对多个存储单元进行寻址。<br>地址总线的地址 由低到高排列。</p>
-<ol>
-<li>一个CPU有N根地址总线，则可以说这个CPU的地址总线的宽度为N。’<br>2.这样的CPU最多可以寻找2的N次方个内存单元。<br><strong>数据总线</strong><br>数据总线的宽度就决定了CPU和外界的数据传送的速度。<br>数据总线是从低位向高位索引的。<br><strong>控制总线</strong><br>CPU对外部器件的控制是通过控制总线来进行的。在这里控制总线是个总称，控制总线是一些不同控制线的集合。有多少根控制总线，就意味着CPU提供了对外部器件的多少种控制。<br>控制总线的宽度决定了CPU对外部器件的控制量。<h2 id="内存地址空间"><a href="#内存地址空间" class="headerlink" title="内存地址空间"></a>内存地址空间</h2><strong>主板</strong><br>在每一台PC机中，都有一个主板，主板上有核心器件和一些主要的器件。<br>这些器件通过总线相连。<br><strong>接口</strong><br>计算机系统中，所有可用程序控制其工作的设备，必须受到CPU的控制。<br>CPU对外部设备不能直接控制，如显示器，音响，打印机等。直接控制这些设备进行工作的是插在扩展插槽上的这些接口卡。<br><strong>各类存储器的芯片</strong><br>从读写属性上看分为两类：随机存储器（RAM）和只读存储器（ROM）<br>功能还有连接上分类：随机存储器RAM、装有BIOS的ROM、接口卡上的RAM</li>
-</ol>
-<p><strong>定义</strong><br>最终运行程序的是CPU，我们用汇编编程的时候，必须要从CPU的角度考虑，我们用其他语言进行编程的时候，要从汇编的角度考虑问题。<br>对于CPU来讲，系统中的所有存储器中的存储单元都处于一个统一的逻辑存储器中，特的容量搜CPU寻址能力的限制，这个逻辑存储器就是我们所说的内存地址空间。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/05/02/汇编语言/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="汇编语言--基础知识">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Reverse sign in" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/01/Reverse sign in/" class="article-date">
-  	<time datetime="2019-05-01T12:19:42.949Z" itemprop="datePublished">2019-05-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/01/Reverse sign in/">
-        Reverse sign in
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>软件代码逆向主要是指对软件的结构，流程，算法，代码等进行逆向拆解还有分析。<br>参考学习链接：<a href="https://blog.csdn.net/s1054436218/article/details/71698904" target="_blank" rel="noopener">https://blog.csdn.net/s1054436218/article/details/71698904</a></p>
-<h1 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h1><p> 该题目是rev1,只有这一个文件</p>
-<h1 id="解题方式"><a href="#解题方式" class="headerlink" title="解题方式"></a>解题方式</h1><pre><code>1、把文件拖动到IDA中，然后按F5 查看伪代码
-</code></pre><p><img src="https://img-blog.csdnimg.cn/2019050119323085.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>题目是对两个数据进行异或运算，需要找到byte_400818数组里面的数值<br>选中byte_400818 然后双击进入：</p>
-<p><img src="https://img-blog.csdnimg.cn/20190501194329712.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>（char）(<em>_BYTE</em>)(i+a1)</strong><br>C语言中，内存地址也是用整数int表示（32bit）.因此，(BYTE <em>)(i+a1) 表示把整数(i+a1)强制转换为BYTE型数值的地址。<br>   a1其实就是输入字符串的取地址。
-   </em>（i+a1）便表示的是字符串的第i个字符</p>
-<p> <strong> 2 dup(60h)</strong>  在汇编语言中表示两个60h</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int arr[32] = &#123; 0x66,0x6D, 0x63, 0x64, 0x7F, 0x3C, 0x36, 0x72, 0x57, 0x42, 0x64,</span><br><span class="line">		0x3B, 0x7B, 0x52, 0x7C, 0x3C, 0x66, 0x54, 0x60,0x60, 0x27,</span><br><span class="line">		0x4A, 0x49, 0x7F, 0x71, 0x58, 0x52, 0x72, 0x7D, 0x75, 0x2A,0x62&#125;;</span><br><span class="line"></span><br><span class="line">	for (int i=0;i&lt;32;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		printf(&quot;%c&quot;,i^arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/05/01/Reverse sign in/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Reverse sign in">
          &nbsp;
         view
     </span>
