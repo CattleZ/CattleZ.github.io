@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="归一化则损累积增益这个指标通常是用来衡量和评价搜索结果算法  高关联度的结果比一般关联度的结果更影响最终的指标得分 有高关联度的结果出现在更靠前的位置的时候，指标会越高累计增益CG  一个搜索结果相关性分数的总和，与顺序无关指定位置P的CG为：其中reli 表示 i这个位置上的相关度。 折损累计增益DCG就是在每一个CG的结果上除以一个折损值，DCG在每个项目的得分乘上一个权值，该权值与位置成反关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gorge">
+<meta property="og:url" content="http://yoursite.com/2020/07/12/Normalized Discounted Cumulative Gain(NDCG)/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="归一化则损累积增益这个指标通常是用来衡量和评价搜索结果算法  高关联度的结果比一般关联度的结果更影响最终的指标得分 有高关联度的结果出现在更靠前的位置的时候，指标会越高累计增益CG  一个搜索结果相关性分数的总和，与顺序无关指定位置P的CG为：其中reli 表示 i这个位置上的相关度。 折损累计增益DCG就是在每一个CG的结果上除以一个折损值，DCG在每个项目的得分乘上一个权值，该权值与位置成反关">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200709095732954.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200709100512191.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200709100721635.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200709101206431.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200709101246215.png">
+<meta property="og:updated_time" content="2020-07-09T03:39:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gorge">
+<meta name="twitter:description" content="归一化则损累积增益这个指标通常是用来衡量和评价搜索结果算法  高关联度的结果比一般关联度的结果更影响最终的指标得分 有高关联度的结果出现在更靠前的位置的时候，指标会越高累计增益CG  一个搜索结果相关性分数的总和，与顺序无关指定位置P的CG为：其中reli 表示 i这个位置上的相关度。 折损累计增益DCG就是在每一个CG的结果上除以一个折损值，DCG在每个项目的得分乘上一个权值，该权值与位置成反关">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200709095732954.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Normalized Discounted Cumulative Gain(NDCG)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/12/Normalized Discounted Cumulative Gain(NDCG)/" class="article-date">
+  	<time datetime="2020-07-12T08:33:05.548Z" itemprop="datePublished">2020-07-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>归一化则损累积增益<br>这个指标通常是用来衡量和评价搜索结果算法</p>
+<ol>
+<li>高关联度的结果比一般关联度的结果更影响最终的指标得分</li>
+<li>有高关联度的结果出现在更靠前的位置的时候，指标会越高<h2 id="累计增益CG"><a href="#累计增益CG" class="headerlink" title="累计增益CG"></a>累计增益CG</h2></li>
+</ol>
+<p>一个搜索结果相关性分数的总和，与顺序无关<br>指定位置P的CG为：<br><img src="https://img-blog.csdnimg.cn/20200709095732954.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>其中reli 表示 i这个位置上的相关度。</p>
+<h2 id="折损累计增益DCG"><a href="#折损累计增益DCG" class="headerlink" title="折损累计增益DCG"></a>折损累计增益DCG</h2><p>就是在每一个CG的结果上除以一个折损值，DCG在每个项目的得分乘上一个权值，该权值与位置成反关系，即位置越靠前，权值越大，目的是为了让排名越靠前的结果越能影响最后的结果。排序越往后，价值越低。<br><img src="https://img-blog.csdnimg.cn/20200709100512191.png" alt="在这里插入图片描述"><br>或者<br><img src="https://img-blog.csdnimg.cn/20200709100721635.png" alt="在这里插入图片描述"></p>
+<h2 id="归一化则损累计增益"><a href="#归一化则损累计增益" class="headerlink" title="归一化则损累计增益"></a>归一化则损累计增益</h2><p>由于搜索结果随着检索词的不同，返回的数量是不一致的。而DCG是一个累加的值，没法对两个不同的结果进行比较，所以需要进行一个归一化的处理。<br><img src="https://img-blog.csdnimg.cn/20200709101206431.png" alt="在这里插入图片描述"><br>IDCG 为理想情况下的最大的DCG值<br><img src="https://img-blog.csdnimg.cn/20200709101246215.png" alt="在这里插入图片描述"><br>其中|REL|表示结果按照相关性从大到小的顺序排序，取前P个结果组成的集合。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/07/12/Pearson Correlation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Normalized Discounted Cumulative Gain(NDCG)" data-title data-url="http://yoursite.com/2020/07/12/Normalized Discounted Cumulative Gain(NDCG)/" data-images="../../photo/head.jpg" data-content>
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
