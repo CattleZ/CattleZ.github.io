@@ -191,6 +191,84 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-PlaintextAttack" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/24/PlaintextAttack/" class="article-date">
+  	<time datetime="2019-04-24T05:27:29.443Z" itemprop="datePublished">2019-04-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/24/PlaintextAttack/">
+        Invisible Flag
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@<a href="Zip明文攻击">TOC</a></p>
+<h1 id="明文攻击"><a href="#明文攻击" class="headerlink" title="明文攻击"></a>明文攻击</h1><p>明文攻击是一种较为高效的攻击手段，大致原理是当你不知道一个zip的密码，但是你有一个zip里面的已经知道的文件或者已经通过其他手段知道zip加密文件中的某些内容的时候，因为同一个zip压缩包里面的所有文件都是使用同一个加密的密钥来加密的，所以可以利用已知文件来找加密的密钥，利用密钥来解锁其他加密文件。一般不知道密码的具体长度以及知不知道组成密码的成分，想办法用明文攻击是最快的方式。</p>
+<h1 id="zip加密文件的三种破解方式"><a href="#zip加密文件的三种破解方式" class="headerlink" title="zip加密文件的三种破解方式"></a>zip加密文件的三种破解方式</h1><ol>
+<li><strong>暴力破解</strong> ，这是最花时间的一种破解方式，力破解就是不断的去尝试所有可能的密码。如果密码比较短，或许在短时间内可以找到正确的密码。但是如果比较长，比如说用64个字符长的字符串来做密码的话，可能你重生十次后发现依然未能找到答案。</li>
+<li><strong>字典攻击</strong>，相比于暴力破解这种弱智儿童，字典攻击大概就是三岁小孩的智商。它使用了一个字典文件，然后一一尝试文件中的每个密码。现在在网络上有很多的人相互共享自己的字典文件，这使得字典攻击比暴力破解有效率得多。尤其是当目标文件是用一个弱密码进行保护的时候，字典攻击效率较高。但是，由于字典攻击没有囊括所有可能的密码，所以对于强密码保护的zip文件，字典攻击毫无办法。</li>
+<li><strong>明文攻击</strong>，这是到目前为止最智能的一种攻击方法。眼见为实，你可以亲自尝试一下。但是首先，你需要一些前提条件：<ul>
+<li>一个加密的压缩文件</li>
+<li>了解压缩文件的zip版本（比如加密平台、zip版本号等，可以通过文件属性了解。如果是linux平台，用unzip -v命令可以查看一个zip包的详细信息，包括加密算法等。）</li>
+<li>知道压缩包里某个文件的部分连续内容（至少12字节）</li>
+<li>运气<h1 id="破解过程"><a href="#破解过程" class="headerlink" title="破解过程"></a>破解过程</h1>工具有PKCrack (LINUX) 还有Advanced Zip Passwword Recory<br>我这里选择使用AZPR<br>明文攻击使用Plain_text attack<img src="https://img-blog.csdnimg.cn/20190424132319213.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>最后保存一下新的文件就是已经破解出来的文件啦</li>
+</ul>
+</li>
+</ol>
+<p>作者：Gorge</p>
+<hr>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2019/04/24/PlaintextAttack/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Invisible Flag">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Another 01Game" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

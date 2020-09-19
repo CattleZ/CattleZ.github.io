@@ -191,6 +191,111 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-本机Mac建设Git记录" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/09/19/本机Mac建设Git记录/" class="article-date">
+  	<time datetime="2020-09-19T08:04:42.150Z" itemprop="datePublished">2020-09-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/19/本机Mac建设Git记录/">
+        本机Mac建设git记录
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>首先，是在电脑上通过app store 安装Xcode.<br>在 Xcode中找到locations 这个 选项，可以发现有一个Command Line Tools 的工具。</p>
+<h2 id="创建本地仓库"><a href="#创建本地仓库" class="headerlink" title="创建本地仓库"></a>创建本地仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir learngit</span><br><span class="line">git init</span><br></pre></td></tr></table></figure>
+<p>我的这个安装目录是 /Users/gorge/learngit</p>
+<h2 id="查看git是否配置成功"><a href="#查看git是否配置成功" class="headerlink" title="查看git是否配置成功"></a>查看git是否配置成功</h2><p>git config –list</p>
+<h2 id="密钥的位置"><a href="#密钥的位置" class="headerlink" title="密钥的位置"></a>密钥的位置</h2><p>在gorge 下执行ls -al 查看是否存在 .ssh 目录</p>
+<h2 id="上传方式"><a href="#上传方式" class="headerlink" title="上传方式"></a>上传方式</h2><ul>
+<li>首先我们要将我们要进行管理的文件 移动到本地建立的文件夹</li>
+<li>在当前目录执行 <strong>git add [文件名]</strong> 将文件添加到本地仓库</li>
+<li>执行提交 <strong>git commit -m</strong> “文件描述” 命令 ，告诉系统文件提交到仓库</li>
+<li>将文件 直接提交到 远程仓库的命令是 <strong>git push origin master</strong> 命令进行提交</li>
+</ul>
+<p>本地文件夹是<strong>工作区</strong>，<em>.git</em>目录是<strong>版本库</strong><br>我们执行的添加操作实际上是指将信息添加到本地的工作区中的版本库中。<br><em>git add 操作将数据添加到暂存区。</em><br><em>git commit 操作提交更改，将内容添加到分支master</em></p>
+<h2 id="查看历史修改版本的命令"><a href="#查看历史修改版本的命令" class="headerlink" title="查看历史修改版本的命令"></a>查看历史修改版本的命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard  HEAD^</span><br></pre></td></tr></table></figure>
+<ul>
+<li>HEAD 表示当前版本</li>
+<li>^ 表示回退一个版本</li>
+<li>^^ 表示回退两个版本</li>
+<li>如果是多个版本的话可以是 HEAD~n</li>
+</ul>
+<p>或者执行git reset –hard  [id]</p>
+<h2 id="查看历史记录"><a href="#查看历史记录" class="headerlink" title="查看历史记录"></a>查看历史记录</h2><p>git log 用来查看提交记录<br>git reflog  用来查看你的每一次操作记录</p>
+<h2 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h2><h3 id="主要分为两种情况："><a href="#主要分为两种情况：" class="headerlink" title="主要分为两种情况："></a>主要分为两种情况：</h3><ol>
+<li>首先是在工作区的修改还没有提交到暂存区</li>
+</ol>
+<p>下面的命令会将文件的版本恢复为我们提交到分支的最新的版本。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- readme.txt</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>在工作区进行了修改并且已经提交到暂存区</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD &lt;file&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p>为了提高操作的安全行，我们在操作的过程中可以使用<br>创建新的分支–执行操作<code></code>–合并分支 的过程。<br>我们通常使用的是一个分支master分支。但是对于git来说，分支的创建与合并是非常快速的。因此，我们为了操作的安全性，创建一个新的分支进行操作无疑是一个非常好的方法。</p>
+<p>执行创建分支<em>dev</em>，并且将当前工作转换到当前分支上面。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br></pre></td></tr></table></figure></p>
+<p>查看当前分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+<p>在当前分支执行操作完成后，进行添加并提交</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;文件名&gt;</span><br><span class="line">git commit -m <span class="string">"文件描述"</span></span><br></pre></td></tr></table></figure>
+<p>分支的切换操作,master是我们的默认分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
+<p>或者<br>创建并且切换到新的分支<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git switch -c dev</span><br><span class="line">//切换到已有分支</span><br><span class="line">git switch master</span><br></pre></td></tr></table></figure></p>
+<p>将dev分支进行合并</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge dev</span><br></pre></td></tr></table></figure>
+<p>合并完成之后，新创建的分支就可以删除了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d dev</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/09/19/本机Mac建设Git记录/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="本机Mac建设git记录">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Normalized Discounted Cumulative Gain(NDCG)" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -851,90 +956,6 @@
         
 <div class="counter-tag counter">
     <span id="/2019/05/08/寄存器（内存控制04）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="寄存器（内存控制04）">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-寄存器（内存访问02）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/08/寄存器（内存访问02）/" class="article-date">
-  	<time datetime="2019-05-08T03:33:19.328Z" itemprop="datePublished">2019-05-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/08/寄存器（内存访问02）/">
-        寄存器（内存访问02）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="mov-指令"><a href="#mov-指令" class="headerlink" title="mov 指令"></a>mov 指令</h1><blockquote>
-<p>mov 寄存器，数据<br>  mov 寄存器，寄存器<br>  mov 寄存器，内存单元<br>  mov 内存单元，寄存器<br>  mov 段寄存器，寄存器<br>  mov 寄存器，段寄存器</p>
-</blockquote>
-<h1 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h1><p>我们可以根据需要将一组内存单元定义为一个段。<br>我们可以将一组长度为N（N&lt;=64k）、地址连续、起始地址为16的倍数的内存单元当做为专门存储数据的内存空间，从而定义了一个数据段。</p>
-<p>mov指令要访问内存单元，可以在mov指令中只给出单元的偏移地址，此时，段地址默认在DS寄存器中。</p>
-<p>[add] 表示一个偏移地址为add的内存单元。</p>
-<p>在内存和寄存器之间传送字型数据的时候，高地址单元和高8位寄存器、低地址单元和低8位寄存器相对应。</p>
-<p>mov、add、sub是具有两个操作对象的指令。jmp是具有一个操作对象的指令。</p>
-<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>栈是一种具有特殊的访问方式的存储空间，他的特殊性就在与先进的后出，后进的先出。</p>
-<p>栈的两个基本的操作:入栈还有出栈。<br>8086CPU中提供的入栈还有出栈的操作。<br>PUSH ax：将寄存器ax中的数据送入栈中。<br>POP ax: 从栈顶取出数据送入ax中。<br>8086CPU中的入栈和出栈操作都是以字为单位进行的。</p>
-<blockquote>
-<p>CPU如何指导当前要执行的指令所在的位置？<br>因为：寄存器CS和IP中存放着当前指令的段地址和偏移地址。</p>
-</blockquote>
-<p>8086CPU中，有两个寄存器;<br>   段寄存器SS  存放栈顶的段地址<br>   寄存器SP    存放栈顶的偏移地址<br>任意时刻，SS和SP指向栈顶元素。</p>
-<p>执行PUS的时候，sp偏移地址-2</p>
-<h2 id="pop-ax的过程"><a href="#pop-ax的过程" class="headerlink" title="pop ax的过程"></a>pop ax的过程</h2><p>（1）将SS：SP指向的内存单元处的数据送入ax中<br>（2）SP = SP+2，SS：SP指向当前的栈顶下面的单元，以当前栈顶下面的单元为新的栈顶。</p>
-<h2 id="栈顶越界的问题"><a href="#栈顶越界的问题" class="headerlink" title="栈顶越界的问题"></a>栈顶越界的问题</h2><p>SS和SP 只是记录了栈顶的地址，当栈顶越界的时候是非常危险的，栈顶溢出，溢出攻击。</p>
-<p>我们既然将一段空间安排为栈，那么在栈空间之外的空间里面很可能是存放有其他用途的数据，代码等。将这些数据，代码意外地改写，将会引发一连串的错误。<br>CPU可以解决这个问题。</p>
-<h2 id="栈与内存"><a href="#栈与内存" class="headerlink" title="栈与内存"></a>栈与内存</h2><p>栈空间当然也是内存空间的一部分，它只是一段可以以一种特殊的方式进行访问的内存空间。</p>
-<p>PUSH/POP  寄存器dx、段寄存器ds、内存单元[0]</p>
-<p>0607</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/05/08/寄存器（内存访问02）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="寄存器（内存访问02）">
          &nbsp;
         view
     </span>
