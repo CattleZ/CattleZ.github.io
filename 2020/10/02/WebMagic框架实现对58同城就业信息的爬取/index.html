@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介此信息的爬取，纯属是练习使用，没有用在商业用途。WebMagic的设计参考了业界最优秀的爬虫Scrapy，而实现则应用了HttpClient、Jsoup等Java世界最成熟的工具。 WebMagic由四个组件(Downloader、PageProcessor、Scheduler、Pipeline)构成，核心代码非常简单，主要是将这些组件结合并完成多线程的任务。 导包使用webmagic需要导入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gorge">
+<meta property="og:url" content="http://yoursite.com/2020/10/02/WebMagic框架实现对58同城就业信息的爬取/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="简介此信息的爬取，纯属是练习使用，没有用在商业用途。WebMagic的设计参考了业界最优秀的爬虫Scrapy，而实现则应用了HttpClient、Jsoup等Java世界最成熟的工具。 WebMagic由四个组件(Downloader、PageProcessor、Scheduler、Pipeline)构成，核心代码非常简单，主要是将这些组件结合并完成多线程的任务。 导包使用webmagic需要导入">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201001204658382.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201001210902543.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020100121212968.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201001212707496.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:updated_time" content="2020-10-02T03:23:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gorge">
+<meta name="twitter:description" content="简介此信息的爬取，纯属是练习使用，没有用在商业用途。WebMagic的设计参考了业界最优秀的爬虫Scrapy，而实现则应用了HttpClient、Jsoup等Java世界最成熟的工具。 WebMagic由四个组件(Downloader、PageProcessor、Scheduler、Pipeline)构成，核心代码非常简单，主要是将这些组件结合并完成多线程的任务。 导包使用webmagic需要导入">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201001204658382.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-WebMagic框架实现对58同城就业信息的爬取" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/10/02/WebMagic框架实现对58同城就业信息的爬取/" class="article-date">
+  	<time datetime="2020-10-02T03:23:05.880Z" itemprop="datePublished">2020-10-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>此信息的爬取，纯属是练习使用，没有用在商业用途。</strong><br>WebMagic的设计参考了业界最优秀的爬虫Scrapy，而实现则应用了HttpClient、Jsoup等Java世界最成熟的工具。</p>
+<p>WebMagic由四个组件(Downloader、PageProcessor、Scheduler、Pipeline)构成，核心代码非常简单，主要是将这些组件结合并完成多线程的任务。<br><img src="https://img-blog.csdnimg.cn/20201001204658382.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="导包"><a href="#导包" class="headerlink" title="导包"></a>导包</h2><p>使用webmagic需要导入的基本包：</p>
+<p><strong>webmagic-core</strong><br>webmagic-core是WebMagic核心部分，只包含爬虫基本模块和基本抽取器。WebMagic-core的目标是成为网页爬虫的一个教科书般的实现。</p>
+<p><strong>webmagic-extension</strong><br>webmagic-extension是WebMagic的主要扩展模块，提供一些更方便的编写爬虫的工具。包括注解格式定义爬虫、JSON、分布式等支持。</p>
+<h2 id="页面分析"><a href="#页面分析" class="headerlink" title="页面分析"></a>页面分析</h2><p>假设我们现在要爬取的是城市在北京的所有的岗位招聘信息。<br>58同城的页面的设计如下：<br><img src="https://img-blog.csdnimg.cn/20201001210902543.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>从这一个界面上大家就可以很容易的找到一些想要的基本的信息，比如说岗位、公司性质、薪资情况等信息。如果你需要的信息这些就足够了，那么你只需要对这一个界面进行分析爬取就好了。我这里为了获取更完善的信息，所以就进行了进一步的分析。</p>
+<p>职位详细信息的界面设置如下：<br><img src="https://img-blog.csdnimg.cn/2020100121212968.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="链接分析"><a href="#链接分析" class="headerlink" title="链接分析"></a>链接分析</h2><p><strong>总体界面链接分析：</strong><br><em>第一页的链接：</em><br><a href="https://search.51job.com/list/010000,000000,0000,00,9,99,+,2,1.html?lang=c&amp;postchannel=0000&amp;workyear=99&amp;cotype=99&amp;degreefrom=99&amp;jobterm=99&amp;companysize=99&amp;ord_field=0&amp;dibiaoid=0&amp;line=&amp;welfare=" target="_blank" rel="noopener">https://search.51job.com/list/010000,000000,0000,00,9,99,+,2,1.html?lang=c&amp;postchannel=0000&amp;workyear=99&amp;cotype=99&amp;degreefrom=99&amp;jobterm=99&amp;companysize=99&amp;ord_field=0&amp;dibiaoid=0&amp;line=&amp;welfare=</a><br><em>第二页的链接：</em><br><a href="https://search.51job.com/list/010000,000000,0000,00,9,99,+,2,2.html?lang=c&amp;postchannel=0000&amp;workyear=99&amp;cotype=99&amp;degreefrom=99&amp;jobterm=99&amp;companysize=99&amp;ord_field=0&amp;dibiaoid=0&amp;line=&amp;welfare=" target="_blank" rel="noopener">https://search.51job.com/list/010000,000000,0000,00,9,99,+,2,2.html?lang=c&amp;postchannel=0000&amp;workyear=99&amp;cotype=99&amp;degreefrom=99&amp;jobterm=99&amp;companysize=99&amp;ord_field=0&amp;dibiaoid=0&amp;line=&amp;welfare=</a></p>
+<p>大家对这个链接进行分析，可以发现链接是有规律的，在同一个城市下的求职信息，链接的差别主要在 <em>n.html</em> 这个位置，所以如果只是获取这个页面的信息，链接的分析到此就可以结束了，直接对页面进行详细分析，如何用xpath 进行匹配到你想要获取的信息，就可以了。</p>
+<p><strong>详细页面链接分析：</strong><br>第一个职位链接：<br><a href="https://jobs.51job.com/beijing-tzq/124559934.html?s=01&amp;t=0" target="_blank" rel="noopener">https://jobs.51job.com/beijing-tzq/124559934.html?s=01&amp;t=0</a><br>第二个职位链接：<br><a href="https://jobs.51job.com/beijing-cyq/117551387.html?s=01&amp;t=0" target="_blank" rel="noopener">https://jobs.51job.com/beijing-cyq/117551387.html?s=01&amp;t=0</a></p>
+<p>这里我没有看出很容易处理的共同点来。所有这个链接就不能很简单的获取。但是我们可以从每一个汇总页的位置获得，大家可以多看几个链接进行分析，可以用正则表达式进行进一步的分析（这个方式似乎更方便一些）</p>
+<h2 id="页面HTML分析"><a href="#页面HTML分析" class="headerlink" title="页面HTML分析"></a>页面HTML分析</h2><p>所以我们这里就直接分析总页就可以了。<br><img src="https://img-blog.csdnimg.cn/20201001212707496.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>大家看到这里是不是已经很明显了，对于总页的每一个模块的链接是非常明显的，并且58同城的信息每一个模块的设置的格式是非常整洁的。可以看到每一个div的class属性是e,然后直接找子标签为a的标签的href属性就可以得到你想要的进一步的页面的链接。</p>
+<p>所以，就进行了两步爬取分析。第一步是爬取相关招聘信息的网址，第二步是针对当前网址爬取招聘岗位的详细信息。</p>
+<h2 id="编写爬虫（这里只介绍一下爬取网址，详细信息过程一样）"><a href="#编写爬虫（这里只介绍一下爬取网址，详细信息过程一样）" class="headerlink" title="编写爬虫（这里只介绍一下爬取网址，详细信息过程一样）"></a>编写爬虫（这里只介绍一下爬取网址，详细信息过程一样）</h2><ul>
+<li>在WebMagic里面如果想要实现基本的爬虫，只需要编写一个类实现Pa geProcessor即可，需要重写process(Page page)方法</li>
+<li>爬虫的配置<br>1、Spider<br>Spider是爬虫启动的入口。在启动爬虫之前，我们需要使用一个PageProcessor创建一个Spider对象，然后使用run()进行启动。同时Spider的其他组件（Downloader、Scheduler、Pipeline）都可以通过set方法来进行设置。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Spider.create(<span class="keyword">new</span> URls())</span><br><span class="line">                .addUrl(<span class="string">"url"</span>)</span><br><span class="line"><span class="comment">//使用文件保存抓取URL，可以在关闭程序并下次启动时，从之前抓取到的URL继续抓取(具体内容查看Scheduler的配置)</span></span><br><span class="line">                .setScheduler(<span class="keyword">new</span> FileCacheQueueScheduler(<span class="string">"./51jobUrl"</span>))</span><br><span class="line">                .thread(<span class="number">5</span>)</span><br><span class="line">                .run();</span><br></pre></td></tr></table></figure>
+<p>  2、Site<br>对站点本身的一些配置信息，例如编码、HTTP头、超时时间、重试策略等、代理等，都可以通过设置Site对象来进行配置。<br>private Site site = Site.me().setRetryTimes(3).setSleepTime(10000).setTimeOut(10000);</p>
+<ul>
+<li>抽取信息并且将信息保留下来</li>
+</ul>
+<p>将获取到的页面进行xpath解析，xpath技术这里就不在赘述。.all（）方法是返回所有抽取结果。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.getHtml().xpath(<span class="string">"//div[@class='el']//p[@class='t1']/span/a/@href"</span>).all()</span><br></pre></td></tr></table></figure></p>
+<p>将获得数据保存下来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.putField(<span class="string">"url"</span>,page.getHtml().xpath(<span class="string">"//div[@class='el']//p[@class='t1']/span/a/@href"</span>).all());</span><br></pre></td></tr></table></figure>
+<p>因为我们这里需要将数据保存到数据库中，因此需要将数据从f ield中通过名称获取出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String  a = page.getResultItems().get(<span class="string">"url"</span>).toString();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从页面发现后续的地址来进行抓取<br>list是你要进行匹配的链接，可以是使用正则表达式进行匹配的，也可以是手动添加的等。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.addTargetRequests(list);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数据已经获得了，最后将这些数据插入到提前建设好的数据库就可以了。</li>
+<li><a href="https://github.com/CattleZ/MacLearngit/tree/master/WebMagic" target="_blank" rel="noopener">源码</a><br><a href="https://webmagic.io/docs/zh/" target="_blank" rel="noopener">官方学习文档</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/10/09/Java中的Socket/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/19/本机Mac建设Git记录/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">本机Mac建设git记录《一》</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="WebMagic框架实现对58同城就业信息的爬取" data-title data-url="http://yoursite.com/2020/10/02/WebMagic框架实现对58同城就业信息的爬取/" data-images="../../photo/head.jpg" data-content>
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
