@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>大数据-Hbase实验以及讲解 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介HBase是一个面向列的高可靠、高性能、可伸缩的分布式数据库。是Google公司的BigTable的开源实现，主要用来存储非结构化数据和半结构化数据的松散数据，支持大规模海量数据的、分布式并发数据处理效率极高；适用于廉价设备，适合读操作，不适合写操作。HBase可以直接使用本地文件系统而不用HDFS作为底层数据存储方式。为了提高数据可靠性和系统的健壮性，一般都使用HDFS作为底层数据存储方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据-Hbase实验以及讲解">
+<meta property="og:url" content="http://yoursite.com/2020/10/15/大数据-HBase实验以及讲解/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="简介HBase是一个面向列的高可靠、高性能、可伸缩的分布式数据库。是Google公司的BigTable的开源实现，主要用来存储非结构化数据和半结构化数据的松散数据，支持大规模海量数据的、分布式并发数据处理效率极高；适用于廉价设备，适合读操作，不适合写操作。HBase可以直接使用本地文件系统而不用HDFS作为底层数据存储方式。为了提高数据可靠性和系统的健壮性，一般都使用HDFS作为底层数据存储方式。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201014150445658.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:updated_time" content="2020-10-15T12:27:23.642Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大数据-Hbase实验以及讲解">
+<meta name="twitter:description" content="简介HBase是一个面向列的高可靠、高性能、可伸缩的分布式数据库。是Google公司的BigTable的开源实现，主要用来存储非结构化数据和半结构化数据的松散数据，支持大规模海量数据的、分布式并发数据处理效率极高；适用于廉价设备，适合读操作，不适合写操作。HBase可以直接使用本地文件系统而不用HDFS作为底层数据存储方式。为了提高数据可靠性和系统的健壮性，一般都使用HDFS作为底层数据存储方式。">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201014150445658.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-大数据-HBase实验以及讲解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/10/15/大数据-HBase实验以及讲解/" class="article-date">
+  	<time datetime="2020-10-15T12:13:54.270Z" itemprop="datePublished">2020-10-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      大数据-Hbase实验以及讲解
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/10/15/大数据-HBase实验以及讲解/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="大数据-Hbase实验以及讲解">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>HBase是一个面向列的高可靠、高性能、可伸缩的分布式数据库。是Google公司的BigTable的开源实现，主要用来存储<a href="https://baike.baidu.com/item/%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/309808?fr=aladdin" target="_blank" rel="noopener">非结构化数据</a>和<a href="https://baike.baidu.com/item/%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/3193001?fr=aladdin" target="_blank" rel="noopener">半结构化数据</a>的松散数据，支持大规模海量数据的、分布式并发数据处理效率极高；适用于廉价设备，适合读操作，不适合写操作。HBase可以直接使用本地文件系统而不用HDFS作为底层数据存储方式。为了提高数据可靠性和系统的健壮性，一般都使用HDFS作为底层数据存储方式。</p>
+<h2 id="HBase与传统数据库的对比"><a href="#HBase与传统数据库的对比" class="headerlink" title="HBase与传统数据库的对比"></a>HBase与传统数据库的对比</h2><table>
+<thead>
+<tr>
+<th>对比项目</th>
+<th>传统数据库</th>
+<th>HBase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据类型</td>
+<td>关系型模型</td>
+<td>未经解释的字符串</td>
+</tr>
+<tr>
+<td>数据操作</td>
+<td>插入、删除、更新、查询等已经多表连接等</td>
+<td>只有简单的插入、查询、删除、清空等。避免了复杂的表格之间的关系，只采用单表的主键查询，无法实现表的连接操作</td>
+</tr>
+<tr>
+<td>存储模式</td>
+<td>基于行存储，元组或者行会连续的存储在磁盘页</td>
+<td>基于列存储的，每个列族都由几个文件保存，不同列族的文件是分离的</td>
+</tr>
+<tr>
+<td>数据索引</td>
+<td>通常可以针对不同的列构建复杂的多个索引</td>
+<td>只有一个索引-行键</td>
+</tr>
+<tr>
+<td>数据维护</td>
+<td>更新操作的时候，新的值会覆盖旧的值</td>
+<td>不会删除旧版的数据，而是生成一个新的版本</td>
+</tr>
+<tr>
+<td>可伸缩性</td>
+<td>很难实现横向扩展，纵向扩展有限</td>
+<td>很好的实现水平扩展</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数据模型的新的概念"><a href="#数据模型的新的概念" class="headerlink" title="数据模型的新的概念"></a>数据模型的新的概念</h2><ul>
+<li><p>列族<br>一个表被分成许多个列族的组合。列族需要在表创建的时候就创建好，数量不能太多（HBa se的一些缺陷导致的）,存储在同一个列族当中的数据，通常都是属于同一种数据类型的。在存储的时候，列明都以列族作为前缀的。比如，course:history和 course:math这两个列都属于courses这个列族</p>
+</li>
+<li><p>列限定符</p>
+</li>
+</ul>
+<p>列族里面的数据通过列限定符来定位。列限定符不用事先定义，也不需要在不同行之间保持一致。</p>
+<ul>
+<li><p>时间戳<br>每个单元格都保存着同一份数据的多个版本，这些版本采用时间戳进行索引。每次对一个单元格执行操作的时候，HBa se都会隐式的自动生成并存储一个时间戳。</p>
+</li>
+<li><p>数据坐标</p>
+<p>传统的数据库我们都是通过二维坐标进行取值的，但是对于HBase来讲，需要根据[行键、列族、列限定符、时间戳]来确定一个单元格。</p>
+<h2 id="物理视图"><a href="#物理视图" class="headerlink" title="物理视图"></a>物理视图</h2></li>
+</ul>
+<p>对于数据表的观察，便于我们观察的是概念视图，但是在HBa se中实际存储的是按照数据的物理视图进行存储的。物理视图是采用了基于列的存储方式，而不是像传统的方式那样基于行的存储方式。<br><img src="https://img-blog.csdnimg.cn/20201014150445658.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>对于在概念视图中，空的列不会存储成null,而是根本就不会存储。</p>
+<p>列式数据库主要适合于批量数据处理和即席查询 。<br>他的优点是：<em>可以降低I/O开销，支持大并发用户查询，处理速度比传统方法快100倍。</em><br>他的缺点是：执行连接操作时需要昂贵的元组重构代价，因为一个元组的不同属性被分散到不同的磁盘页中存储，当需要一个完整的元组的时候，就要从多个磁盘页中读取相应字段的值来重新组合得到原来的一个元组。</p>
+<h2 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h2><p>主要理解HBa se架构个部分的作用，主要包括：</p>
+<ul>
+<li>客户端</li>
+<li>Zookper服务器</li>
+<li>Master</li>
+<li><p>Region服务器</p>
+<ul>
+<li>Store</li>
+<li>HLog文件<h2 id="HBase-常用的She-l-l命令"><a href="#HBase-常用的She-l-l命令" class="headerlink" title="HBase 常用的She l l命令"></a>HBase 常用的She l l命令</h2>自行学习，网上资料很多<h2 id="HBase-常用的Java-API-及应用实例"><a href="#HBase-常用的Java-API-及应用实例" class="headerlink" title="HBase 常用的Java API 及应用实例"></a>HBase 常用的Java API 及应用实例</h2>自行学习，网上资料很多<br>主要包括：HBaseConfiguration、HTableDescriptor、HcolumnDescriptor、Put、Get、ResultScanner、Resul、Scan。<h2 id="HBase的安装"><a href="#HBase的安装" class="headerlink" title="HBase的安装"></a>HBase的安装</h2></li>
+</ul>
+</li>
+<li><p>可以使用wget命令在<a href="http://archive.apache.org/dist/hbase/" target="_blank" rel="noopener">HBase的官网</a>下载想要使用的版本</p>
+</li>
+<li>解压</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">sudo tar -zxf ~/下载/hbase-2.2.2-bin.tar.gz -C /usr/<span class="built_in">local</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>更改名称</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">sudo mv ./hbase-2.2.2 ./hbase</span><br></pre></td></tr></table></figure>
+<ul>
+<li>更改权限</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">sudo chown -R hadoop ./hbase</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置环境变量</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line">//如果没有引入过PATH 直接添加下面的代码，如果引入过，就将路径添加到path路径的后面即可</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/hbase/bin</span><br></pre></td></tr></table></figure>
+<p>执行命令，让配置生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加HBase的权限</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">sudo chown -R hadoop ./hbase       <span class="comment">#将hbase下的所有文件的所有者改为hadoop，hadoop是当前用户的用户名。</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看版本，确保安装成功</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/hbase/bin/hbase version</span><br></pre></td></tr></table></figure>
+<h2 id="伪分布式配置"><a href="#伪分布式配置" class="headerlink" title="伪分布式配置"></a>伪分布式配置</h2><ul>
+<li>配置/usr/local/hbase/conf/hbase-env.sh。命令如下</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/hbase/conf/hbase-env.sh</span><br></pre></td></tr></table></figure>
+<p>配置JAVA_HOME，HBASE_CLASSPATH，HBASE_MANAGES_ZK.<br>HBASE_CLASSPATH设置为本机HBase安装目录下的conf目录（即/usr/local/hbase/conf）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/jdk1.<span class="number">8.0</span>_162</span><br><span class="line">export HBASE_CLASSPATH=/usr/local/hbase/conf </span><br><span class="line">export HBASE_MANAGES_ZK=true</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置/usr/local/hbase/conf/hbase-site.xml<br>用命令vi打开并编辑hbase-site.xml，命令如下</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/hbase/conf/hbase-site.xml</span><br></pre></td></tr></table></figure>
+<p>修改hbase.rootdir，指定HBase数据在HDFS上的存储路径；将属性hbase.cluter.distributed设置为true。假设当前Hadoop集群运行在伪分布式模式下，在本机上运行，且NameNode运行在9000端口</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.rootdir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs://localhost:<span class="number">9000</span>/hbase&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.unsafe.stream.capability.enforce&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接下来测试运行HBase<br>启动hbase的时候一定要确保hadoop已经成功启动</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/hbase</span><br><span class="line">bin/start-hbase.sh</span><br></pre></td></tr></table></figure>
+<p>成功安装配置好之后，下面就开始我们基本的实验吧</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="现有以下关系型数据库中的表和数据，要求将其转换为适合于HBase存储的表并插入数据："><a href="#现有以下关系型数据库中的表和数据，要求将其转换为适合于HBase存储的表并插入数据：" class="headerlink" title="现有以下关系型数据库中的表和数据，要求将其转换为适合于HBase存储的表并插入数据："></a>现有以下关系型数据库中的表和数据，要求将其转换为适合于HBase存储的表并插入数据：</h3><p>学生表（Student）<br>学号（S_No）     | 姓名（S_Name) |性别（S_Sex)|年龄（S_Age）<br>——– | —–|—-|—-<br>2015001  | Zhangsan|male|23<br>2015002  | Mary|female|22<br>2015003  | Lisi |male|24<br>下面先插入s003 学生的信息<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> hbase(main):<span class="number">008</span>:<span class="number">0</span>&gt;create <span class="string">'Student'</span>,<span class="string">'S_No'</span>,<span class="string">'S_Name'</span>,<span class="string">'S_Sex'</span>,<span class="string">'S_Age'</span></span><br><span class="line">hbase(main):<span class="number">029</span>:<span class="number">0</span>&gt; put <span class="string">'Student'</span>,<span class="string">'s003'</span>,<span class="string">'S_No'</span>,<span class="string">'2015003'</span></span><br><span class="line">Took <span class="number">0.0138</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">030</span>:<span class="number">0</span>&gt; put <span class="string">'Student'</span>,<span class="string">'s003'</span>,<span class="string">'S_Name'</span>,<span class="string">'Lisi'</span></span><br><span class="line">Took <span class="number">0.0118</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">031</span>:<span class="number">0</span>&gt; put <span class="string">'Student'</span>,<span class="string">'s003'</span>,<span class="string">'S_Sex'</span>,<span class="string">'male'</span></span><br><span class="line">Took <span class="number">0.0090</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">032</span>:<span class="number">0</span>&gt; put <span class="string">'Student'</span>,<span class="string">'s003'</span>,<span class="string">'S_Age'</span>,<span class="string">'24'</span></span><br></pre></td></tr></table></figure></p>
+<p>课程表（Course）<br>课程号（C_No）    | 课程名（C_Name） |学分（C_Credit）<br>——– | —–|—-|—-<br>123001  | Math|2.0<br>123002 | Computer Science|5.0<br>123003  |English|3.0</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">hbase(main):<span class="number">041</span>:<span class="number">0</span>&gt; create <span class="string">'Course'</span>,<span class="string">'C_No'</span>,<span class="string">'C_Name'</span>,<span class="string">'C_Credit'</span></span><br><span class="line">Created table Course</span><br><span class="line">Took <span class="number">1.3558</span> seconds                                                                                                                                                                                         </span><br><span class="line">=&gt; Hbase::Table - Course</span><br><span class="line">hbase(main):<span class="number">042</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'C001'</span>,<span class="string">'C_No'</span>,<span class="string">'2015001'</span></span><br><span class="line">Took <span class="number">0.0373</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">043</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'C001'</span>,<span class="string">'C_Name'</span>,<span class="string">'Math'</span></span><br><span class="line">Took <span class="number">0.0097</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">044</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'C001'</span>,<span class="string">'C_No'</span>,<span class="string">'123001'</span></span><br><span class="line">Took <span class="number">0.0060</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">045</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'C001'</span>,<span class="string">'C_Credit'</span>,<span class="string">'2.0'</span></span><br><span class="line">Took <span class="number">0.0093</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">046</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'c002'</span>,<span class="string">'C_No'</span>,<span class="string">'123002'</span></span><br><span class="line">Took <span class="number">0.0049</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">047</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'c002'</span>,<span class="string">'C_Name'</span>,<span class="string">'Computer'</span></span><br><span class="line">Took <span class="number">0.1125</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">048</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'c002'</span>,<span class="string">'C_Credit'</span>,<span class="string">'5.0'</span></span><br><span class="line">Took <span class="number">0.0107</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">049</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'c003'</span>,<span class="string">'C_No'</span>,<span class="string">'123003'</span></span><br><span class="line">Took <span class="number">0.0097</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">050</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'c003'</span>,<span class="string">'C_Name'</span>,<span class="string">'English'</span></span><br><span class="line">Took <span class="number">0.0060</span> seconds                                                                                                                                                                                         </span><br><span class="line">hbase(main):<span class="number">051</span>:<span class="number">0</span>&gt; put <span class="string">'Course'</span>,<span class="string">'c003'</span>,<span class="string">'C_Credit'</span>,<span class="string">'3.0'</span></span><br><span class="line">Took <span class="number">0.0089</span> seconds</span><br></pre></td></tr></table></figure>
+<p>选课表（SC）<br>学号（SC_Sno）    | 课程号（SC_Cno））|成绩（SC_Score）<br>——– | —–|—-|—-<br>2015001  | 123001|86<br>2015001 | 123003|69<br>2015002  |123002|77<br>2015002  | 123003|99<br>2015003 | 123001|98<br>2015003  |123002|95</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create <span class="string">'SC'</span>,<span class="string">'SC_Sno'</span>,<span class="string">'SC_Cno'</span>,<span class="string">'SC_Score'</span></span><br><span class="line">Created table SC</span><br><span class="line">Took <span class="number">1.2786</span> seconds                                                                                                                                                                                         </span><br><span class="line">=&gt; Hbase::Table - SC</span><br><span class="line">hbase(main):<span class="number">053</span>:<span class="number">0</span>&gt; put <span class="string">'SC'</span>,<span class="string">'sc001'</span>,<span class="string">'SC_Sno'</span>,<span class="string">'2015001'</span></span><br><span class="line">NoMethodError: undefined method `ut<span class="string">' for main:Object</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">hbase(main):054:0&gt; put '</span>SC<span class="string">','</span>sc001<span class="string">','</span>SC_Sno<span class="string">','</span><span class="number">2015001</span><span class="string">'</span></span><br><span class="line"><span class="string">Took 0.0210 seconds                                                                                                                                                                                         </span></span><br><span class="line"><span class="string">hbase(main):055:0&gt; put '</span>SC<span class="string">','</span>sc001<span class="string">','</span>SC_Cno<span class="string">','</span><span class="number">123001</span><span class="string">'</span></span><br><span class="line"><span class="string">Took 0.0201 seconds                                                                                                                                                                                         </span></span><br><span class="line"><span class="string">hbase(main):056:0&gt; put '</span>SC<span class="string">','</span>sc001<span class="string">','</span>SC_Score<span class="string">','</span><span class="number">86</span><span class="string">'</span></span><br></pre></td></tr></table></figure>
+<p>这样，我们的表还有数据就填充完了，上面因为一些数据的填充的过程都是一样的，因此就写了一个实例来演示一下，需要注意的是<em>表格中每一个行的数据，都需要为他增加一个主键，也就是语句中的sc001的部分，因为hba se是列存储的，这个用来表示每一行，因此，对应每一行的时候，这个值要有所区分</em></p>
+<h3 id="编程实现以下指定功能，并用Hadoop提供的HBase-Shell命令完成相同任务："><a href="#编程实现以下指定功能，并用Hadoop提供的HBase-Shell命令完成相同任务：" class="headerlink" title="编程实现以下指定功能，并用Hadoop提供的HBase Shell命令完成相同任务："></a>编程实现以下指定功能，并用Hadoop提供的HBase Shell命令完成相同任务：</h3><ul>
+<li>先是shell命令</li>
+</ul>
+<p>（1）列出HBase所有的表的相关信息，例如表名；</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase(main):<span class="number">073</span>:<span class="number">0</span>&gt; list</span><br></pre></td></tr></table></figure>
+<p>（2）在终端打印出指定的表的所有记录数据；</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan <span class="string">'Student'</span></span><br></pre></td></tr></table></figure>
+<p>（3）向已经创建好的表添加和删除指定的列族或列；</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create <span class="string">'s1'</span>,<span class="string">'score'</span></span><br><span class="line">put <span class="string">'s1'</span>,<span class="string">'zhangsan'</span>,<span class="string">'score:math'</span>,<span class="string">'69'</span></span><br><span class="line">delete <span class="string">'s1'</span>,<span class="string">'zhangsan'</span>,<span class="string">'score:math'</span></span><br></pre></td></tr></table></figure>
+<p>（4）清空指定的表的所有记录数据；</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase(main):<span class="number">078</span>:<span class="number">0</span>&gt; truncate <span class="string">'s1'</span></span><br></pre></td></tr></table></figure>
+<p>（5）统计表的行数。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase&gt; count <span class="string">'s1'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Java命令</li>
+</ul>
+<p>使用HBase Java API进行编程控制<br>在进行编程之前，我们先进行一些前期的准备工作，准备好编程需要的环境。<br>当我们建立好普通的java项目之后，首先要进行一个导包的操作。<br>(导包操作以及建立项目的过程，不会的自行百度学习)<br>所需要的包位于</p>
+<p><1> 进入到“/usr/local/hbase/lib”目录，选中该目录下的所有jar文件（注意，不要选中client-facing-thirdparty、ruby、shaded-clients和zkcli这四个目录）</1></p>
+<p><2>在“client-facing-thirdparty”目录下（如下图所示），选中所有jar文件<br>上面就是我们所需要的全部的包了。</2></p>
+<p>在这个项目下，建立一个类就可以进行编程了。<br>下面是上面五个小实验的详细代码 讲解，需要执行哪一个过程，在main函数中，调用即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Test1;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.util.Bytes;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExampleForHBase</span> </span>&#123;</span><br><span class="line">	<span class="comment">//首先定义一个 与数据库连接所需要的配置文件</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Configuration configuration;</span><br><span class="line">    <span class="comment">//定义一个连接对象</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Connection connection;</span><br><span class="line">    <span class="comment">//定义一个操作数据库的对象。管理员可用于创建，删除，列出，启用和禁用以及以其他方式修改表以及执行其他管理操作。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Admin admin;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        createTable(<span class="string">"student"</span>,<span class="keyword">new</span> String[]&#123;<span class="string">"score"</span>&#125;);</span><br><span class="line">        insertData(<span class="string">"student"</span>,<span class="string">"zhangsan"</span>,<span class="string">"score"</span>,<span class="string">"English"</span>,<span class="string">"69"</span>);</span><br><span class="line">        insertData(<span class="string">"student"</span>,<span class="string">"zhangsan"</span>,<span class="string">"score"</span>,<span class="string">"Math"</span>,<span class="string">"86"</span>);</span><br><span class="line">        insertData(<span class="string">"student"</span>,<span class="string">"zhangsan"</span>,<span class="string">"score"</span>,<span class="string">"Computer"</span>,<span class="string">"77"</span>);</span><br><span class="line">        getData(<span class="string">"student"</span>, <span class="string">"zhangsan"</span>, <span class="string">"score"</span>,<span class="string">"English"</span>);</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="comment">//初始化 连接数据库所需要的 配置文件，连接对象，以及管理员</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        configuration  = HBaseConfiguration.create();</span><br><span class="line">        configuration.set(<span class="string">"hbase.rootdir"</span>,<span class="string">"hdfs://0.0.0.0:8020/hbase"</span>);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            connection = ConnectionFactory.createConnection(configuration);</span><br><span class="line">            admin = connection.getAdmin();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="comment">//设置数据库连接完成之后的关闭操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(admin != <span class="keyword">null</span>)&#123;</span><br><span class="line">            	<span class="comment">//管理员权限关闭</span></span><br><span class="line">                admin.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">null</span> != connection)&#123;</span><br><span class="line">            	<span class="comment">//连接关闭</span></span><br><span class="line">                connection.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 第一个题 列出HBase所有的表的相关信息</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">listTables</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        init();<span class="comment">//建立连接</span></span><br><span class="line">        List&lt;TableDescriptor&gt; tableDescriptors = admin.listTableDescriptors();</span><br><span class="line">        <span class="keyword">for</span>(TableDescriptor tableDescriptor : tableDescriptors)&#123;</span><br><span class="line">            TableName tableName = tableDescriptor.getTableName();</span><br><span class="line">            System.out.println(<span class="string">"Table:"</span> + tableName);</span><br><span class="line">        &#125;</span><br><span class="line">        close();<span class="comment">//关闭连接</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//第二题 在终端打印出指定的表的所有记录数据</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment">//在终端打印出指定的表的所有记录数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getData</span><span class="params">(String tableName)</span><span class="keyword">throws</span>  IOException</span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        <span class="comment">//根据表名 获得一个表对象</span></span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        <span class="comment">// 获得一个查询表的查询对象</span></span><br><span class="line">        Scan scan = <span class="keyword">new</span> Scan();</span><br><span class="line">        <span class="comment">//使用查询对象，获得查询到的结果（Result）集合  ResultScanner</span></span><br><span class="line">        ResultScanner scanner = table.getScanner(scan);<span class="comment">//获取行的遍历器</span></span><br><span class="line">        <span class="keyword">for</span> (Result result:scanner)&#123;</span><br><span class="line">        	<span class="comment">//将每一条Result的结果 打印输出</span></span><br><span class="line">            printRecoder(result);</span><br><span class="line">        &#125;</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//打印一条记录的详情</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printRecoder</span><span class="params">(Result result)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">    	<span class="comment">//每一个列又包含多条信息 ，因此 需要迭代打印输出 </span></span><br><span class="line">        <span class="keyword">for</span>(Cell cell:result.rawCells())&#123;</span><br><span class="line">            System.out.print(<span class="string">"行健: "</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getRowArray(),cell.getRowOffset(), cell.getRowLength())));</span><br><span class="line">            System.out.print(<span class="string">"列簇: "</span>+<span class="keyword">new</span> String( Bytes.toString(cell.getFamilyArray(),cell.getFamilyOffset(), cell.getFamilyLength()) ));</span><br><span class="line">            System.out.print(<span class="string">" 列: "</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getQualifierArray(),cell.getQualifierOffset(), cell.getQualifierLength())));</span><br><span class="line">            System.out.print(<span class="string">" 值: "</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getValueArray(),cell.getValueOffset(), cell.getValueLength())));</span><br><span class="line">            System.out.println(<span class="string">"时间戳: "</span>+cell.getTimestamp());            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//第三题 向表中 添加数据 所需要的关键字 与 shell的put语句 是对应的</span></span><br><span class="line">    <span class="comment">//colFamily代表的是列簇 如果列为空，那么应设置col的值为“”</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertData</span><span class="params">(String tableName,String rowKey,String colFamily,String col,String val)</span> <span class="keyword">throws</span> IOException </span>&#123; </span><br><span class="line">      init();</span><br><span class="line">      <span class="comment">//建立连接 获取表</span></span><br><span class="line">    	Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">    	<span class="comment">//语句执行 添加</span></span><br><span class="line">        Put put = <span class="keyword">new</span> Put(rowKey.getBytes());</span><br><span class="line">        put.addColumn(colFamily.getBytes(),col.getBytes(), val.getBytes());</span><br><span class="line">        table.put(put);</span><br><span class="line">        table.close(); </span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="comment">//删除数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deleRow</span><span class="params">(String tableName,String rowKey,String colFamily,String col)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        Delete delete = <span class="keyword">new</span> Delete(rowKey.getBytes());</span><br><span class="line">        <span class="comment">//删除指定列族</span></span><br><span class="line">        delete.addFamily(Bytes.toBytes(colFamily));</span><br><span class="line">        <span class="comment">//删除指定列</span></span><br><span class="line">        delete.addColumn(Bytes.toBytes(colFamily),Bytes.toBytes(col));</span><br><span class="line">        table.delete(delete);</span><br><span class="line">        table.close();</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"> <span class="comment">//第四题 清空指定的表的所有记录数据；</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clearRows</span><span class="params">(String tableName)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        TableName tablename = TableName.valueOf(tableName);</span><br><span class="line">        admin.disableTable(tablename);</span><br><span class="line">        admin.deleteTable(tablename);</span><br><span class="line">        TableDescriptorBuilder tableDescriptor = TableDescriptorBuilder.newBuilder(tablename);</span><br><span class="line">        admin.createTable(tableDescriptor.build());        </span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//第五题 统计表的行数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">countRows</span><span class="params">(String tableName)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        Scan scan = <span class="keyword">new</span> Scan();</span><br><span class="line">        ResultScanner scanner = table.getScanner(scan);</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Result result = scanner.next();result!=<span class="keyword">null</span>;result=scanner.next())&#123;</span><br><span class="line">            num++;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"行数:"</span>+ num);</span><br><span class="line">        scanner.close();</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建表</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createTable</span><span class="params">(String myTableName,String[] colFamily)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        TableName tableName = TableName.valueOf(myTableName);</span><br><span class="line">        <span class="keyword">if</span>(admin.tableExists(tableName))&#123;</span><br><span class="line">            System.out.println(<span class="string">"talbe is exists!"</span>);</span><br><span class="line">            <span class="comment">//删除原来的表</span></span><br><span class="line">            admin.disableTable(tablename);</span><br><span class="line">            admin.deleteTable(tablename);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//创建新的表</span></span><br><span class="line">            TableDescriptorBuilder tableDescriptor = TableDescriptorBuilder.newBuilder(tableName);</span><br><span class="line">            <span class="keyword">for</span>(String str:colFamily)&#123;</span><br><span class="line">                ColumnFamilyDescriptor family = </span><br><span class="line">ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes(str)).build();</span><br><span class="line">                tableDescriptor.setColumnFamily(family);</span><br><span class="line">            &#125;</span><br><span class="line">            admin.createTable(tableDescriptor.build());</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取表中的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getData</span><span class="params">(String tableName,String rowKey,String colFamily, String col)</span><span class="keyword">throws</span>  IOException</span>&#123; </span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        Get get = <span class="keyword">new</span> Get(rowKey.getBytes());</span><br><span class="line">        get.addColumn(colFamily.getBytes(),col.getBytes());</span><br><span class="line">        Result result = table.get(get);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(result.getValue(colFamily.getBytes(),col==<span class="keyword">null</span>?<span class="keyword">null</span>:col.getBytes())));</span><br><span class="line">        table.close(); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同时完成：<br>(1)createTable(String tableName, String[] fields)<br>创建表，参数tableName为表的名称，字符串数组fields为存储记录各个域名称的数组。要求当HBase已经存在名为tableName的表的时候，先删除原有的表，然后再创建新的表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createTable</span><span class="params">(String myTableName,String[] colFamily)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        TableName tableName = TableName.valueOf(myTableName);</span><br><span class="line">        <span class="keyword">if</span>(admin.tableExists(tableName))&#123;</span><br><span class="line">            System.out.println(<span class="string">"talbe is exists!"</span>);</span><br><span class="line">            <span class="comment">//删除原来的表</span></span><br><span class="line">            admin.disableTable(tablename);</span><br><span class="line">            admin.deleteTable(tablename);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//创建新的表</span></span><br><span class="line">            TableDescriptorBuilder tableDescriptor = TableDescriptorBuilder.newBuilder(tableName);</span><br><span class="line">            <span class="keyword">for</span>(String str:colFamily)&#123;</span><br><span class="line">                ColumnFamilyDescriptor family = </span><br><span class="line">ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes(str)).build();</span><br><span class="line">                tableDescriptor.setColumnFamily(family);</span><br><span class="line">            &#125;</span><br><span class="line">            admin.createTable(tableDescriptor.build());</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>(2)addRecord(String tableName, String row, String[] fields, String[] values)<br>向表tableName、行row（用S_Name表示）和字符串数组files指定的单元格中添加对应的数据values。其中fields中每个元素如果对应的列族下还有相应的列限定符的话，用“columnFamily:column”表示。例如，同时向“Math”、“Computer Science”、“English”三列添加成绩时，字符串数组fields为{“Score:Math”,”Score；Computer Science”,”Score:English”}，数组values存储这三门课的成绩。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addRecord</span><span class="params">(String tableName,String row,String[] fields,String[] values)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i != fields.length;i++)&#123;</span><br><span class="line">            Put put = <span class="keyword">new</span> Put(row.getBytes());</span><br><span class="line">            String[] cols = fields[i].split(<span class="string">":"</span>);</span><br><span class="line">            put.addColumn(cols[<span class="number">0</span>].getBytes(), cols[<span class="number">1</span>].getBytes(), values[i].getBytes());</span><br><span class="line">            table.put(put);</span><br><span class="line">        &#125;</span><br><span class="line">        table.close();</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>(3)scanColumn(String tableName, String column)<br>浏览表tableName某一列的数据，如果某一行记录中该列数据不存在，则返回null。要求当参数column为某一列族名称时，如果底下有若干个列限定符，则要列出每个列限定符代表的列的数据；当参数column为某一列具体名称（例如“Score:Math”）时，只需要列出该列的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">scanColumn</span><span class="params">(String tableName,String column)</span><span class="keyword">throws</span>  IOException</span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        Scan scan = <span class="keyword">new</span> Scan();</span><br><span class="line">        scan.addFamily(Bytes.toBytes(column));</span><br><span class="line">        ResultScanner scanner = table.getScanner(scan);</span><br><span class="line">        <span class="keyword">for</span> (Result result = scanner.next(); result != <span class="keyword">null</span>; result = scanner.next())&#123;</span><br><span class="line">            showCell(result);</span><br><span class="line">        &#125;</span><br><span class="line">        table.close();</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//格式化输出</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showCell</span><span class="params">(Result result)</span></span>&#123;</span><br><span class="line">        Cell[] cells = result.rawCells();</span><br><span class="line">        <span class="keyword">for</span>(Cell cell:cells)&#123;</span><br><span class="line">            System.out.println(<span class="string">"RowName:"</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getRowArray(),cell.getRowOffset(), cell.getRowLength()))+<span class="string">" "</span>);</span><br><span class="line">            System.out.println(<span class="string">"Timetamp:"</span>+cell.getTimestamp()+<span class="string">" "</span>);</span><br><span class="line">            System.out.println(<span class="string">"column Family:"</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getFamilyArray(),cell.getFamilyOffset(), cell.getFamilyLength()))+<span class="string">" "</span>);</span><br><span class="line">            System.out.println(<span class="string">"row Name:"</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getQualifierArray(),cell.getQualifierOffset(), cell.getQualifierLength()))+<span class="string">" "</span>);</span><br><span class="line">            System.out.println(<span class="string">"value:"</span>+<span class="keyword">new</span> String(Bytes.toString(cell.getValueArray(),cell.getValueOffset(), cell.getValueLength()))+<span class="string">" "</span>);           </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>(4)modifyData(String tableName, String row, String column)<br>修改表tableName，行row（可以用学生姓名S_Name表示），列column指定的单元格的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">modifyData</span><span class="params">(String tableName,String row,String column,String val)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">    init();</span><br><span class="line">    Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">    Put put = <span class="keyword">new</span> Put(row.getBytes());</span><br><span class="line">    put.addColumn(column.getBytes(),<span class="keyword">null</span>,val.getBytes());</span><br><span class="line">    table.put(put);</span><br><span class="line">    table.close();</span><br><span class="line">    close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(5)deleteRow(String tableName, String row)<br>删除表tableName中row指定的行的记录。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deleteRow</span><span class="params">(String tableName,String row)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        Table table = connection.getTable(TableName.valueOf(tableName));</span><br><span class="line">        Delete delete = <span class="keyword">new</span> Delete(row.getBytes());        </span><br><span class="line">        table.delete(delete);</span><br><span class="line">        table.close();</span><br><span class="line">        close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/11/林子雨大数据-hdfs常用的操作（实验操作详细记录与讲解）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">林子雨大数据-hdfs常用的操作（实验操作详细记录与讲解）</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="大数据-HBase实验以及讲解" data-title="大数据-Hbase实验以及讲解" data-url="http://yoursite.com/2020/10/15/大数据-HBase实验以及讲解/" data-images="../../photo/head.jpg" data-content="大数据-Hbase实验以及讲解">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

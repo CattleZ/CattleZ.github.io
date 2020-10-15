@@ -191,6 +191,86 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-JS轨迹图（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/06/28/JS轨迹图（一）/" class="article-date">
+  	<time datetime="2020-06-28T11:50:08.563Z" itemprop="datePublished">2020-06-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/28/JS轨迹图（一）/">
+        轨迹图（一）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="引用百度API并建立密钥"><a href="#引用百度API并建立密钥" class="headerlink" title="引用百度API并建立密钥"></a>引用百度API并建立密钥</h1><p>我们这里因为用的是百度地图提供的服务，因此，使用的开发文档是百度的API，这里面集成了大量的与地图相关的服务。这个是开源的，免费的。但是想要使用的话，是需要在百度地图控制台申请一个本机的密钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;http://api.map.baidu.com/api?v=2.0&amp;ak=密钥&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="引入相关js-文件"><a href="#引入相关js-文件" class="headerlink" title="引入相关js 文件"></a>引入相关js 文件</h1><p>只有百度提供的API是不够的，还需要一些依赖包去满足更多的需求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;js/echarts3.8.5.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;js/bmap3.8.5.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>如果是需要对地图有更多的要求，或者只是单纯对某一个地区进行操作，则需要引用其他的的js文件。</p>
+<h1 id="建立一个盒子接收"><a href="#建立一个盒子接收" class="headerlink" title="建立一个盒子接收"></a>建立一个盒子接收</h1><p>因为我们的地图是基于Html 进行的，因此需要一个div对获得数据进行接收。这里直接创建一个带有id属性的div即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;allmap&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="编写JS文件"><a href="#编写JS文件" class="headerlink" title="编写JS文件"></a>编写JS文件</h1><h2 id="获得盒子"><a href="#获得盒子" class="headerlink" title="获得盒子"></a>获得盒子</h2><p>这里就是获得我们刚刚创建的div ,用来接收地图。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var myChart = echarts.init(document.getElementById(&apos;allmap&apos;));</span><br></pre></td></tr></table></figure></p>
+<h2 id="设置属性"><a href="#设置属性" class="headerlink" title="设置属性"></a>设置属性</h2><p>接下来是对地图样式的设置，这里的内容是比较多的，也是需要后期继续学习与研究的，这里先简单的介绍一些比较简单的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var bmap = &#123;</span><br><span class="line">        center: [startPoint.x, startPoint.y],</span><br><span class="line">        zoom: 15,</span><br><span class="line">        roam: true,</span><br><span class="line">        mapStyle: &#123;&#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>上面为我们的地图样式提供了一个框架，第一个参数是我们第一次访问地图时候显示的中心位置，第二个参数是地图放大多少，第三个参数是指我们是否有权限自己调节大小,这里我们主要设置的是mapStyle的内容，也就是地图的样式，下面是几个实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">styleJson: [</span><br><span class="line">               &#123;</span><br><span class="line">                   &apos;featureType&apos;: &apos;land&apos;,     //调整土地颜色</span><br><span class="line">                   &apos;elementType&apos;: &apos;geometry&apos;,</span><br><span class="line">                   &apos;stylers&apos;: &#123;</span><br><span class="line">                       &apos;color&apos;: &apos;#081734&apos;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;,</span><br><span class="line">               &#123;</span><br><span class="line">                   &apos;featureType&apos;: &apos;building&apos;,   //调整建筑物颜色</span><br><span class="line">                   &apos;elementType&apos;: &apos;geometry&apos;,</span><br><span class="line">                   &apos;stylers&apos;: &#123;</span><br><span class="line">                       &apos;color&apos;: &apos;#04406F&apos;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;,</span><br><span class="line">               &#123;</span><br><span class="line">                   &apos;featureType&apos;: &apos;building&apos;,   //调整建筑物标签是否可视</span><br><span class="line">                   &apos;elementType&apos;: &apos;labels&apos;,</span><br><span class="line">                   &apos;stylers&apos;: &#123;</span><br><span class="line">                       &apos;visibility&apos;: &apos;on&apos;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;,</span><br><span class="line">               &#123;</span><br><span class="line">                   &apos;featureType&apos;: &apos;highway&apos;,     //调整高速道路颜色</span><br><span class="line">                   &apos;elementType&apos;: &apos;geometry&apos;,</span><br><span class="line">                   &apos;stylers&apos;: &#123;</span><br><span class="line">                       &apos;color&apos;: &apos;#015B99&apos;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;,</span><br><span class="line">               &#123;</span><br><span class="line">                   &apos;featureType&apos;: &apos;highway&apos;,    //调整高速名字是否可视</span><br><span class="line">                   &apos;elementType&apos;: &apos;labels&apos;,</span><br><span class="line">                   &apos;stylers&apos;: &#123;</span><br><span class="line">                       &apos;visibility&apos;: &apos;off&apos;</span><br><span class="line">                   &#125;</span><br><span class="line">                   ]</span><br></pre></td></tr></table></figure>
+<h2 id="显示数据"><a href="#显示数据" class="headerlink" title="显示数据"></a>显示数据</h2><p>最后，我们调整完所有的参数之后，读取一下我们的数据集，保存在一个列表里面，我们这里用series来表示。将我们的数据，设置到option里面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">option = &#123;</span><br><span class="line">       bmap: bmap,</span><br><span class="line">       zoom: 13,</span><br><span class="line">       color: [&apos;gold&apos;, &apos;aqua&apos;, &apos;lime&apos;],</span><br><span class="line">       series:    series3</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+<p>最后调用函数，使用指定的配置项以及数据将地图显示出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myChart.setOption(option);</span><br></pre></td></tr></table></figure>
+<h1 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h1><p>这里随便选取了家乡的几个点，作为测试，效果图如下：<br><img src="https://img-blog.csdnimg.cn/20200628194641454.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/06/28/JS轨迹图（一）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="轨迹图（一）">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-阿里云Ubuntu上安装mysql并运行" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -849,72 +929,6 @@
         
 <div class="counter-tag counter">
     <span id="/2019/05/01/Reverse sign in/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Reverse sign in">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-burp抓包" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/01/burp抓包/" class="article-date">
-  	<time datetime="2019-05-01T08:35:17.211Z" itemprop="datePublished">2019-05-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/01/burp抓包/">
-        burp 抓包
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="更改端口"><a href="#更改端口" class="headerlink" title="更改端口"></a>更改端口</h2><p>1、IE浏览器—&gt;Internet选项—&gt;连接–&gt;局域网设置—&gt;设为使用过的端口号X<br><img src="https://img-blog.csdnimg.cn/20190501162720535.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2、burp设置，proxy—&gt;options–&gt;设置新的端口号</p>
-<h2 id="打开软件的拦截"><a href="#打开软件的拦截" class="headerlink" title="打开软件的拦截"></a>打开软件的拦截</h2><p>Intercept   - — &gt;inter is on —–&gt;raw</p>
-<h2 id="访问网页抓包"><a href="#访问网页抓包" class="headerlink" title="访问网页抓包"></a>访问网页抓包</h2><p>  这个过程就相当于一个中转站，电脑发送到网站的包被这个中转站拦截，所以网页会出现加载不出来的现象，我们需要手动forword.</p>
-<h2 id="针对我们获取到的信息进行修改"><a href="#针对我们获取到的信息进行修改" class="headerlink" title="针对我们获取到的信息进行修改"></a>针对我们获取到的信息进行修改</h2><h2 id="转发包forwoad"><a href="#转发包forwoad" class="headerlink" title="转发包forwoad"></a>转发包forwoad</h2>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/05/01/burp抓包/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="burp 抓包">
          &nbsp;
         view
     </span>
