@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>青岛崂山区过去24小时气候变化可视化 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前面已经介绍过几个方便的可视化工具了！今天又发现了一个python里面非常便捷的Echarts的改版（为python而生的）！抽时间学了一下,随手做了一个简单的小项目！项目逻辑比较简单，简单介绍一下过程以及工具的使用！(以后pytho n处理完数据之后，就可以直接使用了) 项目简介大体过程是：用python语言对中国气象台的网站进行气象数据的爬取，然后将爬取下来的数据使用pyecharts进行可视">
+<meta property="og:type" content="article">
+<meta property="og:title" content="青岛崂山区过去24小时气候变化可视化">
+<meta property="og:url" content="http://yoursite.com/2020/11/06/青岛崂山区过去24小时气候变化可视化/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="前面已经介绍过几个方便的可视化工具了！今天又发现了一个python里面非常便捷的Echarts的改版（为python而生的）！抽时间学了一下,随手做了一个简单的小项目！项目逻辑比较简单，简单介绍一下过程以及工具的使用！(以后pytho n处理完数据之后，就可以直接使用了) 项目简介大体过程是：用python语言对中国气象台的网站进行气象数据的爬取，然后将爬取下来的数据使用pyecharts进行可视">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201106101501842.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201106101550734.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201106101612963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:updated_time" content="2020-11-06T02:30:21.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="青岛崂山区过去24小时气候变化可视化">
+<meta name="twitter:description" content="前面已经介绍过几个方便的可视化工具了！今天又发现了一个python里面非常便捷的Echarts的改版（为python而生的）！抽时间学了一下,随手做了一个简单的小项目！项目逻辑比较简单，简单介绍一下过程以及工具的使用！(以后pytho n处理完数据之后，就可以直接使用了) 项目简介大体过程是：用python语言对中国气象台的网站进行气象数据的爬取，然后将爬取下来的数据使用pyecharts进行可视">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201106101501842.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-青岛崂山区过去24小时气候变化可视化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/11/06/青岛崂山区过去24小时气候变化可视化/" class="article-date">
+  	<time datetime="2020-11-06T02:18:56.950Z" itemprop="datePublished">2020-11-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      青岛崂山区过去24小时气候变化可视化
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/11/06/青岛崂山区过去24小时气候变化可视化/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="青岛崂山区过去24小时气候变化可视化">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面已经介绍过几个方便的可视化工具了！今天又发现了一个python里面非常便捷的Echarts的改版（为python而生的）！抽时间学了一下,随手做了一个简单的小项目！<br>项目逻辑比较简单，简单介绍一下过程以及工具的使用！(以后pytho n处理完数据之后，就可以直接使用了)</p>
+<h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>大体过程是：用python语言对中国气象台的网站进行气象数据的爬取，然后将爬取下来的数据使用pyecharts进行可视化分析。<br><strong><em>声明：数据的爬取，仅用于本次练习，非商业用途</em></strong></p>
+<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>之前的文章有讲解过使用java的webMagic进行数据的爬取！但是当前使用爬虫最火的还要数python！等有时间在出一篇关于python 爬虫的记录！<br><a href="http://www.nmc.cn/publish/forecast" target="_blank" rel="noopener">中央气象台</a><br>首先，打开中央气象台的网站，然后在城市预报中随便选择一个热门城市！然后打开we b控制台，手动切换省份以及城市的名称对页面进行分析。<br>在python中web的学习可以参考<a href="https://requests.readthedocs.io/en/latest/" target="_blank" rel="noopener">requests库</a>，当然还有urllib urllib2等库。大佬说建议全面放弃！我就不介绍这两个了！版本也有点老了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获得请求数据的函数 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_html</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment">#请求的连接</span></span><br><span class="line">    r=requests.get(url)</span><br><span class="line">    <span class="keyword">return</span> r.text</span><br></pre></td></tr></table></figure>
+<p>通过分析可以找到 URL1 = ‘<a href="http://www.nmc.cn/f/rest/province/ASD&#39;" target="_blank" rel="noopener">http://www.nmc.cn/f/rest/province/ASD&#39;</a><br>这个连接是代表的省份 其中ASD表示的是山东省的代码<br> URL = ‘<a href="http://www.nmc.cn/f/rest/passed/55538‘这个链接是某一个城市过去24小时的气候信息，其中的55538是某一个城市的代号。这里使用的是json格式的。" target="_blank" rel="noopener">http://www.nmc.cn/f/rest/passed/55538‘这个链接是某一个城市过去24小时的气候信息，其中的55538是某一个城市的代号。这里使用的是json格式的。</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在这个网站中 城市与代号之间的对应关系 是 </span><br><span class="line">省会 - 城市 - 代号</span><br><span class="line">所以我们要先获得城市的代码，然后找到要使用的城市的名称 然后获得代号</span><br></pre></td></tr></table></figure>
+<p>这样我们通过上述代码就可以获得每一部分的数据！通过查看单个链接数据可以发现数据格式是json数据格式，因此我们需要对数据进行一个简单的解析。</p>
+<p>我们首先解析一个城市到城市代码的 映射<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_citymap</span><span class="params">(url)</span>:</span></span><br><span class="line">    obj = get_html(url)</span><br><span class="line">    parse_json = json.loads(obj)</span><br><span class="line">    code_citymap = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> parse_json:</span><br><span class="line">        code_citymap[a[<span class="string">'city'</span>]] = a[<span class="string">'code'</span>]</span><br><span class="line">    <span class="keyword">return</span> code_citymap</span><br></pre></td></tr></table></figure></p>
+<p>然后根据城市映射，构建一个新的请求链接。直接获得要请求的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">geturl</span><span class="params">(cityname,url)</span>:</span></span><br><span class="line">    URL = <span class="string">'http://www.nmc.cn/f/rest/passed/'</span></span><br><span class="line">    code = get_citymap(url)[cityname]</span><br><span class="line">    <span class="keyword">return</span> URL+code</span><br></pre></td></tr></table></figure>
+<p>对请求的数据进行json解析</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obb = get_html(geturl(<span class="string">'崂山'</span>,URL1))</span><br><span class="line">parse_dajson = json.loads(obb)</span><br></pre></td></tr></table></figure>
+<p>根据解析出来的数据，将我们要关注的天气信息进行统计</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">time = []</span><br><span class="line">rain = []</span><br><span class="line">temperature = []</span><br><span class="line">humidity = []</span><br><span class="line">pressure = []</span><br><span class="line">windSpeed = []</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> parse_dajson:</span><br><span class="line">    time.append(a[<span class="string">'time'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'rain1h'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(rain)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'rain1h'</span>]= rain[<span class="number">-1</span>]</span><br><span class="line">    rain.append(a[<span class="string">'rain1h'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'temperature'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(temperature)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'temperature'</span>]=temperature[<span class="number">-1</span>]</span><br><span class="line">    temperature.append(a[<span class="string">'temperature'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'humidity'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(humidity)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'humidity'</span>]=humidity[<span class="number">-1</span>]</span><br><span class="line">    humidity.append(a[<span class="string">'humidity'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'pressure'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(pressure)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'pressure'</span>]=pressure[<span class="number">-1</span>]</span><br><span class="line">    pressure.append(a[<span class="string">'pressure'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'windSpeed'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(windSpeed)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'windSpeed'</span>]=windSpeed[<span class="number">-1</span>]</span><br><span class="line">    windSpeed.append(a[<span class="string">'windSpeed'</span>])</span><br></pre></td></tr></table></figure>
+<p>统计完信息之后，我们就要进行可视化处理了！就要用到python版本的p yecharts。对于pyecharts在网络上主要有两个版本。我们尽量使用最新版！这个也是让我对python感到非常头疼的。版本更新，语法不兼容！<br>对于pyecharts的学习建议大家直接学习<a href="https://pyecharts.org/#/zh-cn/intro" target="_blank" rel="noopener">官方学习文档</a><br>官方为大家提供了足够的使用<a href="https://gallery.pyecharts.org/#/README" target="_blank" rel="noopener">模板</a>可修改性是比较强的。<br>下面就是使用官方文档进行的一个可视化过程。<br>使用之前需要导入所需要的包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyecharts.options <span class="keyword">as</span> opts</span><br><span class="line"><span class="keyword">from</span> pyecharts.charts <span class="keyword">import</span> Line,Bar,Page,PictorialBar</span><br><span class="line"><span class="keyword">from</span> pyecharts.globals <span class="keyword">import</span> ThemeType,SymbolType</span><br></pre></td></tr></table></figure>
+<p>为了将所有的可视化结果全部显示在一个网页上，我们需要设置一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">page = Page(layout=Page.DraggablePageLayout)</span><br><span class="line">...</span><br><span class="line">这部分是a,b,c,d模块</span><br><span class="line">...</span><br><span class="line">page.add(a,b,c,d)</span><br><span class="line">page.render(<span class="string">"/Users/gorge/Desktop/temperature_change_line_chart.html"</span>)</span><br></pre></td></tr></table></figure>
+<p>对于a ,bcc,d模块的写法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 气温</span></span><br><span class="line">a=(</span><br><span class="line">    Line(init_opts=opts.InitOpts(width=<span class="string">"1600px"</span>, height=<span class="string">"400px"</span>))</span><br><span class="line">    .add_xaxis(xaxis_data=time)</span><br><span class="line">    .add_yaxis(</span><br><span class="line">        series_name=<span class="string">"气温"</span>,</span><br><span class="line">        y_axis=temperature,</span><br><span class="line">        markpoint_opts=opts.MarkPointOpts(</span><br><span class="line">            data=[</span><br><span class="line">                opts.MarkPointItem(type_=<span class="string">"max"</span>, name=<span class="string">"最大值"</span>),</span><br><span class="line">                opts.MarkPointItem(type_=<span class="string">"min"</span>, name=<span class="string">"最小值"</span>),</span><br><span class="line">            ]</span><br><span class="line">        ),</span><br><span class="line">        markline_opts=opts.MarkLineOpts(</span><br><span class="line">            data=[opts.MarkLineItem(type_=<span class="string">"average"</span>, name=<span class="string">"平均值"</span>)]</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">    .set_global_opts(</span><br><span class="line">        title_opts=opts.TitleOpts(title=<span class="string">"青岛过去24小时气温变化"</span>, subtitle=<span class="string">"数据真实"</span>),</span><br><span class="line">        tooltip_opts=opts.TooltipOpts(trigger=<span class="string">"axis"</span>),</span><br><span class="line">        toolbox_opts=opts.ToolboxOpts(is_show=<span class="literal">True</span>),</span><br><span class="line">        xaxis_opts=opts.AxisOpts(type_=<span class="string">"category"</span>, boundary_gap=<span class="literal">False</span>),</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">b= (</span><br><span class="line">    Bar(&#123;<span class="string">"theme"</span>: ThemeType.MACARONS&#125;)</span><br><span class="line">    .add_xaxis(time)</span><br><span class="line">    .add_yaxis(<span class="string">"temperature"</span>, temperature)</span><br><span class="line">    .add_yaxis(<span class="string">"humidity"</span>, humidity)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">c = (</span><br><span class="line">    PictorialBar()</span><br><span class="line">    .add_xaxis(time)</span><br><span class="line">    .add_yaxis(</span><br><span class="line">        <span class="string">""</span>,</span><br><span class="line">        windSpeed,</span><br><span class="line">        label_opts=opts.LabelOpts(is_show=<span class="literal">False</span>),</span><br><span class="line">        symbol_size=<span class="number">18</span>,</span><br><span class="line">        symbol_repeat=<span class="string">"fixed"</span>,</span><br><span class="line">        symbol_offset=[<span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">        is_symbol_clip=<span class="literal">True</span>,</span><br><span class="line">        symbol=SymbolType.ROUND_RECT,</span><br><span class="line">    )</span><br><span class="line">    .reversal_axis()</span><br><span class="line">    .set_global_opts(</span><br><span class="line">        title_opts=opts.TitleOpts(title=<span class="string">"青岛过去24小时风速图"</span>),</span><br><span class="line">        xaxis_opts=opts.AxisOpts(is_show=<span class="literal">False</span>),</span><br><span class="line">        yaxis_opts=opts.AxisOpts(</span><br><span class="line">            axistick_opts=opts.AxisTickOpts(is_show=<span class="literal">False</span>),</span><br><span class="line">            axisline_opts=opts.AxisLineOpts(</span><br><span class="line">                linestyle_opts=opts.LineStyleOpts(opacity=<span class="number">0</span>)</span><br><span class="line">            ),</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">d = (</span><br><span class="line">    Line()</span><br><span class="line">    .add_xaxis(time)</span><br><span class="line">    .add_yaxis(<span class="string">"降雨量/mm"</span>, rain, is_smooth=<span class="literal">True</span>)</span><br><span class="line">    .set_global_opts(title_opts=opts.TitleOpts(title=<span class="string">"青岛过去24小时降水图"</span>))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>通过上述操作，我们就可以获得一个可以动态显示的网页版的可视化界面了！这样看起来是不是要比Echarts的好多了呀！<br><img src="https://img-blog.csdnimg.cn/20201106101501842.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20201106101550734.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20201106101612963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/25/Spark基础笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Spark基础笔记</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="青岛崂山区过去24小时气候变化可视化" data-title="青岛崂山区过去24小时气候变化可视化" data-url="http://yoursite.com/2020/11/06/青岛崂山区过去24小时气候变化可视化/" data-images="../../photo/head.jpg" data-content="青岛崂山区过去24小时气候变化可视化">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

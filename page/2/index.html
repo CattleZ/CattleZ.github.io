@@ -191,6 +191,165 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Pearson Correlation" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/12/Pearson Correlation/" class="article-date">
+  	<time datetime="2020-07-12T08:33:05.539Z" itemprop="datePublished">2020-07-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/12/Pearson Correlation/">
+        Pearson Collelation
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>皮尔森相关系数是衡量线性关联性的程度，P的一个几何解释是其代表两个变量的取值根据均值集中后构成的向量之间夹角的余弦。</p>
+<ul>
+<li>0 无相关</li>
+<li>0-1 正相关</li>
+<li>-1 - 0负相关</li>
+</ul>
+<h2 id="相关系数"><a href="#相关系数" class="headerlink" title="相关系数"></a>相关系数</h2><ul>
+<li>0.8-1.0 极强相关</li>
+<li>0.6-0.8 强相关</li>
+<li>0.4-0.6 中等相关</li>
+<li>0.2- 0.4 弱相关</li>
+<li><p>0.0- 0.2 极弱相关或者无关</p>
+<h2 id="计算公式"><a href="#计算公式" class="headerlink" title="计算公式"></a>计算公式</h2></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200709092607634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>两个连续变量（x，y）的per 系数P（x,y）等于他们之间的协方差cov（x,y）除以他们各自的标准差成绩。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line">vec1 = [0,1,2,3,4]</span><br><span class="line">vec2 = [0,1,2,3,4]</span><br><span class="line">def pearson(vec1,vec2):</span><br><span class="line">    n = len(vec1)</span><br><span class="line">    n1= len(vec2)</span><br><span class="line">    if(n==n1):</span><br><span class="line">        sum1 = sum(float(vec1[i]) for i in range(n))</span><br><span class="line">        sum2 = sum(float(vec2[i]) for i in range(n))</span><br><span class="line">        sum1_pow = sum([pow(v,2.0) for v in vec1])</span><br><span class="line">        sum2_pow = sum([pow(v,2.0) for v in vec2])</span><br><span class="line">        p_sum = sum([vec1[i]*vec2[i] for i in range(n)])</span><br><span class="line">        num = p_sum-(sum1*sum2/n)</span><br><span class="line">        fen = math.sqrt((sum1_pow-pow(sum1,2)/n)*(sum2_pow-pow(sum2,2)/n))</span><br><span class="line">        if fen ==0:</span><br><span class="line">            return 0.0;</span><br><span class="line">        return num/fen;</span><br><span class="line">    return 0.0;</span><br><span class="line">v = pearson(vec1,vec2);</span><br><span class="line">print(v)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/07/12/Pearson Correlation/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Pearson Collelation">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-PDF &amp; CDF" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/12/PDF & CDF/" class="article-date">
+  	<time datetime="2020-07-12T08:33:03.643Z" itemprop="datePublished">2020-07-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/12/PDF & CDF/">
+        PDF &amp; CDF
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概率密度函数-PDF"><a href="#概率密度函数-PDF" class="headerlink" title="概率密度函数 PDF"></a>概率密度函数 PDF</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>在数学中，连续型随机变量的概率密度函数（在不至于混淆时可以简称为密度函数）是一个描述这个随机变量的输出值，在某个确定的取值点附近的可能性的函数。而随机变量的取值落在某个区域之内的概率则为概率密度函数在这个区域上的积分。</p>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>对于一维连续随机变量<br>随机数据的概率密度函数：表示瞬时幅值落在指定的范围内的概率，因此是幅值的函数。它随所取范围的幅值而变化。<br>密度函数f(x) 具有以下性质：</p>
+<ol>
+<li>f(x) &gt;= 0</li>
+<li><img src="https://img-blog.csdnimg.cn/20200709195504798.png" alt="在这里插入图片描述"><ol start="3">
+<li><img src="https://img-blog.csdnimg.cn/20200709195610934.png" alt="在这里插入图片描述"></li>
+</ol>
+</li>
+</ol>
+<h1 id="累积分布函数CDF"><a href="#累积分布函数CDF" class="headerlink" title="累积分布函数CDF"></a>累积分布函数CDF</h1><p>累积分布函数又叫分布函数是概率密度函数的积分，能完整的描述一个实随机变量X的概率分布。</p>
+<h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>对于所有的实数x累积分布函数<br><img src="https://img-blog.csdnimg.cn/20200709191556745.png" alt="在这里插入图片描述"></p>
+<h2 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h2><p>对离散变量而言，所有小于等于a的值出现概率的和</p>
+<h2 id="性质-1"><a href="#性质-1" class="headerlink" title="性质"></a>性质</h2><ul>
+<li>有界性<br><img src="https://img-blog.csdnimg.cn/20200709191806520.png" alt="在这里插入图片描述"></li>
+<li>单调性<br><img src="https://img-blog.csdnimg.cn/20200709192007587.png" alt="在这里插入图片描述"></li>
+<li>右连续性<br><img src="https://img-blog.csdnimg.cn/20200709192244162.png" alt="在这里插入图片描述"><h2 id="两种应用"><a href="#两种应用" class="headerlink" title="两种应用"></a>两种应用</h2>一种是对小于参考值的现象值的出现频率的分析的累积频率分析<br>另一种是对累计分布函数进行估计，随后可以求的简单的统计值或进行各种统计假设检验。</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/07/12/PDF & CDF/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="PDF &amp; CDF">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-百度地图-散点图（一）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -774,162 +933,6 @@
         
 <div class="counter-tag counter">
     <span id="/2019/05/05/寄存器（内存访问01）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="寄存器（内存访问01）">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-寄存器（CPU的工作原理）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/03/寄存器（CPU的工作原理）/" class="article-date">
-  	<time datetime="2019-05-03T13:20:44.060Z" itemprop="datePublished">2019-05-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/03/寄存器（CPU的工作原理）/">
-        寄存器（CPU的工作原理）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h2><p>8086CPU有14个寄存器，他们的名字称为诶：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。<br>8086CPU所有的寄存器都是16位的，可以存放两个字节。<br>为了保证兼容性，这四个寄存器都可以分为两个独立的8位寄存器使用。<br>AX可以分为 AH还有AL； AH还有AL寄存器是可以独立使用的8位寄存器。<br>BX可以分为BH还有BL；<br>CX可以分为CH还有CL；<br>DX可以分为DH还有DL;</p>
-<h2 id="字在寄存器中的存储"><a href="#字在寄存器中的存储" class="headerlink" title="字在寄存器中的存储"></a>字在寄存器中的存储</h2><blockquote>
-<p>一个字可以存在一个16位的寄存器中，这个字的高位字节和低位字节自然就存在这个寄存器的高8位寄存器和低8位寄存器中。</p>
-</blockquote>
-<h2 id="几条汇编指令"><a href="#几条汇编指令" class="headerlink" title="几条汇编指令"></a>几条汇编指令</h2><p><strong>汇编指令是不区分大小写的</strong><br>mov AX,BX  的意思是将BX中的数据放在AX中<br>add AX,BX  的意思是将BX与AX相加，放在AX中</p>
-<p><strong>如果超过数据的存储范围，就会有数据的丢失</strong><br>这里的丢失，指的就是进位制不能在8位寄存器中保存，但是CPU不是真的丢弃这个进位值。</p>
-<h2 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h2><p>CPU访问内存单元的时候要给出内存单元的地址，所有的内存单元构成的存储空间是一个一维的线性空间。<br>我们将这个唯一的地址称为物理地址。<br><strong>决定一个CPU是多少位的，有以下三方面的特点</strong></p>
-<ul>
-<li>运算器一次最多可以处理16位的数据。</li>
-<li>寄存器的最大宽度为16位。</li>
-<li><p>寄存器和运算器之间的通路是16位的。<br>8086CPU在读写内存的时候，发生了一些事情：</p>
-</li>
-<li><p>CPU中的相关部件提供两个16位的地址，一个称为段地址，另一称为偏移地址</p>
-</li>
-<li>段地址和偏移地址通过内部总线送入一个称为地址加法器的部件；</li>
-<li>地址加法器将两个16位地址合并成一个20位的地址。<br>地址加法器合成物理地址的方法：<pre><code>物理地址=段地址×16+偏移地址
-</code></pre><h2 id="段的概念"><a href="#段的概念" class="headerlink" title="段的概念"></a>段的概念</h2>内存并没有分段，段的划分来自于CPU，由于8086CPU用“段地址*16”+偏移地址=物理地址的方式。实际上，内存并没有划分成一个一个的段。<br>以后在编程的时候，根据需要将若干个地址连续的内存单元看作一个段，用段地址X16定位段的起始地址（基础地址），用偏移地址定位段中的内存单元。<br>段的起始地址一定是16的倍数。<br>偏移地址为16位，所以一个段的长度最大为64k。<blockquote>
-<p>CPU可以用不同的段地址还有偏移地址来形成同一个物理地址。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h2><p>段寄存器就是用来提供段地址的。8086CPU有4个段寄存器：CS、DS、SS、ES<br>当8086CPU要访问内存的时候，由这4个段寄存器提供内存单元的段地址。</p>
-<h2 id="CS和IP"><a href="#CS和IP" class="headerlink" title="CS和IP"></a>CS和IP</h2><p>CS和IP是8086CPU中最关键的寄存器，他们指示了CPU当前要读取的指令的地址。<br>CS为代码段寄存器。用来存放指令的段地址。<br>IP为指令指针寄存器。用来存放指令的偏移地址。<br><strong>转移指令</strong><br>修改CS、IP的内容不能使用MOV指令，而是通过使用 <strong>JMP</strong>进行的。<br>jmp 段地址：偏移地址<br>功能：用指令中给出的段地址修改CS，偏移地址修改IP<br>jmp 1000:3  表示CS= 1000,IP=3</p>
-<h2 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h2><p>可以将长度为N（N&lt;=64KB）的一组代码，存在一组地址连续、起始地址为16的倍数的内存单元中，这段内存是用来存放代码的，从而定义了一个代码段。<br>CPU只认被CS：IP指向的内存单元中的内容为指令。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/05/03/寄存器（CPU的工作原理）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="寄存器（CPU的工作原理）">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Real wifi" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/03/Real wifi/" class="article-date">
-  	<time datetime="2019-05-03T05:00:39.534Z" itemprop="datePublished">2019-05-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/03/Real wifi/">
-        Real wifi
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><img src="https://img-blog.csdnimg.cn/20190503124355555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="先用wireshrk-软件"><a href="#先用wireshrk-软件" class="headerlink" title="先用wireshrk 软件"></a>先用wireshrk 软件</h2><p>打开之后观察里面的数据信息，发现协议是802.11协议，这个协议wifi以这个协议作为其网络层以下的协议。</p>
-<h2 id="aircrack-ng打开"><a href="#aircrack-ng打开" class="headerlink" title="aircrack-ng打开"></a>aircrack-ng打开</h2><p><strong>安装aircrack-ng</strong>在官网上下载安装包，然后拖动到Linux的桌面上，双击安装<br><img src="https://img-blog.csdnimg.cn/20190503124840390.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>使用命令行用aircrack打开数据包。</strong><br>命令：aricrack-ng realwife.pcap<br>可以查看都ESSID以及加密的类型。题目中 有说wifi的密码比较弱，因此，我们可以使用弱口令字典暴力破解wifi的密码。<br>命令:ariack-ng - w rokoul.txt realwife.pcap<br>我们可以获得wifi的密码</p>
-<blockquote>
-<p>现在找到wifi的密码，但是wifi的密码并不是flag<br>我们还需要进一步的分析<br>通过ESSID还有wifi的密码解密原来的文件，得到解密后的新的文件<br>命令：airdecap-ng -e Blue-Whale -p 12345678 realwife.pcap<br>得到一个新的pcap文件，我们对http流进行追踪，就可以查看到flag.<br><img src="https://img-blog.csdnimg.cn/20190503130025650.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-</blockquote>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/05/03/Real wifi/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Real wifi">
          &nbsp;
         view
     </span>

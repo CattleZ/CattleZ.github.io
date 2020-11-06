@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Spark基础笔记 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介Spark是由美国加州大学伯克利分校的AMP实验室于2009年开发的，是基于内存计算的并行计算框架，可用于构建大型的、低延迟的数据分析应用程序。spark的主要特点：  运行速度快 Spark使用先进的DAG（有向无环图）执行引擎，用来支持循环数据流与内存计算，基于内存的执行速度比hadoop mapReduce快上百倍，基于磁盘的执行速度也能快上十倍。 容易使用 支持java、python、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark基础笔记">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/Spark基础笔记/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="简介Spark是由美国加州大学伯克利分校的AMP实验室于2009年开发的，是基于内存计算的并行计算框架，可用于构建大型的、低延迟的数据分析应用程序。spark的主要特点：  运行速度快 Spark使用先进的DAG（有向无环图）执行引擎，用来支持循环数据流与内存计算，基于内存的执行速度比hadoop mapReduce快上百倍，基于磁盘的执行速度也能快上十倍。 容易使用 支持java、python、">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201022200451934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201022200745461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201024200214371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:updated_time" content="2020-11-06T02:29:23.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark基础笔记">
+<meta name="twitter:description" content="简介Spark是由美国加州大学伯克利分校的AMP实验室于2009年开发的，是基于内存计算的并行计算框架，可用于构建大型的、低延迟的数据分析应用程序。spark的主要特点：  运行速度快 Spark使用先进的DAG（有向无环图）执行引擎，用来支持循环数据流与内存计算，基于内存的执行速度比hadoop mapReduce快上百倍，基于磁盘的执行速度也能快上十倍。 容易使用 支持java、python、">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201022200451934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Spark基础笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/10/25/Spark基础笔记/" class="article-date">
+  	<time datetime="2020-10-25T09:09:06.200Z" itemprop="datePublished">2020-10-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spark基础笔记
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/10/25/Spark基础笔记/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Spark基础笔记">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Spark是由美国加州大学伯克利分校的AMP实验室于2009年开发的，是<em>基于内存计算的并行计算框架</em>，可用于构建<em>大型的、低延迟</em>的数据分析应用程序。<br>spark的主要特点：</p>
+<ul>
+<li>运行速度快<br> Spark使用先进的DAG（有向无环图）执行引擎，用来支持循环数据流与内存计算，基于内存的执行速度比hadoop mapReduce快上百倍，基于磁盘的执行速度也能快上十倍。</li>
+<li>容易使用<br> 支持java、python、Scala和R语言进行编程，编程相对简洁</li>
+<li>通用性<br> 提供了完整而强大的技术栈，包括SQL查询、流式计算、机器学习和图算法组件，这些<em>组件可以无缝整合在一个应用中</em>，可以应对复杂的运算。同时支持批处理、交互式查询和流数据处理。</li>
+<li>运行模式多样<br> 可运行于独立的集群中或者hadoop中。<h2 id="Spark与Hadoop的对比"><a href="#Spark与Hadoop的对比" class="headerlink" title="Spark与Hadoop的对比"></a>Spark与Hadoop的对比</h2></li>
+<li>Hadoop的主要缺点<br>hadoop的主要两个组成部分，一部分是h d f s分布式存储，另一个方面是Ma pReduce计算模型。<ol>
+<li>表达能力有限。计算都必须转化为Map和Reduce两个操作。这不是适合所有的情况。</li>
+<li>磁盘的IO开销比较大。每次执行都需要从磁盘读取数据，并且在计算完成后需要将结果写入到磁盘中，IO开销过大。</li>
+<li>延迟高。一次计算可能需要分解成<em>一系列按顺序执行的MapReduce任务</em>，任务之间的衔接由于涉及到IO开销。会产生较高的延迟。在前一个结束之前，其他任务无法开始。</li>
+</ol>
+</li>
+<li>Spark的主要优点<br> 在借鉴了mapReduce的优点基础上，还有以下优点：<ol>
+<li>Spark的计算模式也属于Hadoop MapReduce，但是并不局限于Ma p和Reduce，还提供了多种数据集的类型，编程模型比mapReduce更灵活。</li>
+<li>提供了内存计算，中间结果放在内存中，带来了更高的迭代运算效率，但是同时也对计算机的硬件要求更高。</li>
+<li>基于DAG的任务调度机制，要比MapReduce的迭代执行机制更优越。</li>
+</ol>
+</li>
+</ul>
+<p>但是Spark并不能完全替代hadoop，spark只是优化了mapReduce的计算模型，hadoop的分布式文件系统的优越性还是不能忽视的。Spark专注于BDAS架构中数据的处理与分析，数据存储还是主要依靠h d f s。</p>
+<h2 id="Spark生态系统的主要组件"><a href="#Spark生态系统的主要组件" class="headerlink" title="Spark生态系统的主要组件"></a>Spark生态系统的主要组件</h2><p>这里我们先知道有这些东西的存在就好了，等具体使用的时候，我们在具体的学习。</p>
+<ul>
+<li>Spark Core<br>主要面向批数据处理，是spark的基本功能，主要包括内存计算、任务调度、部署模式、故障恢复、存储管理等。</li>
+<li>Spark SQL<br>能够统一处理关系表和RDD，使得开发人员不需要自己编写Spark应用程序，轻松使用SQL命令进行查询。</li>
+<li>Spark Streaming<br>支持高吞吐量、可容错性的实时流数据处理，核心思路是将流数据分解成一系列的短小的批处理作业。每个短小的批处理作业都可以使用spark core进行快速处理。支持TCP套接字等。</li>
+<li>MLlib（ 机器学习）<br>提供了常用的机器学习算法的实现，包括聚类、分类、回归、协同过滤等。降低了机器学习的门槛，开发人员只要具备一定的伦理只是就能进行机器学习的工作。</li>
+<li>GraphX<br>是基于图计算的API，能在海量数据上自如的运行复杂的图算法。<h2 id="Spark-的运行架构"><a href="#Spark-的运行架构" class="headerlink" title="Spark 的运行架构"></a>Spark 的运行架构</h2><img src="https://img-blog.csdnimg.cn/20201022200451934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20201022200745461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>一个应用由一个任务控制节点（Driver） 和 若干作业（Jo b）构成，一个作业由多个阶段（Stage）构成，一个阶段由多个（Tas k）组成。当执行任务的时候一个任务控制节点会向集群管理器（Clu ster Manager）申请资源。启动Executor,并向Exe cutor发送应用程序代码和文件，然后在Executor上执行任务，运行结束之后执行结果会返回给任务控制节点，或者写入HDFS中或者数据库中。<br>具体的过程，我们后期会做一个实验，在实验中感受一下执行过程。</p>
+<h4 id="使用Executor执行任务的优势"><a href="#使用Executor执行任务的优势" class="headerlink" title="使用Executor执行任务的优势"></a>使用Executor执行任务的优势</h4><ol>
+<li>利用多线程来执行具体的任务，减少了任务启动的开销。</li>
+<li>Executor中有一个BlockManager存储模块，会将内存和磁盘共同作为存储设备，当进行迭代计算的时候，中间结果可以暂时的存储在这些模块中，减少了IO开销。</li>
+</ol>
+<h2 id="RDD弹性分布式数据集"><a href="#RDD弹性分布式数据集" class="headerlink" title="RDD弹性分布式数据集"></a>RDD弹性分布式数据集</h2><h3 id="出现背景"><a href="#出现背景" class="headerlink" title="出现背景"></a>出现背景</h3><p>在实际应用中，有很多的迭代算和交互式数据挖掘工具，不同阶段之间会重用中间结果。目前的mapReduce框架都是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销。</p>
+<h3 id="RDD概念"><a href="#RDD概念" class="headerlink" title="RDD概念"></a>RDD概念</h3><p>就是一个分布式分区对象集合，本质上只是一个只读的分区记录集合。每个RDD可以分成多个分区，每个分区就是一个数据集片段，并且一个RDD的不同分区可以被保存到集群中不同的节点上，从而可以在集群中的不同节点上进行并行计算。RDD的只读不能直接修改的特点（要想修改只能基于稳定的物理存储中的数据集）决定了RDD适合执行批处理，不适合细粒度的、异步的应用。比如web系统、增量式的网络爬虫等。</p>
+<h4 id="RDD-实现高效计算的原因"><a href="#RDD-实现高效计算的原因" class="headerlink" title="RDD 实现高效计算的原因"></a>RDD 实现高效计算的原因</h4><p>（1）高效的容错性<br>在RDD的设计中，数据只读，不可修改。如果需要修改数据，必须从父RDD 转换到子RDD，由此在不同的RDD之间建立了血缘关系。检查容错可以直接通过父节点进行重新计算，而不需要回滚整个系统或者通过数据冗余的方式。<br>（2）中间结果持久化到内存 。数据在内存中的多个RDD操作之间进行传递，不需要落地到磁盘，避免了不必要的读写磁盘开销。<br>（3）存放的数据可以是JAVA对象，避免了不必要的对象的序列化和反序列化开销。</p>
+<h4 id="RDD之间的依赖关系"><a href="#RDD之间的依赖关系" class="headerlink" title="RDD之间的依赖关系"></a>RDD之间的依赖关系</h4><ol>
+<li>窄依赖</li>
+<li>宽依赖</li>
+</ol>
+<h4 id="RDD中阶段的划分"><a href="#RDD中阶段的划分" class="headerlink" title="RDD中阶段的划分"></a>RDD中阶段的划分</h4><p>上面我们说了数据的执行是基于数据的阶段进行执行的，那么数据的阶段是怎么样划分的呢？<br><img src="https://img-blog.csdnimg.cn/20201024200214371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>具体划分方法：<br>在DAG中进行反向解析，遇到宽依赖就断开，遇到窄依赖就把当前的RDD加入到当前的阶段中，将窄依赖尽量划分在同一个阶段中，可以实现流水线计算。<br>如上图所示：HDFS中读入数据，生成3个不同的RDD（A,C,E），通过一系列的转化操作后，再将数据存储到HDFS中。对DAG进行解析的时候，RDD A到RDDB 以及从RDD B以及RDD F到RDD G的转化都是宽依赖的，因此需要在此断开，会生成3个阶段。在阶段2中 map和union 操作都是窄依赖，这两个操作可以形成一个流水线操作。<br>（先入个门吧）<br><a href="http://dblab.xmu.edu.cn/blog/972-2/" target="_blank" rel="noopener">学习链接</a><br><a href="http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#module-pyspark.sql.functions" target="_blank" rel="noopener">Spark API</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/06/青岛崂山区过去24小时气候变化可视化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          青岛崂山区过去24小时气候变化可视化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/24/emmm-spark商业数据分析案例讲解/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">emmm-spark商业数据分析案例讲解</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Spark基础笔记" data-title="Spark基础笔记" data-url="http://yoursite.com/2020/10/25/Spark基础笔记/" data-images="../../photo/head.jpg" data-content="Spark基础笔记">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
