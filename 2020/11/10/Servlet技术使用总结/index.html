@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Servlet技术使用总结 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本科期间很久之前学的了,好久没使用了，感觉知识有一些遗忘了（可能这也是大多数编程人的困绕吧）！所以打算抽时间，在学习新知识的同时也对过往的知识进行一个回顾。整个记录的过程可能不像是开发的过程一样，仅作为一个笔记。想到哪里就写到哪里吧（随着技术的不断迭代有些内容可能有些老了）！随心情了～～～ 如何开发一个Servlet步骤 编写一个java类，继承HttpServlet 重写doGet()和doPo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Servlet技术使用总结">
+<meta property="og:url" content="http://yoursite.com/2020/11/10/Servlet技术使用总结/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="本科期间很久之前学的了,好久没使用了，感觉知识有一些遗忘了（可能这也是大多数编程人的困绕吧）！所以打算抽时间，在学习新知识的同时也对过往的知识进行一个回顾。整个记录的过程可能不像是开发的过程一样，仅作为一个笔记。想到哪里就写到哪里吧（随着技术的不断迭代有些内容可能有些老了）！随心情了～～～ 如何开发一个Servlet步骤 编写一个java类，继承HttpServlet 重写doGet()和doPo">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-11-10T13:28:38.871Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Servlet技术使用总结">
+<meta name="twitter:description" content="本科期间很久之前学的了,好久没使用了，感觉知识有一些遗忘了（可能这也是大多数编程人的困绕吧）！所以打算抽时间，在学习新知识的同时也对过往的知识进行一个回顾。整个记录的过程可能不像是开发的过程一样，仅作为一个笔记。想到哪里就写到哪里吧（随着技术的不断迭代有些内容可能有些老了）！随心情了～～～ 如何开发一个Servlet步骤 编写一个java类，继承HttpServlet 重写doGet()和doPo">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Servlet技术使用总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/11/10/Servlet技术使用总结/" class="article-date">
+  	<time datetime="2020-11-10T08:30:06.530Z" itemprop="datePublished">2020-11-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Servlet技术使用总结
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/11/10/Servlet技术使用总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Servlet技术使用总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本科期间很久之前学的了,好久没使用了，感觉知识有一些遗忘了（可能这也是大多数编程人的困绕吧）！所以打算抽时间，在学习新知识的同时也对过往的知识进行一个回顾。整个记录的过程可能不像是开发的过程一样，仅作为一个笔记。想到哪里就写到哪里吧（随着技术的不断迭代有些内容可能有些老了）！随心情了～～～</p>
+<h2 id="如何开发一个Servlet"><a href="#如何开发一个Servlet" class="headerlink" title="如何开发一个Servlet"></a>如何开发一个Servlet</h2><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ul>
+<li>编写一个java类，继承HttpServlet</li>
+<li>重写doGet()和doPost()方法</li>
+<li>Servlet程序交给服务器运行<ul>
+<li>servlet程序的class码拷贝到WEB-INF/classes目录</li>
+<li>在web.xml文件中进行配置（使用Eclipse的时候，可能不存在，这时候就要直接创建一个servlet的程序，eclipse会自动的在内部给你配置好，在类中更改要访问的名字就可以了）<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置一个servlet --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- servlet的配置 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的内部名称，自定义。尽量有意义 --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>FirstServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的类全名： 包名+简单类名 --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>gz.itcast.a_servlet.FirstServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- servlet的映射配置 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>FirstServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的映射路径（访问servlet的名称） --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/first<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>如果是在Eclip se中将会是这样,我们在通过连接访问的时候就直接访问<code>/indexServlet</code>就可以了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Servlet implementation class indexServlet</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WebServlet</span>(<span class="string">"/indexServlet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">indexServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>访问的时候 <code>问次URL：  http://localhost:8080/项目名/indexServlet</code><br>tomcat服务器启动时，首先加载webapps中的每个web应用的web.xml配置文件</p>
+<ul>
+<li>http://   http协议</li>
+<li>localhost  到本地的hosts文件中查找是否存在该域名对应的IP地址127.0.0.1 ,如果使用其他服务器的话，就需要将这部分转换成服务器的地址</li>
+<li>8080 服务器的端口</li>
+<li>/项目名 这个是要与tomcat服务器的项目名进行对应的</li>
+<li>/indexServlet 我们要访问的servlet文件，资源名称</li>
+</ul>
+<p>整个的执行过程为：</p>
+<p>1）在项目的web.xml中查找是否有匹配的url-pattern的内容（/indexServlet）<br>2）如果找到匹配的url-pattern,则使用当前servlet-name的名称到web.xml文件中查询是否相同名称的servlet配置<br>3）如果找到，则取出对应的servlet配置信息中的servlet-class内容：<br>通过反射：a）构造FirstServlet的对象b）然后调用FirstServlet里面的方法</p>
+<h3 id="Servlet的映射路径"><a href="#Servlet的映射路径" class="headerlink" title="Servlet的映射路径"></a>Servlet的映射路径</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>FirstServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的映射路径（访问servlet的名称） --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/first<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="精确匹配"><a href="#精确匹配" class="headerlink" title="精确匹配"></a>精确匹配</h4><table>
+<thead>
+<tr>
+<th>url-pattern</th>
+<th>浏览器输入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/first</td>
+<td><a href="http://localhost:8080/项目名/first" target="_blank" rel="noopener">http://localhost:8080/项目名/first</a></td>
+</tr>
+<tr>
+<td>/itcast/demo1</td>
+<td><a href="http://localhost:8080/项目名/itcast/demo1" target="_blank" rel="noopener">http://localhost:8080/项目名/itcast/demo1</a></td>
+</tr>
+</tbody>
+</table>
+<h4 id="模糊匹配"><a href="#模糊匹配" class="headerlink" title="模糊匹配"></a>模糊匹配</h4><table>
+<thead>
+<tr>
+<th>url-pattern</th>
+<th>浏览器输入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/*</td>
+<td><a href="http://localhost:8080/项目名/任意路径" target="_blank" rel="noopener">http://localhost:8080/项目名/任意路径</a></td>
+</tr>
+<tr>
+<td>/itcast/*</td>
+<td><a href="http://localhost:8080/项目名/itcast/任意路径" target="_blank" rel="noopener">http://localhost:8080/项目名/itcast/任意路径</a></td>
+</tr>
+<tr>
+<td>*.后缀名</td>
+<td><a href="http://localhost:8080/项目名/任意路径.后缀名" target="_blank" rel="noopener">http://localhost:8080/项目名/任意路径.后缀名</a></td>
+</tr>
+</tbody>
+</table>
+<p>注意：<br>        1）url-pattern要么以 / 开头，要么以<em>开头。  例如， itcast是非法路径。<br>        2）不能同时使用两种模糊匹配，例如 /itcast/</em>.do是非法路径<br>        3）当有输入的URL有多个servlet同时被匹配的情况下：<br>        3.1 精确匹配优先。（长的最像优先被匹配）<br>        3.2 以后缀名结尾的模糊url-pattern优先级最低！！！</p>
+<h3 id="缺省路径"><a href="#缺省路径" class="headerlink" title="缺省路径"></a>缺省路径</h3><p>servlet的缺省路径（<url-pattern>/</url-pattern>）是在tomcat服务器内置的一个路径。该路径对应的是一个DefaultServlet（缺省Servlet）。这个缺省的Servlet的作用是用于解析web应用的静态资源文件。<br>当我们提供了一个缺省路径的时候，那么服务器又该如何读取文件呢？</p>
+<ol>
+<li>到当前应用下的web.xml文件查找是否有匹配的url-pattern。</li>
+<li>如果没有匹配的url-pattern，则交给tomcat的内置的DefaultServlet处理</li>
+<li>DefaultServlet程序到项目应用的根目录下查找是存在一个名称为index.html的静态文件。</li>
+<li>如果找到该文件，则读取该文件内容，返回给浏览器。</li>
+<li>如果找不到该文件，则返回404错误页面<br><em>注意：所以不建议使用/或/</em>，因为Tomcat服务器会先找动态资源再找静态资源。如果是/或/<em>就不会再访问到静态资源，如果是/.html或者/.css等路径格式，那么这类静态资源就不会被访问到了，所以慎用/或/</em> 和静态资源的后缀*</li>
+</ol>
+<h2 id="Servlet的生命周期（重点）"><a href="#Servlet的生命周期（重点）" class="headerlink" title="Servlet的生命周期（重点）"></a>Servlet的生命周期（重点）</h2><p>Servlet的生命是由Tomcat控制的！！！！</p>
+<h3 id="Servlet的四个生命周期方法"><a href="#Servlet的四个生命周期方法" class="headerlink" title="Servlet的四个生命周期方法"></a>Servlet的四个生命周期方法</h3><ul>
+<li>构造方法： 创建servlet对象的时候调用。默认情况下，第一次访问servlet的时候创建servlet对象只调用1次。证明servlet对象在tomcat是单实例的。</li>
+<li>init方法： 创建完servlet对象的时候紧接着调用。只调用1次。</li>
+<li>service方法： 每次发出请求时调用。调用n次。</li>
+<li>destroy方法： 销毁servlet对象的时候调用。停止服务器或者重新部署web应用时销毁servlet对象，只调用1次。</li>
+</ul>
+<h4 id="Tomtcat内部代码运行："><a href="#Tomtcat内部代码运行：" class="headerlink" title="Tomtcat内部代码运行："></a>Tomtcat内部代码运行：</h4><pre><code>1）通过映射找到到servlet-class的内容，字符串： gz.itcast.a_servlet.FirstServlet
+2）通过反射构造FirstServlet对象
+    2.1 得到字节码对象
+                Class clazz = class.forName(&quot;gz.itcast.a_servlet.FirstServlet&quot;);
+    2.2 调用无参数的构造方法来构造对象
+                Object obj = clazz.newInstance();     ---1.servlet的构造方法被调用
+3）创建ServletConfig对象，通过反射调用init方法
+    3.1 得到方法对象
+                Method m = clazz.getDeclareMethod(&quot;init&quot;,ServletConfig.class);
+    3.2 调用方法
+                m.invoke(obj,config);             --2.servlet的init方法被调用
+4）创建request，response对象，通过反射调用service方法
+    4.1 得到方法对象
+                Methodm m =clazz.getDeclareMethod(&quot;service&quot;,HttpServletRequest.class,HttpServletResponse.class);
+    4.2 调用方法
+                m.invoke(obj,request,response);  --3.servlet的service方法被调用
+5）当tomcat服务器停止或web应用重新部署，通过反射调用destroy方法
+    5.1 得到方法对象
+                Method m = clazz.getDeclareMethod(&quot;destroy&quot;,null);
+    5.2 调用方法
+                m.invoke(obj,null);            --4.servlet的destroy方法被调用
+</code></pre><h3 id="Servlet的自动加载"><a href="#Servlet的自动加载" class="headerlink" title="Servlet的自动加载"></a>Servlet的自动加载</h3><p>默认情况下，第一个访问Servlet的时候创建Servlet对象，如果Servlet在进行init()的时候或者构造方法的时候，执行了太多的逻辑代码，那么会导致用户在第一次请求的时候，会加载比较慢！<br><strong><em>（‘我们可以通过改变一下访问对象的时机，将对象的创建的时机更改到加载Web应用的时候’）</em></strong><br>这个配置是在Servlet的配置文件中进行配置的！<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>LifeDemo<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>gz.itcast.c_life.LifeDemo<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 让servlet对象自动加载 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span>  注意： 整数值越大，创建优先级越低！！</span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="有参数的init方法和无参数的init方法"><a href="#有参数的init方法和无参数的init方法" class="headerlink" title="有参数的init方法和无参数的init方法"></a>有参数的init方法和无参数的init方法</h3><p>有参数的init方法是servlet的生命周期方法，一定会被tomcat服务器调用<br>注意：如果要编写初始代码，不需要覆盖有参数的init方法(默认调用无参的init方法）<br>无参数的init方法是servlet的编写初始化代码的方法。是Sun公司设计出来专门给开发者进行覆盖，然后在里面编写servlet的初始逻辑代码的方法。</p>
+<h3 id="Servlet的多线程并发问题"><a href="#Servlet的多线程并发问题" class="headerlink" title="Servlet的多线程并发问题"></a>Servlet的多线程并发问题</h3><p>如果多个线程同时访问了Servlet的共享对象（成员对象）则会引发线程安全问题。Servlet是单实例，多线程的。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
+<li>将共享数据进行加锁 ，是用synchronized 或者锁对象</li>
+<li>在使用过程中，尽量不要使用成员变量，或者共享资源<h3 id="ServletConfig对象"><a href="#ServletConfig对象" class="headerlink" title="ServletConfig对象"></a>ServletConfig对象</h3>ServletConfig对象: 主要是用于加载servlet的初始化参数。在一个web应用可以存在多个ServletConfig对象（一个Servlet对应一个ServletConfig对象）<br>操作方式：<br>可以通过调用init()方法进行获取，直接从有参数的init方法中得到！！<br>Servlet的参数只能由当前的Servlet获取！！<br>下面是我在doGet()方法中获取的该对象！！<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Enumeration&lt;String&gt; enum3 =   getServletConfig().getInitParameterNames();</span><br><span class="line">	 System.out.println(enum3.hasMoreElements());</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="ServletContext对象"><a href="#ServletContext对象" class="headerlink" title="ServletContext对象"></a>ServletContext对象</h3><p>ServletContext对象 ,叫做Servlet的上下文对象。表示一个当前的web应用环境。一个web应用中只有一个ServletContext对象。本身也是一个全局的域对象！<br>ServletContext对象的获取方式，目前我使用的主要有以下三种方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ServletContext context = getServletConfig().getServletContext();</span><br><span class="line">	 ServletContext context1 = getServletContext();</span><br><span class="line">	 ServletContext context2 = request.getServletContext();</span><br><span class="line">       System.out.println(context.equals(context1)); <span class="comment">//true</span></span><br><span class="line">       System.out.println(context.equals(context2)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<h4 id="ServletContext对象的核心API-作用"><a href="#ServletContext对象的核心API-作用" class="headerlink" title="ServletContext对象的核心API(作用)"></a>ServletContext对象的核心API(作用)</h4><pre><code>java.lang.String getContextPath()   --得到当前web应用的路径(用在请求重定向的路径中)
+
+java.lang.String getInitParameter(java.lang.String name)  --得到web应用的初始化参数
+java.util.Enumeration getInitParameterNames()  
+
+void setAttribute(java.lang.String name, java.lang.Object object) --域对象有关的方法
+java.lang.Object getAttribute(java.lang.String name)  
+void removeAttribute(java.lang.String name)  
+
+RequestDispatcher getRequestDispatcher(java.lang.String path)   --转发（类似于重定向）
+
+java.lang.String getRealPath(java.lang.String path)     --得到web应用的资源文件
+java.io.InputStream getResourceAsStream(java.lang.String path)  
+</code></pre><h4 id="域对象"><a href="#域对象" class="headerlink" title="域对象"></a>域对象</h4><p>作用是用于保存数据，获取数据。可以在不同的动态资源之间共享数据！！<br>数据的传递方式：</p>
+<ul>
+<li>通过传递参数的形式，共享数据。局限：只能传递字符串类型</li>
+<li>使用域对象 可以使用域对象共享数据，好处：可以共享任何类型的数据！！！！！<ul>
+<li>保存数据：void setAttribute(java.lang.String name, java.lang.Object object)                    </li>
+<li>获取数据： java.lang.Object getAttribute(java.lang.String name)  <ul>
+<li>删除数据： void removeAttribute(java.lang.String name)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="转发与重定向"><a href="#转发与重定向" class="headerlink" title="转发与重定向"></a>转发与重定向</h3><h4 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h4><p>代码使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.getRequestDispatcher(<span class="string">"/pingjiao.jsp"</span>).forward(request, response);</span><br></pre></td></tr></table></figure>
+<p>a）地址栏不会改变<br>b）转发只能转发到当前web应用内的资源<br>c）可以在转发过程中，可以把数据保存到request域对象中</p>
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p>代码使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.sendRedirect(request.getContextPath()+<span class="string">"/adminLogin.jsp"</span>);</span><br></pre></td></tr></table></figure>
+<p>a）地址栏会改变，变成重定向到地址。<br>b）重定向可以跳转到当前web应用，或其他web应用，甚至是外部域名网站。<br>c）不能再重定向的过程，把数据保存到request中。</p>
+<p><strong><em>结论： 如果要使用request域对象进行数据共享，只能用转发技术！！！</em></strong></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/10/多线程基础总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          多线程基础总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/06/青岛崂山区过去24小时气候变化可视化/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">青岛崂山区过去24小时气候变化可视化</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Servlet技术使用总结" data-title="Servlet技术使用总结" data-url="http://yoursite.com/2020/11/10/Servlet技术使用总结/" data-images="../../photo/head.jpg" data-content="Servlet技术使用总结">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
