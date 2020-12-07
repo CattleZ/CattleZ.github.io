@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>js-BOM_DOM总结 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="BOMBrowser Object Model(浏览器对象模型)JS是由浏览器中内置的js脚本执行解释器程序来执行js的脚本语言的。为了方便操作，js封装了对浏览器的各个对象使得开发者可以方便的操作浏览器。 window对象是javascript层级中的顶层对象，是代表浏览器窗口或一个框架，该对象在或者每次出现的时候都被自动创建。  moveto() 将窗口左上角的屏幕位置移动到指定的x和y位置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js-BOM_DOM总结">
+<meta property="og:url" content="http://yoursite.com/2020/12/05/BOM_DOM编程总结/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="BOMBrowser Object Model(浏览器对象模型)JS是由浏览器中内置的js脚本执行解释器程序来执行js的脚本语言的。为了方便操作，js封装了对浏览器的各个对象使得开发者可以方便的操作浏览器。 window对象是javascript层级中的顶层对象，是代表浏览器窗口或一个框架，该对象在或者每次出现的时候都被自动创建。  moveto() 将窗口左上角的屏幕位置移动到指定的x和y位置">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-12-07T04:16:43.471Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js-BOM_DOM总结">
+<meta name="twitter:description" content="BOMBrowser Object Model(浏览器对象模型)JS是由浏览器中内置的js脚本执行解释器程序来执行js的脚本语言的。为了方便操作，js封装了对浏览器的各个对象使得开发者可以方便的操作浏览器。 window对象是javascript层级中的顶层对象，是代表浏览器窗口或一个框架，该对象在或者每次出现的时候都被自动创建。  moveto() 将窗口左上角的屏幕位置移动到指定的x和y位置">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-BOM_DOM编程总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/12/05/BOM_DOM编程总结/" class="article-date">
+  	<time datetime="2020-12-05T06:52:20.650Z" itemprop="datePublished">2020-12-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js-BOM_DOM总结
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/12/05/BOM_DOM编程总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="js-BOM_DOM总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="BOM"><a href="#BOM" class="headerlink" title="BOM"></a>BOM</h2><p>Browser Object Model(浏览器对象模型)<br>JS是由浏览器中内置的js脚本执行解释器程序来执行js的脚本语言的。<br>为了方便操作，js封装了对浏览器的各个对象使得开发者可以方便的操作浏览器。</p>
+<h3 id="window对象"><a href="#window对象" class="headerlink" title="window对象"></a>window对象</h3><p>是javascript层级中的顶层对象，是代表浏览器窗口或一个框架，该对象在<body>或者<frameset>每次出现的时候都被自动创建。</frameset></body></p>
+<ul>
+<li>moveto() 将窗口左上角的屏幕位置移动到指定的x和y位置</li>
+<li>moveby() 相对于目前的位置移动</li>
+<li>resizeTo() 调整当前浏览器的窗口</li>
+<li>open() 打开新的窗口显示指定的URL</li>
+<li>setTimeout(vCode,iMilliseconds) 超时后执行代码</li>
+<li>setInterval(vCode,iMilliSeconds) 定时执行代码，第一次也是先到执行时在执行<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3>所有的事件都是以o n开头，后面的是事件的触发方式。如：<br>o’clock 表示单击<br>onkeydown 表示键按下</li>
+</ul>
+<h4 id="鼠标点击事件"><a href="#鼠标点击事件" class="headerlink" title="鼠标点击事件"></a>鼠标点击事件</h4><ul>
+<li>o’clock 用户使用鼠标左键单击对象的时候触发</li>
+<li>ondbclick 当用户双击对象的时候触发</li>
+<li>onmousedown 当用户在鼠标位于对象之上的时候，释放鼠标按钮时候触发</li>
+<li>onmouseout 当用户将鼠标指针移出对象边界的时候触发</li>
+<li>onmousemove 当用户将鼠标划过对象的时候触发</li>
+<li>onblur 在对象失去输入焦点的时候触发</li>
+<li>onfocus 当对象获得焦点的时候触发</li>
+<li>onchange 当对象或选中区的内容改变的时候触发</li>
+<li>o load 在浏览器完成对象的装载后立即触发</li>
+<li><p>o submit 当表单将要被提交的时候触发</p>
+<h3 id="location对象"><a href="#location对象" class="headerlink" title="location对象"></a>location对象</h3><p>location对象是由js runtime engine自动创建的，包含有关当前URL 的信息。<br>location 中的重要方法：</p>
+<pre><code>href 属性 设置或获取整个 URL 为字符串
+reload（）重新装入当前页面
+</code></pre><h3 id="screen-对象"><a href="#screen-对象" class="headerlink" title="screen 对象"></a>screen 对象</h3><p>js自动创建的，包含有关客户机显示屏幕的信息<br>属性：</p>
+<ul>
+<li>availHeight 获取系统屏幕的工作区域高度 ，排除任务栏</li>
+<li>availWidth 获取系统屏幕的工作区域的宽度 排除任务栏</li>
+<li>height 获取屏幕的垂直分辨率</li>
+<li>width 获取屏幕的水平分辨率</li>
+</ul>
+<p>案例：</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.write(<span class="string">"屏幕工作区: "</span> + screen.availHeight + <span class="string">", "</span> + screen.availWidth + <span class="string">"&lt;br&gt;"</span>);</span><br><span class="line">	<span class="built_in">document</span>.write(<span class="string">"屏幕分辨率: "</span> + screen.height + <span class="string">", "</span> + screen.width + <span class="string">"&lt;br&gt;"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="document-对象"><a href="#document-对象" class="headerlink" title="document 对象"></a>document 对象</h3><p>该对象代表整个文档页面<br>对象的集合：</p>
+<ul>
+<li>all 获取页面所有的元素对象</li>
+<li>forms 获取页面所有的表单对象</li>
+<li>images 获取页面所有的图片对象</li>
+<li>links 获取所有的超链接 或者area对象<h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2>全称Document Object Model 即文档对象模型。<br>该模型描绘了一个层次化的树，允许开发人员添加、删除、修改页面的某一部分。<br>浏览器在解析HTML的时候，其实不是按照一行一行读取并解析的，而是将HTML页面中的每一个标记按照顺序在内存中组建一颗DOM树，组建好之后，按照树的结构将页面显示在浏览器窗口中。</li>
+</ul>
+<p>节点最多有一个父亲节点，可以有多个子节点。<br>HTML DOM 定义访问和操作HTML 文档的标准方法。</p>
+<ul>
+<li>document 代表当前页面的整个文档树</li>
+<li><p>访问属性</p>
+<ul>
+<li>all</li>
+<li>forms</li>
+<li>images</li>
+<li>links</li>
+<li>body</li>
+</ul>
+<p>访问方法（最常用的是DOM方法）</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">      <span class="comment">//获取Dom树 获取document对象</span></span><br><span class="line">      <span class="keyword">var</span> dom  = <span class="built_in">window</span>.document;</span><br><span class="line">      <span class="comment">//获取界面的所有元素</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">testAll</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">var</span> allarr = dom.all;</span><br><span class="line">          alert(allarr.length);</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span>  i =<span class="number">0</span>;i&lt;allarr.length;i++)&#123;</span><br><span class="line">              <span class="comment">//获取节点的名字</span></span><br><span class="line">              alert(allarr[i].nodeName)</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//anchors 获取页面中的所有锚连接</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">testAnchors</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">var</span> anaArr = dom.anchors;</span><br><span class="line">          alert(anaArr.length);</span><br><span class="line">          alert(anaArr[<span class="number">0</span>].nodeName);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//获取所有的form对象</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">testForms</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">var</span> formARR = dom.forms;</span><br><span class="line">          alert(formARR.length)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//images</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">testimage</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">var</span> ima = dom.images;</span><br><span class="line">          alert(ima.length)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//获取页面的所有连接</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">testlinks</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">var</span> lin = dom.links;</span><br><span class="line">          alert(lin.length)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">  &lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="获取节点对象的案例"><a href="#获取节点对象的案例" class="headerlink" title="获取节点对象的案例"></a>获取节点对象的案例</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getobj</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="comment">//根据标签id获取对象</span></span><br><span class="line">            <span class="keyword">var</span> a = <span class="built_in">document</span>.getElementById(<span class="string">"1"</span>)</span><br><span class="line">            alert(a.nodeName)</span><br><span class="line">           <span class="comment">//根据标标签属性名称获取对象</span></span><br><span class="line">            <span class="keyword">var</span> b = <span class="built_in">document</span>.getElementsByName(<span class="string">"bu"</span>)</span><br><span class="line">            alert(b.length)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//根据标签名称获取对象</span></span><br><span class="line">            <span class="keyword">var</span> c = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"p"</span>)</span><br><span class="line">            alert(c.length)</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="通过节点关系查找节点"><a href="#通过节点关系查找节点" class="headerlink" title="通过节点关系查找节点"></a>通过节点关系查找节点</h3><p>//从一个节点开始出发 进行查找</p>
+<ul>
+<li>parentNode 获取当前节点的父亲节点</li>
+<li>childNodes 获取当前节点的孩子节点</li>
+<li>firstChild 获取当前节点的第一个孩子节点</li>
+<li>lastChild 获取当前节点的最后一个孩子节点</li>
+<li>nextSibling 获取当前节点的兄弟节点<br> 注意这个有一个隐藏的文本标签 </li>
+<li>previousSibling 获取当前节点的上一个节点<h3 id="获取节点对象的信息"><a href="#获取节点对象的信息" class="headerlink" title="获取节点对象的信息"></a>获取节点对象的信息</h3>每个节点都包含的信息的，这些属性是：</li>
+<li>nodType 节点类型</li>
+<li>元素  返回1 </li>
+<li>文本 返回3</li>
+<li>注释 返回8</li>
+<li>nodeName 节点名称</li>
+<li>元素节点的nodeName是标签的名称</li>
+<li>属性节点的nodeName是属性名称</li>
+<li>文本节点的nodeName 永远是#text</li>
+<li>文档节点的nodeName 永远是#document</li>
+<li>nodeValue 节点值</li>
+<li>对于文本节点 nodeValue 属性是包含的文本</li>
+<li>对于属性节点 nodeValue属性是属性值</li>
+<li>对于注释节点 nodeValue属性注释内容</li>
+<li>nodeValue属性对文档节点和元素节点是不可用的<h2 id="节点操作"><a href="#节点操作" class="headerlink" title="节点操作"></a>节点操作</h2><h3 id="创建新的节点"><a href="#创建新的节点" class="headerlink" title="创建新的节点"></a>创建新的节点</h3></li>
+<li>document.createElement(“标签名”) 创建新元素节点</li>
+<li>elt.setAttribute(“属性名”,”属性值”）设置属性</li>
+<li>elt.appendChild(e)</li>
+<li>elt.insertBefore(new,child) 添加到elt中，child之前</li>
+<li>elt.removeChild(eChild) 删除指定的子节点</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">    &lt;script type="text/</span>javascript<span class="string">"&gt;</span></span><br><span class="line"><span class="string">       var count =1;</span></span><br><span class="line"><span class="string">       function add() &#123;</span></span><br><span class="line"><span class="string">           var trNode = document.createElement("</span>tr<span class="string">");</span></span><br><span class="line"><span class="string">           var tdNode = document.createElement("</span>td<span class="string">");</span></span><br><span class="line"><span class="string">           var inputNode  = document.createElement("</span>input<span class="string">");</span></span><br><span class="line"><span class="string">           inputNode.setAttribute("</span>type<span class="string">","</span>button<span class="string">");</span></span><br><span class="line"><span class="string">           inputNode.setAttribute("</span>value<span class="string">",count++);</span></span><br><span class="line"><span class="string">           count++;</span></span><br><span class="line"><span class="string">           tdNode.appendChild(inputNode);</span></span><br><span class="line"><span class="string">           trNode.appendChild(tdNode);</span></span><br><span class="line"><span class="string">           //trNode添加到指定的位置上</span></span><br><span class="line"><span class="string">           var tbodyNode = document.getElementsByTagName("</span>tbody<span class="string">")[0];</span></span><br><span class="line"><span class="string">           var button1 = document.getElementById("</span>b1<span class="string">");</span></span><br><span class="line"><span class="string">           tbodyNode.insertBefore(trNode,button1);</span></span><br><span class="line"><span class="string">       &#125;</span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">  &lt;table&gt;</span></span><br><span class="line"><span class="string">      &lt;tr&gt;</span></span><br><span class="line"><span class="string">          &lt;td&gt;</span></span><br><span class="line"><span class="string">              &lt;input type="</span>button<span class="string">" value="</span><span class="number">0</span><span class="string">" &gt;</span></span><br><span class="line"><span class="string">          &lt;/td&gt;</span></span><br><span class="line"><span class="string">      &lt;/tr&gt;</span></span><br><span class="line"><span class="string">      &lt;tr id="</span>b1<span class="string">"&gt;</span></span><br><span class="line"><span class="string">          &lt;td&gt;</span></span><br><span class="line"><span class="string">              &lt;input type="</span>button<span class="string">" value="</span>添加<span class="string">" onclick="</span>add()<span class="string">"&gt;</span></span><br><span class="line"><span class="string">          &lt;/td&gt;</span></span><br><span class="line"><span class="string">      &lt;/tr&gt;</span></span><br><span class="line"><span class="string">  &lt;/table&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="几个小案例"><a href="#几个小案例" class="headerlink" title="几个小案例"></a>几个小案例</h2><h3 id="生成二级城市联动菜单"><a href="#生成二级城市联动菜单" class="headerlink" title="生成二级城市联动菜单"></a>生成二级城市联动菜单</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">    &lt;title&gt;二级联动菜单&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">    &lt;script type="text/</span>javascript<span class="string">"&gt;</span></span><br><span class="line"><span class="string">        function selcity() &#123;</span></span><br><span class="line"><span class="string">            //每一个省建立一个二维数组</span></span><br><span class="line"><span class="string">            var arr = [['--选择城市--'],['海淀区','朝阳区','东城区','西城区']</span></span><br><span class="line"><span class="string">                ,['沈阳','大连','鞍山','抚顺']</span></span><br><span class="line"><span class="string">                ,['济南','青岛','烟台','威海']</span></span><br><span class="line"><span class="string">                ,['石家庄','廊坊','唐山','秦皇岛']];</span></span><br><span class="line"><span class="string">            //获取选择的省的角标</span></span><br><span class="line"><span class="string">            var selNode = document.getElementById("</span>selid<span class="string">");</span></span><br><span class="line"><span class="string">            var index = selNode.selectedIndex;</span></span><br><span class="line"><span class="string">            var cities = arr[index];</span></span><br><span class="line"><span class="string">            var subSelNode = document.getElementById("</span>subselid<span class="string">")</span></span><br><span class="line"><span class="string">            //清除下拉菜单的内容</span></span><br><span class="line"><span class="string">            subSelNode.options.length = 0;</span></span><br><span class="line"><span class="string">            for(var x =0;x&lt;cities.length;x++)&#123;</span></span><br><span class="line"><span class="string">               var optNode = document.createElement("</span>option<span class="string">");</span></span><br><span class="line"><span class="string">               optNode.innerHTML = cities[x];</span></span><br><span class="line"><span class="string">               subSelNode.appendChild(optNode);</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">  &lt;select id="</span>selid<span class="string">" onchange="</span>selcity()<span class="string">"&gt;</span></span><br><span class="line"><span class="string">      &lt;option&gt;--选择省市--&lt;/option&gt;</span></span><br><span class="line"><span class="string">      &lt;option&gt;北京市&lt;/option&gt;</span></span><br><span class="line"><span class="string">      &lt;option&gt;辽宁省&lt;/option&gt;</span></span><br><span class="line"><span class="string">      &lt;option&gt;山东省&lt;/option&gt;</span></span><br><span class="line"><span class="string">      &lt;option&gt;河北省&lt;/option&gt;</span></span><br><span class="line"><span class="string">  &lt;/select&gt;</span></span><br><span class="line"><span class="string">  &lt;select id="</span>subselid<span class="string">"&gt;</span></span><br><span class="line"><span class="string">      &lt;option&gt;--选择城市--&lt;/option&gt;</span></span><br><span class="line"><span class="string">  &lt;/select&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="生产一个验证码"><a href="#生产一个验证码" class="headerlink" title="生产一个验证码"></a>生产一个验证码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">    &lt;title&gt;验证码&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">    &lt;script type="text/</span>javascript<span class="string">"&gt;</span></span><br><span class="line"><span class="string">      function createCode() &#123;</span></span><br><span class="line"><span class="string">          var datas = ["</span>A<span class="string">", "</span>B<span class="string">", "</span>C<span class="string">", "</span>D<span class="string">", "</span>E<span class="string">", "</span>F<span class="string">", "</span>G<span class="string">", "</span>H<span class="string">", "</span>Z<span class="string">", "</span><span class="number">0</span><span class="string">", "</span><span class="number">1</span><span class="string">", "</span><span class="number">2</span><span class="string">", "</span><span class="number">3</span><span class="string">", "</span><span class="number">4</span><span class="string">", "</span><span class="number">5</span><span class="string">", "</span><span class="number">6</span><span class="string">", "</span><span class="number">7</span><span class="string">", "</span><span class="number">8</span><span class="string">", "</span><span class="number">9</span><span class="string">"];</span></span><br><span class="line"><span class="string">          //随机从数组中取出4个元素</span></span><br><span class="line"><span class="string">          var mess = "</span><span class="string">";</span></span><br><span class="line"><span class="string">          var index = 0;</span></span><br><span class="line"><span class="string">          for (var i = 0; i &lt; 4; i++) &#123;</span></span><br><span class="line"><span class="string">              //生成随机数 而且是在数组的长度范围内</span></span><br><span class="line"><span class="string">              //0-9 之间的随机数，Math.floor(Math.random()*10)</span></span><br><span class="line"><span class="string">              //0到数组长度（不包含）之间的浮点数 向下取整</span></span><br><span class="line"><span class="string">              var index = Math.floor(Math.random() * datas.length);</span></span><br><span class="line"><span class="string">              mess += datas[index];</span></span><br><span class="line"><span class="string">          &#125;</span></span><br><span class="line"><span class="string">          ;</span></span><br><span class="line"><span class="string">          var codeSpan = window.document.getElementById("</span>codeSpan<span class="string">");</span></span><br><span class="line"><span class="string">          codeSpan.style.color = "</span>red<span class="string">"</span></span><br><span class="line"><span class="string">          codeSpan.style.fontSize = "</span><span class="number">20</span>px<span class="string">"</span></span><br><span class="line"><span class="string">          codeSpan.style.background = "</span>gray<span class="string">"</span></span><br><span class="line"><span class="string">          codeSpan.style.fontStyle = "</span>italic<span class="string">"</span></span><br><span class="line"><span class="string">          codeSpan.style.textDecoration = "</span>line-through<span class="string">"</span></span><br><span class="line"><span class="string">          codeSpan.innerHTML = mess;</span></span><br><span class="line"><span class="string">          codeSpan.value = mess;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body onload="</span>createCode()<span class="string">"&gt;</span></span><br><span class="line">   &lt;span id="codeSpan"&gt;&lt;/span&gt;&lt;a href="#" onclick="createCode()"&gt;看不清楚&lt;/a&gt;</span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/12/04/Annotation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Annotation总结</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="BOM_DOM编程总结" data-title="js-BOM_DOM总结" data-url="http://yoursite.com/2020/12/05/BOM_DOM编程总结/" data-images="../../photo/head.jpg" data-content="js-BOM_DOM总结">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

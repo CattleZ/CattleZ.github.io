@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Annotation总结 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="从JKD5开始，java增加了对元数据的支持，也就是Annotation,这是代码里的特殊标记，这些标记可以在编译、类加载、运行的是时候被读取，并且能够执行相应的处理。通过使用Annotation ，我们可以在开发过程中，在不改变原有逻辑的情况下，在源文件中补充一些信息。Annotation 可以用于修饰包、类、构造器、方法、成员变量、参数和局部变量的声明。 四个基本的Annotation@Ove">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Annotation总结">
+<meta property="og:url" content="http://yoursite.com/2020/12/04/Annotation/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="从JKD5开始，java增加了对元数据的支持，也就是Annotation,这是代码里的特殊标记，这些标记可以在编译、类加载、运行的是时候被读取，并且能够执行相应的处理。通过使用Annotation ，我们可以在开发过程中，在不改变原有逻辑的情况下，在源文件中补充一些信息。Annotation 可以用于修饰包、类、构造器、方法、成员变量、参数和局部变量的声明。 四个基本的Annotation@Ove">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-12-07T04:15:54.186Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Annotation总结">
+<meta name="twitter:description" content="从JKD5开始，java增加了对元数据的支持，也就是Annotation,这是代码里的特殊标记，这些标记可以在编译、类加载、运行的是时候被读取，并且能够执行相应的处理。通过使用Annotation ，我们可以在开发过程中，在不改变原有逻辑的情况下，在源文件中补充一些信息。Annotation 可以用于修饰包、类、构造器、方法、成员变量、参数和局部变量的声明。 四个基本的Annotation@Ove">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Annotation" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/12/04/Annotation/" class="article-date">
+  	<time datetime="2020-12-04T07:02:03.810Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Annotation总结
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/12/04/Annotation/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Annotation总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从JKD5开始，java增加了对元数据的支持，也就是Annotation,这是代码里的特殊标记，这些标记可以在编译、类加载、运行的是时候被读取，并且能够执行相应的处理。<br>通过使用Annotation ，我们可以在开发过程中，在不改变原有逻辑的情况下，在源文件中补充一些信息。<br>Annotation 可以用于修饰包、类、构造器、方法、成员变量、参数和局部变量的声明。</p>
+<h2 id="四个基本的Annotation"><a href="#四个基本的Annotation" class="headerlink" title="四个基本的Annotation"></a>四个基本的Annotation</h2><h3 id="Override-重写父类方法"><a href="#Override-重写父类方法" class="headerlink" title="@Override (重写父类方法)"></a>@Override (重写父类方法)</h3><p>用来指定方法覆载的，它可以强制一个子类必须覆盖父类的方法。<br>在使用这个注解的时候，可能看不出来效果，这个的主要作用是检查一下父类中，是不是有一个相同的方法被重写！</p>
+<h3 id="Deprecated-标示已经过时"><a href="#Deprecated-标示已经过时" class="headerlink" title="@Deprecated(标示已经过时)"></a>@Deprecated(标示已经过时)</h3><p>用于表示某个程序元素已经过时，当其他程序使用已经过时的类、方法的时候，编译器将会给出警告。</p>
+<h3 id="SuppressWarnings-抑制编译器警告"><a href="#SuppressWarnings-抑制编译器警告" class="headerlink" title="@SuppressWarnings(抑制编译器警告)"></a>@SuppressWarnings(抑制编译器警告)</h3><p>指示被该Annotation修饰的程序元素取消显示指定的编译器警告，会一直作用于该程序元素的所有子元素。在使用的过程总，一定要在括号里面使用name = value的形式 ！即 @SuppressWarnings(value = “unchecked”)<br>unchecked就是一个未经过检查的转换</p>
+<h3 id="java7-的堆污染警告-SafeVarargs"><a href="#java7-的堆污染警告-SafeVarargs" class="headerlink" title="java7 的堆污染警告@SafeVarargs"></a>java7 的堆污染警告@SafeVarargs</h3><p>当把一个不带范型的对象赋给一个带范型的变量的时候，往往就会发生“堆污染”。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List list = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">list.add(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<p>对于形式参数可变的方法，该形参类型又是范型，这将更容易导致“堆污染”。<br>（java不支持范型数组）</p>
+<h2 id="JDK基本的元Annotation"><a href="#JDK基本的元Annotation" class="headerlink" title="JDK基本的元Annotation"></a>JDK基本的元Annotation</h2><h3 id="Retention"><a href="#Retention" class="headerlink" title="@Retention"></a>@Retention</h3><p>只能用来修饰一个Annotation定义，用于指定被修饰的Annotation可以存活多长时间。后面必须跟着一个值（三个限定）<br>例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention</span>(value=RetentionPolicy.SOURCE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Testtable&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Target"><a href="#Target" class="headerlink" title="@Target"></a>@Target</h3><p>只能修饰一个Annotation定义，用于指定被修饰的Annotation能用于修饰哪些程序单元。(有八个程序变量的值)<br>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ActionListenerErro&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Documented"><a href="#Documented" class="headerlink" title="@Documented"></a>@Documented</h3><p>用于指定这个Annotation类可以被javadoc工具提取成文档.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(ElementType.METHOD)</span><br><span class="line"><span class="comment">//使用Documented修饰 一个类 用作Annotation ，这个类可以被javadoc工具提取成文档</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Testtable&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后使用Testtable修饰 其他类的方法，就会被提取成文档</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"><span class="meta">@Testtable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  System.out.println(<span class="string">"info方法..."</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Inherited"><a href="#Inherited" class="headerlink" title="@Inherited"></a>@Inherited</h3><p>如果定义某一个Annotation的时候，这个类被@Inherited修饰，则继承了该类的子类将会被@A修饰。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Inheritable&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中粗体字代码表明@Inheritable 具有继承性，如果某个类使用了@Inheritable修饰，则该类的子类将自动使用@Inheritable修饰</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Inheritable</span></span><br><span class="line">class Base[</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//InheritableTest 类只继承了Base类</span></span><br><span class="line"><span class="comment">// 并未直接使用@Inheritable Annotiation修饰</span></span><br><span class="line">public class InheritableTest extends Base[</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//打印InheritableTest类是否具有@Inheritable修饰</span></span><br><span class="line">System.out.println(InheritableTest.class.isAnnotationPresent(Inheritable.class));</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中的Ba se类使用@Inheritable修饰，而该Annotation具有继承性，所以其子类也将自动使用@Inheritable修饰。上面程序输出 true</p>
+<h2 id="自定义Annotation"><a href="#自定义Annotation" class="headerlink" title="自定义Annotation"></a>自定义Annotation</h2><p>自定义Annotation使用@interface关键字定义一个新的Annotation 类型与定义一个接口非常像。</p>
+<h3 id="标记Annotation-无参数"><a href="#标记Annotation-无参数" class="headerlink" title="标记Annotation(无参数)"></a>标记Annotation(无参数)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个简单的Annotation</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Test&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用Annotation的时候，通常可以用来修饰程序中的类、方法、变量、接口等定义。通常Annotation放在所有的修饰符之前。</p>
+<h3 id="元数据Annotation-有参数"><a href="#元数据Annotation-有参数" class="headerlink" title="元数据Annotation(有参数)"></a>元数据Annotation(有参数)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> mytage&#123;</span><br><span class="line"><span class="function">String <span class="title">name</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">age</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>带有成员变量的Annotation 的定义是以无形参的方法形式来声明，其方法名和返回值定义了该成员变量的名字和类型。<br>在使用的时候，应该写为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@mytage</span>(name=<span class="string">"xx"</span>,age=<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="也可以设置默认值"><a href="#也可以设置默认值" class="headerlink" title="也可以设置默认值"></a>也可以设置默认值</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> mytage&#123;</span><br><span class="line"><span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> "yeeku"</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">age</span><span class="params">()</span> <span class="keyword">default</span> 2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="提取Annotation信息"><a href="#提取Annotation信息" class="headerlink" title="提取Annotation信息"></a>提取Annotation信息</h3><p>开发者使用Annotation 修饰了类、方法、Field等成员之后，这些Annotation不会自己生效，必须由开发者提供相应的工具来提取并处理Annotation信息。</p>
+<p>java5在java.lang.reflect包下新增加了AnnotatedElement接口，该接口代表程序中可以接受注释的程序元素。<br>该接口主要有如下几个实现类：</p>
+<ul>
+<li>Class 类定义</li>
+<li>Constructor 构造器定义</li>
+<li>Field 类的成员变量定义</li>
+<li>Method 类的方法定义</li>
+<li>Package 类的包定义</li>
+</ul>
+<p>程序可以通过调用某一个类的如下三种方法来访问Annotation信息</p>
+<ul>
+<li>getAnnotation(Class<t> annoClass)</t></li>
+<li>Annotation[] getAnnotations() 返回该程序元素上存在的所有的注释</li>
+<li>boolean isAnnotationPresent(Class&lt;? extends Annotation&gt; annotationClass): 判断该程序上是否存在指定类型的注释，如果存在则返回true,否则返回false.<br><strong>例如：</strong>获取Test类的info 方法里面的所有的注释</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Annotation [] aArray = Class.forName(<span class="string">"Test"</span>).getMethod(<span class="string">"info"</span>).getAnnotations()</span><br></pre></td></tr></table></figure>
+<h2 id="使用Annotation-的示例"><a href="#使用Annotation-的示例" class="headerlink" title="使用Annotation 的示例"></a>使用Annotation 的示例</h2><p>仅仅使用注释来标记程序元素是不会有任何影响的，为了让程序中的这些注释起作用，接下来必须为这些注释提供一个注释处理工具，注释处理工具通过分析目标类中的注释，然后在通过反射来运行标记的测试方法，程序可以做出相应的处理。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>在示例程序中通过使用@ActionListenerFor来为程序中的按钮绑定事件监听器</p>
+<ul>
+<li>首先创建一个标记，该标记需要传入一个监听器实现类</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AnnotationExample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionListener;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Target</span>(ElementType.FIELD)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ActionListenerFor &#123;</span><br><span class="line">  <span class="comment">//定义一个成员变量，用于设置元数据</span></span><br><span class="line">  <span class="comment">//该listener 成员变量用于保存监听器实现类</span></span><br><span class="line">	Class&lt;? extends ActionListener&gt; listener();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>然后，创建两个监听器的实现类<br>确认按钮实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AnnotationExample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionEvent;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.JOptionPane;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OkListener</span> <span class="keyword">implements</span> <span class="title">ActionListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		JOptionPane.showMessageDialog(<span class="keyword">null</span>,<span class="string">"单击了确认按钮"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取消按钮实现类</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AnnotationExample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionEvent;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.JOptionPane;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CancelListener</span> <span class="keyword">implements</span> <span class="title">ActionListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		JOptionPane.showMessageDialog(<span class="keyword">null</span>,<span class="string">"单击了取消按钮"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果仅仅在程序中使用注释是不会起任何作用的，需要编写一个注释处理工具来处理程序中的注释</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AnnotationExample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionListener;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.AbstractButton;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActionListenerInstaller</span> </span>&#123;</span><br><span class="line">	<span class="comment">//处理Annotation 的方法，其中obj是包含Annotation的对象</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">processAnnotations</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Class cl = obj.getClass();</span><br><span class="line">			<span class="comment">//获取指定的obj 对象的所有Field 并遍历每个field</span></span><br><span class="line">			<span class="keyword">for</span>(Field f: cl.getDeclaredFields()) &#123;</span><br><span class="line">				<span class="comment">//将指定的Field设置成可自由访问</span></span><br><span class="line">				f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">				<span class="comment">//获取指定Field 上的ActionListenerFor类型的Annotation</span></span><br><span class="line">				ActionListenerFor a = f.getAnnotation(ActionListenerFor.class);</span><br><span class="line">				<span class="comment">//获取f Field 实际对应的对象</span></span><br><span class="line">				Object fobj = f.get(obj);</span><br><span class="line">				<span class="comment">//如果f是AbstractButton 的实例，并且a不为null</span></span><br><span class="line">				<span class="keyword">if</span>(a!=<span class="keyword">null</span> &amp;&amp; fobj != <span class="keyword">null</span> &amp;&amp; fobj <span class="keyword">instanceof</span> AbstractButton) &#123;</span><br><span class="line">					<span class="comment">//获取a注释 里的元数据listener (它是一个监听器类)</span></span><br><span class="line">					Class&lt;? extends ActionListener&gt; listenerClazz = a.listener();</span><br><span class="line">					<span class="comment">//使用反射来创建listener类的对象</span></span><br><span class="line">					ActionListener al = listenerClazz.newInstance();</span><br><span class="line">					AbstractButton ab = (AbstractButton)fobj;</span><br><span class="line">					<span class="comment">//为ab按钮添加事件监听器</span></span><br><span class="line">					ab.addActionListener(al);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>主程序</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AnnotationExample;</span><br><span class="line"><span class="keyword">import</span> javax.swing.JButton;</span><br><span class="line"><span class="keyword">import</span> javax.swing.JFrame;</span><br><span class="line"><span class="keyword">import</span> javax.swing.JPanel;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnotationTest</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> JFrame mainWin = <span class="keyword">new</span> JFrame(<span class="string">"使用注释绑定事件监听器"</span>);</span><br><span class="line">	<span class="comment">//使用Annotation 为ok 按钮绑定事件监听器</span></span><br><span class="line">	<span class="meta">@ActionListenerFor</span>(listener = OkListener.class)</span><br><span class="line">	<span class="keyword">private</span> JButton ok = <span class="keyword">new</span> JButton(<span class="string">"确定"</span>);</span><br><span class="line">	<span class="meta">@ActionListenerFor</span>(listener = CancelListener.class)</span><br><span class="line">	<span class="keyword">private</span> JButton cancle = <span class="keyword">new</span> JButton(<span class="string">"取消"</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    	<span class="comment">//初始化界面的方法</span></span><br><span class="line">    	JPanel jp = <span class="keyword">new</span> JPanel();</span><br><span class="line">    	jp.add(ok);</span><br><span class="line">    	jp.add(cancle);</span><br><span class="line">    	mainWin.add(jp);</span><br><span class="line">    	<span class="comment">//</span></span><br><span class="line">    	ActionListenerInstaller.processAnnotations(<span class="keyword">this</span>);</span><br><span class="line">    	mainWin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span><br><span class="line">    	mainWin.pack();</span><br><span class="line">    	mainWin.setVisible(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">new</span> AnnotationTest().init();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="编译时处理Annotation"><a href="#编译时处理Annotation" class="headerlink" title="编译时处理Annotation"></a>编译时处理Annotation</h2><p>APT（Annotation Processing Tool）是一种注释处理工具，它对源代码文件进行检测找出其中的Annotation后，对Annotation 进行额外的处理。<br>Annotation处理器 在处理Annotation的时候可以根据源文件中的Annotation生成额外的源文件和其他文件，APT还会编译生成的源代码文件和原来的源文件，将他们一起生成class文件。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/05/BOM_DOM编程总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          js-BOM_DOM总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/13/NoSql和关系数据库的操作比较/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NoSql和关系数据库 的操作比较</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Annotation" data-title="Annotation总结" data-url="http://yoursite.com/2020/12/04/Annotation/" data-images="../../photo/head.jpg" data-content="Annotation总结">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2020 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
