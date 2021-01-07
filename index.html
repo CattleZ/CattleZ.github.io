@@ -191,6 +191,582 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-类的加载机制与反射机制" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/01/02/类的加载机制与反射机制/" class="article-date">
+  	<time datetime="2021-01-02T11:20:46.830Z" itemprop="datePublished">2021-01-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/02/类的加载机制与反射机制/">
+        类的加载机制与反射机制
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="JVM和类"><a href="#JVM和类" class="headerlink" title="JVM和类"></a>JVM和类</h1><p>Java命令运行某一个Java程序的时候，该命令将会启动一个Java虚拟机进程，不管该Java程序多么复杂，都处于JVM虚拟机里面，所有的线程、所有的变量都处于同一个进程里面。</p>
+<p>JVM终止的条件：</p>
+<ul>
+<li>程序正常运行结束</li>
+<li>遇到未捕获的异常或错误而结束</li>
+<li>平台强制结束了JVM</li>
+<li>运行的时候使用了System.exit()和Runtime.getRuntime().exit()代码 处结束程序</li>
+</ul>
+<h2 id="类的加载或初始化"><a href="#类的加载或初始化" class="headerlink" title="类的加载或初始化"></a>类的加载或初始化</h2><p>如果该类还没有被加载到内存中，则系统会通过加载、连接、初始化三个步骤来对该程序进行初始化。</p>
+<h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>类的加载是指<em>类加载器</em>将类的class文件读入内存，并为之创建一个java.lang.Class对象，也就是说，当程序使用任何类的时候，系统都会为之创建一个java.lang.Class对象。</p>
+<p>class是作为类的二进制数据，通常有以下几种来源：</p>
+<ul>
+<li>本地系统加载class文件</li>
+<li>从jar包 加载class 文件</li>
+<li>通过网络加载class文件</li>
+<li>把一个java源文件动态编译，并执行加载<br>类加载器通常无须等到使用的时候才加载，虚拟机规范允许系统预先加载某些类</li>
+</ul>
+<h3 id="类的连接"><a href="#类的连接" class="headerlink" title="类的连接"></a>类的连接</h3><p>当类被加载之后，系统会为之生成一个对应的Class对象，接着将会进入连接阶段，连接阶段负责把类的二进制数据合并到JRE中。<br>类的连接分为 下面三个阶段：</p>
+<ul>
+<li>验证：验证阶段用于检验被加载的类是否有正确的内部结构，并和其他类协调一致</li>
+<li>准备： 类准备阶段则负责为类的静态Field分配内存，并设置默认初始值</li>
+<li>解析：将类的二进制数据中的符号引用替换成直接引用。</li>
+</ul>
+<h3 id="类的初始化"><a href="#类的初始化" class="headerlink" title="类的初始化"></a>类的初始化</h3><p>类的初始化阶段，虚拟机负责对类进行初始化，主要就是对静态Field进行初始化。在Java类中对静态Field指定初始值有两种方式：</p>
+<ul>
+<li>声明静态Field时指定初始值</li>
+<li>使用静态初始化块为静态Field指定初始值<br>静态初始化块都将被当成类的初始化语句<br>类的初始化的步骤：</li>
+</ul>
+<ol>
+<li>先判断一下某一个类是不是加载和连接，先进行加载和连接操作</li>
+<li>判断该类的直接父类有没有被初始化，先初始化其父类。每次先初始化的都是Object类</li>
+<li>假如类中有初始化语句，则系统依次执行这些初始化语句<h3 id="类初始化的时机"><a href="#类初始化的时机" class="headerlink" title="类初始化的时机"></a>类初始化的时机</h3></li>
+</ol>
+<ul>
+<li>创建类的实例（new,反射,反序列化）</li>
+<li>调用某个类的静态方法</li>
+<li>使用某个类或者接口的静态Field ，或者为该Field进行赋值</li>
+<li>使用反射方式来强制创建某个类的或者接口的对应java.lang.Class 对象。</li>
+<li>初始化某个类的子类</li>
+<li>直接使用java.exe 命令来运行某个主类<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2>类加载器负责将class文件加载到内存中，并且为之生成对应的java.lang.Class对象。开发中很少用到类加载机制，但是了解这个机制，能更好的满足我们的需求。<br>一个类只要加载进JVM过一次，就不会在加载。同一个类的定义为（包名-类名）作为标识是一样的。一个对象的唯一标识使用的，同一个类+ 类加载器的编号。只有这三个全部相同了才能属于同一个类。<br>当JVM启动的时候，会形成3个类加载器组成的初始类加载器层次结构。</li>
+<li>Bootstrap ClassLoader:根类加载器<br> 负责加载java的核心类。</li>
+<li>Extension ClassLoader: 扩展类加载器<br> 扩展类加载器负责加载JRE的扩展项目中JAR包的类，通过这种方式，就可以为JAVA扩展核心类以外的新功能，只要我们将自己开发的类打包成JAR包，然后放入JAVA_HOME/jre/lib/ext 路径即可。</li>
+<li>System ClassLoader:系统类加载器<br> 他负责在JVM启动的时候加载来自java命令的-classpath选项、java.class.path系统属性，或者CLASSPATH环境变量所指定的JAR包和类的路径。<h3 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h3>JVM的类加载机制主要有如下3种：</li>
+<li>全盘负责<br> 就是当一个类加载器负责加载某个Class的时候，该Class所依赖的和引用的其他Class 也将由该类负责载入。</li>
+<li>父类委托<br>先让parent(父)类加载器试图加载该Class,只有在父类加载器无法加载该类的时候才尝试从自己的类路径中加载该类。</li>
+<li>缓存机制<br>缓存机制将会保证所有加载过的Class 都会被缓存，当程序中需要使用某个Class的时候，类加载器先从缓存中搜寻该Class，只有当缓存区不存在该class对象的时候，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存入缓存区。<h4 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h4>开发者通过扩展ClassLoader的子类，并重写该ClassLoader所包含的方法来实现自定义的类加载器。可以实现如下功能：</li>
+<li>执行代码之前自动验证数字签名</li>
+<li>根据用户提供的密码解密代码，从而实现代码混淆来避免反编译Class文件</li>
+<li>根据用户需求来动态的加载类</li>
+<li>根据应用需求把其他数据以字节码的形式加载到应用中<h4 id="URLClassLoader类"><a href="#URLClassLoader类" class="headerlink" title="URLClassLoader类"></a>URLClassLoader类</h4>通过该类既可以从本地文件系统获取二进制文件来加载该类，也可以从远程主机获取二进制文件来加载该类。<br>主要提供了两构造器：</li>
+<li>URLClassLoader(URL[] urls):使用默认的父类加载器创建一个ClassLoader对象，该对象将从urls所指定的系列路径来查询并加载类</li>
+<li>URLClassLoader(URL[] urls ,ClassLoader parent) 使用指定的父类加载器创建一个ClassLoader对象<ul>
+<li>URL file前缀表示从本地文件系统加载</li>
+<li>http 前缀表示从互联网通过HTTP 加载访问来加载</li>
+<li>ftp 为前缀 表明从互联网通过ftp 访问加载<h3 id="通过反射查看类的信息"><a href="#通过反射查看类的信息" class="headerlink" title="通过反射查看类的信息"></a>通过反射查看类的信息</h3>程序在运行时会出现两种类型，运行时类型与编译时类型。程序在运行的时候接收到外部传入的一个对象，该对象的编译时类型时Object,但是程序又需要调用该对象运行时类型的方法，为了在运行的时候发现对象和类的真实信息，可以通过下面两种方法：</li>
+</ul>
+</li>
+<li>假设在编译时和运行时完全知道类型的具体信息，这种情况下可以通过使用instanceof运算符进行判断，在进行强制类型转换。</li>
+<li>在编译的时候根本无法知道该对象和类属于哪些类，程序只能通过运行时信息来发现该对象和类的真实信息，就必须使用反射。<h4 id="获取Class-对象"><a href="#获取Class-对象" class="headerlink" title="获取Class 对象"></a>获取Class 对象</h4></li>
+<li>使用Class 类的forName(String clazzName) 静态方法。该方法需要传入字符串参数，该字符串参数的值是某个类的全限定类名</li>
+<li>调用某个类的class属性来获取该类对应的Class 对象例如：Person.class</li>
+<li>调用某个对象的getClass()方法。该方法是java.lang.Object 类的一个方法</li>
+<li>调用某个对象的getClass()方法，该方法是java.lang.Object类中的一个方法，所以所有的java对象都可以调用该方法。<br>前两种都是根据类来获取指定类的Class对象，第二种方法有如下优点：</li>
+<li>安全性。程序在编译阶段就可以检查Class对象是不是存在</li>
+<li>程序的性能更好。因为无需调用方法，因此性能更好<h4 id="从class中获取信息"><a href="#从class中获取信息" class="headerlink" title="从class中获取信息"></a>从class中获取信息</h4>Class类提供了大量的实例方法来获取该Class对象所对应的详细信息，主要使用方式查询API。<br>获取构造器的时候无须传入构造器名-同一个类的所有构造器的名字都是相同，所以要确定一个构造器只要指定形参列表即可。<h3 id="使用反射生成并操作对象"><a href="#使用反射生成并操作对象" class="headerlink" title="使用反射生成并操作对象"></a>使用反射生成并操作对象</h3><h4 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h4>通过反射生成对象有两种方式：</li>
+<li>使用Class对象的newInstance()方法来创建该Class对象对应类的实例，这种方式要求该Class必须要实现默认的构造器</li>
+</ul>
+<p>根据配置文件创建 对象池<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Tool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">	<span class="comment">//定义一个对象池，前面是对象名，后面是实际的对象</span></span><br><span class="line">	<span class="keyword">private</span>	Map&lt;String, Object&gt; objectPool = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">	<span class="comment">//定一个创建对象的方法</span></span><br><span class="line">	<span class="comment">//该对象只要传入一个字符串类名，程序可以根据该类名生成Java对象</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> Object <span class="title">createObject</span> <span class="params">(String clazzName)</span> </span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ClassNotFoundException, InstantiationException, IllegalAccessException </span>&#123;</span><br><span class="line">		Class&lt;?&gt; clazz = Class.forName(clazzName);</span><br><span class="line">		<span class="comment">//使用clazz 默认的构造器创建实例</span></span><br><span class="line">		<span class="keyword">return</span> clazz.newInstance();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//该方法根据指定文件来初始化对象池</span></span><br><span class="line">	<span class="comment">//根据配置文件来创建对象</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initPool</span><span class="params">(String fileName)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			FileInputStream fis  = <span class="keyword">new</span> FileInputStream(fileName);</span><br><span class="line">			Properties pr = <span class="keyword">new</span> Properties();</span><br><span class="line">			pr.load(fis);</span><br><span class="line">			<span class="keyword">for</span>(String name : pr.stringPropertyNames()) &#123;</span><br><span class="line">				System.out.println(name);</span><br><span class="line">				<span class="comment">//每取出一对 key-value对就根据value创建一个对象，根据对象值 填充到对象池中</span></span><br><span class="line">				objectPool.put(name,createObject(pr.getProperty(name)));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			System.out.println(<span class="string">"读取"</span>+fileName+<span class="string">"异常"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">getObject</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> objectPool.get(name);</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	test pf = <span class="keyword">new</span> test();</span><br><span class="line">	pf.initPool(<span class="string">"./src/instance.properties"</span>);</span><br><span class="line">	Object x1 = pf.getObject(<span class="string">"a"</span>);</span><br><span class="line">	Object x2 = pf.getObject(<span class="string">"b"</span>);</span><br><span class="line">	System.out.println(x1.equals(x2));</span><br><span class="line">	<span class="comment">//System.out.println(pf.getObject("b"));</span></span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>先使用Class对象获取指定的Constructor对象，在调用Constructor对象的newInstance()方法来创建该对象对应的实例。<br>如果不想利用默认构造器来创建java对象，而是使用指定的构造器来创建java对象，则需要利用Constructor对象，每一个Constructor对应一个构造器。<br>这个的使用步骤为：<ul>
+<li>首先获得一个类的Class</li>
+<li>通过Class获取该类对应的constructor</li>
+<li>调用Constructor的newInstance()方法来创建Java对象。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取class对象</span></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Class&lt;?&gt; cla = Class.forName(<span class="string">"javax.swing.JFrame"</span>);</span><br><span class="line">		Constructor con = cla.getConstructor(String.class);</span><br><span class="line">		<span class="comment">//调用方法创建对象</span></span><br><span class="line">		Object obj = con.newInstance(<span class="string">"ceshi"</span>);</span><br><span class="line">		System.out.println(obj);</span><br><span class="line">	&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>第一种方式来创建对象是比较常见的方式，因为在java中很多都是通过读取配置文件信息来创建java对象的。</p>
+<h4 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h4><p>当获得某个类对应的Class对象后，就可以通过该Class对象的getMethods()方法或者getMethod()方法来获取全部方法或者指定方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Tool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">	<span class="comment">//定义一个对象池，前面是对象名，后面是实际的对象</span></span><br><span class="line">	<span class="keyword">private</span>	Map&lt;String, Object&gt; objectPool = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">	<span class="keyword">private</span> Properties pr = <span class="keyword">new</span> Properties();</span><br><span class="line">	<span class="comment">//定一个创建对象的方法</span></span><br><span class="line">	<span class="comment">//该对象只要传入一个字符串类名，程序可以根据该类名生成Java对象</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> Object <span class="title">createObject</span> <span class="params">(String clazzName)</span> </span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ClassNotFoundException, InstantiationException, IllegalAccessException </span>&#123;</span><br><span class="line">		Class&lt;?&gt; clazz = Class.forName(clazzName);</span><br><span class="line">		<span class="comment">//使用clazz 默认的构造器创建实例</span></span><br><span class="line">		<span class="keyword">return</span> clazz.newInstance();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//该方法根据指定文件来初始化对象池</span></span><br><span class="line">	<span class="comment">//根据配置文件来创建对象</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initPool</span><span class="params">(String fileName)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			FileInputStream fis  = <span class="keyword">new</span> FileInputStream(fileName);</span><br><span class="line">			</span><br><span class="line">			pr.load(fis);</span><br><span class="line">			<span class="keyword">for</span>(String name : pr.stringPropertyNames()) &#123;</span><br><span class="line">				System.out.println(name);</span><br><span class="line">				<span class="comment">//每取出一对 key-value对就根据value创建一个对象，根据对象值 填充到对象池中</span></span><br><span class="line">				<span class="keyword">if</span>(!name.contains(<span class="string">"%"</span>)) &#123;</span><br><span class="line">					objectPool.put(name,createObject(pr.getProperty(name)));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			System.out.println(<span class="string">"读取"</span>+fileName+<span class="string">"异常"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initProperty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(String name : pr.stringPropertyNames()) &#123;</span><br><span class="line">			<span class="comment">// 每次取出来一个key-value 对，如果key 中包含百分号（%）</span></span><br><span class="line">			<span class="comment">//即可认为该key 是用来为对象的Field赋值的</span></span><br><span class="line">			<span class="comment">/*</span></span><br><span class="line"><span class="comment">			 * %的前半为对象名字，后半为Field设置值</span></span><br><span class="line"><span class="comment">			 * 程序将会调用相对应的setter来为Field设置值</span></span><br><span class="line"><span class="comment">			 */</span></span><br><span class="line">			<span class="keyword">if</span>(name.contains(<span class="string">"%"</span>)) &#123;</span><br><span class="line">				<span class="comment">//将配置文件按照%进行分割</span></span><br><span class="line">				String [] objAndProp = name.split(<span class="string">"%"</span>);</span><br><span class="line">				<span class="comment">//取出需要设置的Field值的目标对象</span></span><br><span class="line">				Object target = getObject(objAndProp[<span class="number">0</span>]);</span><br><span class="line">				<span class="comment">//该Field对应的setter方法名为</span></span><br><span class="line">				String mtdName = <span class="string">"set"</span>+objAndProp[<span class="number">1</span>].substring(<span class="number">0</span>,<span class="number">1</span>).toUpperCase()+objAndProp[<span class="number">1</span>].substring(<span class="number">1</span>);</span><br><span class="line">				Class&lt;?&gt; targetClass = target.getClass();</span><br><span class="line">				<span class="comment">//获取该属性对应的setter方法</span></span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					Method mtd = targetClass.getMethod(mtdName, String.class);</span><br><span class="line">					<span class="comment">//通过Method 的invoke 方法执行setter 方法</span></span><br><span class="line">					<span class="comment">//将config.getProperty(name) 的属性值作为调用setter的方法实参</span></span><br><span class="line">					mtd.invoke(target,pr.getProperty(name));</span><br><span class="line">				&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">					<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125; </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">getObject</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> objectPool.get(name);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	test test = <span class="keyword">new</span> test();</span><br><span class="line">	test.initPool(<span class="string">"./src/instance.properties"</span>);</span><br><span class="line">	test.initProperty();</span><br><span class="line">	System.out.println(test.getObject(<span class="string">"a"</span>));</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用Method的invoke()方法来调用对应的方法的时候，Java程序会要求必须有调用该方法的权限，如果某个程序想要调用某个对象的private方法， 那么可以先调用Method方法的如下方法：</p>
+<ul>
+<li>setAccessible(bool flag) 值为true的时候，说明该Method方法在使用的时候要取消java语言的访问呢检查，值为falser的时候，则要进行权限的检查。该方法不只是属于method ，对于constructor、field都是可以调用的<h4 id="访问属性值"><a href="#访问属性值" class="headerlink" title="访问属性值"></a>访问属性值</h4></li>
+<li>getField(String name)</li>
+<li>getFields()</li>
+<li>getDeclaredField(String name)</li>
+<li>getDeclaredFields()</li>
+<li>setXxx(Object obj,Xxx val) 将obj对象的field设置成val值，Xxx对应八种基本类型，val是要设置的对象的值。如果属性类型是引用类型，则取消set后面的Xxx</li>
+<li>getXxx()<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person1</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> String name;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	   <span class="keyword">return</span> <span class="string">"Person[name:"</span>+name+<span class="string">",age:"</span>+age+<span class="string">"]"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test5</span><span class="params">()</span> <span class="keyword">throws</span> NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException </span>&#123;</span><br><span class="line">		Person1 p = <span class="keyword">new</span> Person1();</span><br><span class="line">		Class&lt;Person1&gt; clazz = Person1.class;</span><br><span class="line">		Field nameField = clazz.getDeclaredField(<span class="string">"name"</span>);</span><br><span class="line">		nameField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		nameField.set(p, <span class="string">"gorge"</span>);</span><br><span class="line">		Field ageField = clazz.getDeclaredField(<span class="string">"age"</span>);</span><br><span class="line">		ageField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		ageField.setInt(p, <span class="number">12</span>);</span><br><span class="line">		System.out.println(p);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="操作数组"><a href="#操作数组" class="headerlink" title="操作数组"></a>操作数组</h4><p>在java.lang.reflect包下还提供了一个Arrays类，Arrays对象可以代表所有数组，程序可以通过使用Arrays来动态的创建数组。</p>
+<ul>
+<li>static Object newInstance(class&lt;?&gt; type, int len) 创建一个类型为type，长度为len的数组</li>
+<li>static xxx getXxx(Obj array, int index) 返回array数组中第index个元素。其中x x x是各种基本数据类型</li>
+<li>static void setXxx(Obj array, int index,xxx val)将arrays数组中第index个元素的值设置为val,如果是引用类型则直接使用set()</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Object arr = Array.newInstance(String.class,<span class="number">4</span>);</span><br><span class="line">		<span class="comment">//为数组赋值</span></span><br><span class="line">		Array.set(arr,<span class="number">3</span>,<span class="string">"java"</span>);</span><br><span class="line">		Array.set(arr, <span class="number">2</span>,<span class="string">"java ee"</span>);</span><br><span class="line">		Object one = Array.get(arr,<span class="number">2</span>);</span><br><span class="line">		Object two = Array.get(arr,<span class="number">3</span>);</span><br><span class="line">		System.out.println(one+<span class="string">":"</span>+two);</span><br></pre></td></tr></table></figure>
+<h3 id="使用反射生成JDK动态代理"><a href="#使用反射生成JDK动态代理" class="headerlink" title="使用反射生成JDK动态代理"></a>使用反射生成JDK动态代理</h3><p>在java的java.lang.reflect 包下提供了一个Proxy类和一个InvocationHandler接口，通过使用这个类和接口可以生成JDK动态代理类或动态代理对象。<br>如果在程序中为<strong>一个或多个接口动态的生成实现类</strong>，就可以使用proxy来创建动态代理类；如果需要<strong>为一个或多个接口动态的创建实例</strong>，也可以使用Proxy来创建动态代理实例。</p>
+<ul>
+<li>static Class&lt;?&gt; getProxyClass(ClassLoader loader,Class &lt;?&gt; … interfaces): 创建一个动态代理类所对应的class对象，该代理类将实现interface 所指定的多个接口。第一个ClassLoade参数指定生成动态代理类的类加载器。</li>
+<li>static Object newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h):直接创建一个动态代理对象，该代理对象的实现类实现了interface指定的系列接口，执行代理对象的每个方法时都会被替换执行InvocationHandler对象的invoke方法。<h4 id="通过动态代理类生成动态代理对象"><a href="#通过动态代理类生成动态代理对象" class="headerlink" title="通过动态代理类生成动态代理对象"></a>通过动态代理类生成动态代理对象</h4>先生成一个动态代理类，然后在通过动态代理类，来创建动态代理对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个InvokationHandler对象</span></span><br><span class="line">  InvocationHandler handler = <span class="keyword">new</span> MyInvokationHandler();</span><br><span class="line">  <span class="comment">//通过代理类来创建代理对象</span></span><br><span class="line">  Class proxyClass = Proxy.getProxyClass(Person.class.getClassLoader(), <span class="keyword">new</span> Class[] &#123;Person.class&#125;);</span><br><span class="line">  Constructor ctor = proxyClass.getConstructor(<span class="keyword">new</span> Class[] &#123;InvocationHandler.class&#125;);</span><br><span class="line">  Person p2 = (Person)ctor.newInstance(<span class="keyword">new</span> Object[] &#123;handler&#125;);</span><br><span class="line">  p2.sayHello(<span class="string">"nnd"</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="直接生成动态代理对象"><a href="#直接生成动态代理对象" class="headerlink" title="直接生成动态代理对象"></a>直接生成动态代理对象</h4><ul>
+<li>首先，我们要先创建一个接口</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">walk</span><span class="params">()</span></span>;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">sayHello</span><span class="params">(String name)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后实现InvocationHandle接口，因为在执行方法的时候，都会被替换成调用该invoke()方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="comment">//生成动态代理对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInvokationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line"> <span class="comment">/*</span></span><br><span class="line"><span class="comment">  * 执行动态代理对象的所有方法的时候，都会被替换成执行如下的invoke方法</span></span><br><span class="line"><span class="comment">  * 其中：</span></span><br><span class="line"><span class="comment">  * proxy:代表动态代理对象 例如：Person.class.getClassLoader()</span></span><br><span class="line"><span class="comment">  * method:代表正在执行的方法</span></span><br><span class="line"><span class="comment">  * args:代表调用目标方法的时候传入的实参</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">  <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">  System.out.println(<span class="string">"---正在执行的方法："</span>+method);</span><br><span class="line">  <span class="comment">//这里可以判断一下执行的是什么方法，然后对该方法进行 重新编辑</span></span><br><span class="line">  <span class="keyword">if</span>(method.equals(Person.class.getMethod(<span class="string">"walk"</span>, <span class="keyword">null</span>))) &#123;</span><br><span class="line">   System.out.println(<span class="string">"正在执行walk方法"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(args!=<span class="keyword">null</span>) &#123;</span><br><span class="line">   System.out.println(<span class="string">"下面是执行该方法的时候传入的参数："</span>);</span><br><span class="line">   <span class="keyword">for</span>(Object obj:args) &#123;</span><br><span class="line">    System.out.println(obj);</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">   System.out.println(<span class="string">"该方法没有实际的参数"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建一个动态代理对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//创建一个InvokationHandler对象</span></span><br><span class="line">  InvocationHandler handler = <span class="keyword">new</span> MyInvokationHandler();</span><br><span class="line">  <span class="comment">//使用指定的InvocationHandler 来生成一个动态代理对象</span></span><br><span class="line">  Person p = (Person)Proxy.newProxyInstance(Person.class.getClassLoader(),<span class="keyword">new</span> Class[] &#123;Person.class&#125; , handler);</span><br><span class="line">  p.walk();</span><br><span class="line">  p.sayHello(<span class="string">"HELLO"</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>一般我们通过第二种方式创建类的对象就可以了，在编写框架或者底层基础代码的时候，动态代理的作用就非常大了。</p>
+<h4 id="动态代理和AOP"><a href="#动态代理和AOP" class="headerlink" title="动态代理和AOP"></a>动态代理和AOP</h4><p>在开发一个实际的应用软件系统的时候，总会存在相同的代码段重复出现的情况，这种情况下，如果通过复制粘贴的方式，则对于后期的维护是非常困难的，如果通过将这个方法写出一个方法，然后调用的方式执行，则会使得程序的耦合性提高。因此，我们就可以通过动态代理的方式进行。<br>具体方式如下：</p>
+<ul>
+<li>创建一个对象接口</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Dog</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">info</span><span class="params">()</span></span>;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建接口的实现类</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GunDog</span> <span class="keyword">implements</span> <span class="title">Dog</span> </span>&#123;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span> </span>&#123;</span><br><span class="line">System.out.println(<span class="string">"我是一只猎狗"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">System.out.println(<span class="string">"我奔跑很快"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将重复的方法写到一个工具类中</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DogUtil</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  System.out.println(<span class="string">"------通用方法一"</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  System.out.println(<span class="string">"------通用方法二"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>实现InvocationHandler方法，并设置主调对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInvokationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line"><span class="comment">//需要被代理的对象</span></span><br><span class="line"><span class="keyword">private</span> Object target;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTarget</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.target = target;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"> DogUtil du = <span class="keyword">new</span> DogUtil();</span><br><span class="line">  <span class="comment">//执行DogUtil对象中的method方法</span></span><br><span class="line">  du.method();</span><br><span class="line">  Object result = method.invoke(target, args);</span><br><span class="line">  <span class="comment">//执行DogUtil 对象中的method2方法</span></span><br><span class="line">  du.method2();</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>创建代理工厂为指定的target 生成动态代理对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyProxyFactory</span> </span>&#123;</span><br><span class="line"><span class="comment">//为指定的target生成动态代理对象</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getProxy</span><span class="params">(Object target)</span>  </span>&#123;</span><br><span class="line">  MyInvokationHandler handler = <span class="keyword">new</span> MyInvokationHandler();</span><br><span class="line">  <span class="comment">//为handler设置target对象</span></span><br><span class="line">  handler.setTarget(target);</span><br><span class="line">  <span class="comment">//创建并返回一个动态代理</span></span><br><span class="line">  <span class="keyword">return</span> Proxy.newProxyInstance(target.getClass().getClassLoader(),target.getClass().getInterfaces(), handler);</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  Dog target = <span class="keyword">new</span> GunDog();</span><br><span class="line">  <span class="comment">//以指定target 来创建动态代理对象</span></span><br><span class="line">  Dog dog = (Dog)MyProxyFactory.getProxy(target);</span><br><span class="line">  dog.info();</span><br><span class="line">  dog.run();</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>当我们使用proxy生成一个动态代理的时候，往往并不会凭空产生一个动态代理，通常都是为指定的目标对象生成动态代理。<br>这种动态的代理在AOP（面向切面的编程）中被称为AOP代理，AOP代理可以代替目标对象，AOP代理包含了目标对象的全部方法，但是AOP代理中的方法与目标对象的方法存在差异，AOP代理的方法可以在执行目标方法之前或者之后插入一些有用的处理。</p>
+<h3 id="反射和泛型"><a href="#反射和泛型" class="headerlink" title="反射和泛型"></a>反射和泛型</h3><p>如果Class对应的类暂时未知，则使用Class&lt;?&gt;。通过在反射中使用泛型，可以避免使用反射生成的对象需要强制类型转换。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">getInstance</span><span class="params">(Class&lt;T&gt; cls)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> cls.newInstance();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException e) &#123;</span><br><span class="line">   <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">   e.printStackTrace();</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取实例无需进行类型转换</span></span><br><span class="line">  Date d = getInstance(Date.class);</span><br><span class="line">  JFrame f = getInstance(JFrame.class);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="使用反射来获取泛型信息"><a href="#使用反射来获取泛型信息" class="headerlink" title="使用反射来获取泛型信息"></a>使用反射来获取泛型信息</h4><p>对于基本的类型，可以通过泛型，直接查看</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> dfsdf ;</span><br><span class="line">Field t = Test.class.getField(<span class="string">"dfsdf"</span>);</span><br><span class="line">  Class&lt;?&gt; TYPE = t.getType();</span><br><span class="line">  System.out.println(TYPE);</span><br></pre></td></tr></table></figure>
+<p>但是如果该Field是有泛型类型的类型，如Map&lt;String,Integer&gt;类型，则不能准确的得到这个类型。<br>要想获取泛型类型，则需要先使用</p>
+<ul>
+<li>getGenericType() 获得实例的泛型类型<br>然后在将Type 对象强制类型转换为ParameterizedType 对象，该对象代表被参数化的类型，也就是增加了泛型限制的类型。</li>
+<li>getRawType(): 返回没有泛型信息的原始类型</li>
+<li>getActualTypeArguments() 返回泛型参数类型</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Map&lt;String,Integer&gt; score;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> <span class="keyword">throws</span> NoSuchFieldException, SecurityException </span>&#123;</span><br><span class="line">    Class&lt;?&gt; clazz = Test.class;</span><br><span class="line">    Field f = clazz.getDeclaredField(<span class="string">"score"</span>);</span><br><span class="line">    Class&lt;?&gt; a = f.getType();</span><br><span class="line">    <span class="comment">//下面将看到输出Map类型，但是map的泛型类型，则获取不到</span></span><br><span class="line">    System.out.println(a);</span><br><span class="line">    <span class="comment">//获得Field实例f的泛型类型</span></span><br><span class="line">    Type gType = f.getGenericType();</span><br><span class="line">    <span class="comment">//如果这个类型是ParameterizedType 对象</span></span><br><span class="line">    <span class="keyword">if</span>(gType <span class="keyword">instanceof</span> ParameterizedType) &#123;</span><br><span class="line">     <span class="comment">//强制类型转换</span></span><br><span class="line">     ParameterizedType ptype = (ParameterizedType)gType;</span><br><span class="line">     <span class="comment">//获取原始类型</span></span><br><span class="line">     Type rType = ptype.getRawType();</span><br><span class="line">     System.out.println(<span class="string">"原始类型为："</span>+rType);</span><br><span class="line">     <span class="comment">//获取泛型类型的泛型参数</span></span><br><span class="line">     Type[] tArgs = ptype.getActualTypeArguments();</span><br><span class="line">     System.out.println(<span class="string">"泛型类型是："</span>);</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;tArgs.length;i++) &#123;</span><br><span class="line">      System.out.println(<span class="string">"第"</span>+i+<span class="string">"个泛型类型是"</span>+tArgs[i]);</span><br><span class="line">     &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">     System.out.println(<span class="string">"获取类型错误"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>注意上面说有的类型都是来自java.lang.reflect包下的。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2021/01/02/类的加载机制与反射机制/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="类的加载机制与反射机制">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Java集合总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/12/25/Java集合总结/" class="article-date">
+  	<time datetime="2020-12-25T12:35:38.840Z" itemprop="datePublished">2020-12-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/25/Java集合总结/">
+        Java集合总结
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java的集合类主要是由两个接口派生出来的：Collection 和Map</p>
+<ul>
+<li>Collection<ul>
+<li>Set 无序集合 不可重复<ul>
+<li>EnumSet</li>
+<li>SortedSet<br>  TreeSet</li>
+<li>HashSet<br>  LinkedHashSet</li>
+</ul>
+</li>
+<li>Queue 队列<ul>
+<li>Deque<br> ArrayDeque<br> LinkedList</li>
+<li>PriorityQueue</li>
+</ul>
+</li>
+<li>List 有序集合 元素可以重复<ul>
+<li>ArrayList</li>
+<li>LinkedList</li>
+<li>Vector<br> stack</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Map<ul>
+<li>EnumMap</li>
+<li>IdentityHashMap</li>
+<li>HashMap(线程不安全，key value 可以为null)<ul>
+<li>LinkedHashMap</li>
+</ul>
+</li>
+<li>Hashtable (线程安全key value 不能为null )<ul>
+<li>Properties</li>
+</ul>
+</li>
+<li>SortedMap<ul>
+<li>TreeMap</li>
+</ul>
+</li>
+<li>WeekHashMap</li>
+</ul>
+</li>
+<li>Iterator 用来集合遍历<h1 id="各个集合的特点"><a href="#各个集合的特点" class="headerlink" title="各个集合的特点"></a>各个集合的特点</h1><h2 id="Set集合"><a href="#Set集合" class="headerlink" title="Set集合"></a>Set集合</h2><h3 id="HashSet-类"><a href="#HashSet-类" class="headerlink" title="HashSet 类"></a>HashSet 类</h3>特点：</li>
+</ul>
+<ol>
+<li>不能保证元素的排列顺序，顺序有可能发生变换</li>
+<li>不是同步的，如果是多线程程序，需要使用线程代码，来保证同步</li>
+<li>集合元素可以为null</li>
+<li>HashSet 集合判断两个元素相等是通过两个对象执行equals()方法比较并且两个对象的hashCode()方法返回值也要相等。</li>
+</ol>
+<p>补充： hash 算法的功能 - hash算法的价值在于速度，它可以保证查询速度被快速执行。当需要查询集合中某个元素的时候，hash算法可以直接根据该元素计算出该元素的存储位置，从而可以让程序快速定位该元素。</p>
+<p>HashSet中每个能存储元素的“槽位”通常称为“桶”，如果有多个元素的hashCo de值相同，但他们通过equals()方法返回false,这样一个“桶”里面就会放多个元素，会导致性能下降。</p>
+<h3 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h3><p>是HashSet的子类，与父类的不同在于该类使用链表维护元素的次序，这样使得元素看起来是按照插入顺序保存的。<br>LinkedHashSet是因为使用了链表维护元素的次序，因此性能相对低于父类，但是迭代访问的时候将会有很好的性能。</p>
+<h3 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h3><p>TreeSet可以确保集合元素处于排序状态（排序状态指的是根据值的实际大小），除了haseset的方法之外，treeset提供了一些额外的方法</p>
+<ul>
+<li>Comparator comparator() 如果truest 采用了定制的排序，则该方法返回定制排序所使用的Comparator ,如果采用的是自然的排序，那么这个方法返回null</li>
+<li>first() 返回集合元素中的第一个元素</li>
+<li>last() 返回集合元素中的最后一个元素</li>
+<li>lower(object e) 返回集合元素中位于指定元素之前的元素（即小于指定元素的最大元素）</li>
+<li>higher(object e) 返回集合中位于指定元素之后的元素 （即大于指定元素的最小元素）</li>
+<li>subSet(from,to) 返回集合的子集合，范围从from 到to</li>
+<li>headSet(toele) 返回集合的子集，由小于toele的元素组成</li>
+<li>tailSet(fromele) 返回集合的子集，由大于或等于fromele的元素组成</li>
+</ul>
+<h4 id="treeset的排序"><a href="#treeset的排序" class="headerlink" title="treeset的排序"></a>treeset的排序</h4><p>TreeSet 按照红黑树的数据结构进行存储，支持两种排序。<br><strong><em>如果想要在集合treeSet中添加对象的话，该对象就需要实现Comparable接口。</em></strong><br>comparable该接口定义了一个compareTo(Object obj)方法，该方法返回一个整数值。obj1.compareTo(obj2)如果该方法返回0，则表明这两个对象是相等的，如果返回一个正整数，则表明obj1 大于obj2，如果该方法返回一个负整数，则表明obj1小于obj2。</p>
+<ul>
+<li>自然排序<br>默认情况下是按照自然排序的方法进行排序的，即比较集合的大小，然后按照升序排列。<br>注意：如果添加的对象的比较是根据一个可变Field的字段，进行比较的情况。<br>如果是修改了Field字段，再次试图删除该对象的时候，Treeset里面的元素处于无序的状态，删除一个没有改变过的数据后集合中的元素会进行重新索引，接下来就可以删除集合中的所有的元素了。</li>
+<li>定制排序<br>如果实现定制排序，则可以通过Comparator 接口的帮助。该接口里包含一个in t compare(T o1,T o2)方法，该方法可以用于比较o1和o2的大小。如果需要实现定制排序，则需要在创建TreeSet集合对象的时候，提供一个Comparator对象与该TreeSet 集合关联。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">M</span> </span>&#123;</span><br><span class="line"> <span class="keyword">int</span> age ;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">M</span><span class="params">(<span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">	 <span class="keyword">this</span>.age = age;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	 <span class="keyword">return</span> <span class="string">"M[age:"</span>+age+<span class="string">"]"</span>;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Comparator;</span><br><span class="line"><span class="keyword">import</span> java.util.TreeSet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest4</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		TreeSet&lt;M&gt; ts = <span class="keyword">new</span> TreeSet&lt;M&gt;(<span class="keyword">new</span> Comparator&lt;M&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(M o1, M o2)</span> </span>&#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">				M m1 = o1;</span><br><span class="line">				M m2 = o2;</span><br><span class="line">				<span class="keyword">return</span> m1.age&gt;m2.age?-<span class="number">1</span>:m1.age &lt;m2.age?<span class="number">1</span>:<span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;);</span><br><span class="line">		</span><br><span class="line">		ts.add(<span class="keyword">new</span> M(<span class="number">5</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> M(-<span class="number">3</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> M(<span class="number">9</span>));</span><br><span class="line">		System.out.println(ts);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="EnumSet类"><a href="#EnumSet类" class="headerlink" title="EnumSet类"></a>EnumSet类</h3><p>EnumSet是一个专门为枚举类设计的集合类，EnumSet中的所有元素必须是指定枚举类型的枚举，集合元素是有顺序，顺序是由定义顺序决定的。</p>
+<p>EnumSet内部是以位向量的形式存储的，这种存储形式非常高效，占用内存小，运行效率好，进行批量操作的执行速度非常快。</p>
+<p>EnumSet 集合不允许加入null元素。<br>EnumSet 类没有暴露任何构造器来创建该类的实例，程序应该通过它提供的static方法来创建EnumSet对象。</p>
+<h4 id="EnumSet类提供了如下常用的static方法来创建对象"><a href="#EnumSet类提供了如下常用的static方法来创建对象" class="headerlink" title="EnumSet类提供了如下常用的static方法来创建对象"></a>EnumSet类提供了如下常用的static方法来创建对象</h4><ul>
+<li>allof(Class ele)：创建一个包含指定枚举类里所有枚举值的EnumSet集合</li>
+<li>complementOf(EnumSet s) 创建一个其元素类型与指定EnumSet里元素类型相同的EnumSet集合</li>
+<li>copyOf(Collection c) 使用一个普通集合来创建EnumSet集合</li>
+<li>copyOf(EnumSet s) 创建一个与指定EnumSet 具有相同元素类型、相同集合元素的EnumSet集合</li>
+<li>noneOf(Class elementType) 创建一个元素类型为指定枚举类型的空EnumSet</li>
+<li>range(E from ,E rest) 创建包含一个或多个枚举值的EnumSet 集合，传入的多个枚举值必须属于同一个枚举类</li>
+<li>of(E first,E rest) 创建一个包含一个或多个枚举值的EnumSet集合</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mport java.util.EnumSet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> season&#123;</span><br><span class="line">	Sp,Sum,Fal,Win</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest4</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		EnumSet es1 = EnumSet.allOf(season.class);</span><br><span class="line">		System.out.println(es1);</span><br><span class="line">		</span><br><span class="line">		EnumSet es2 = EnumSet.noneOf(season.class);</span><br><span class="line">		System.out.println(es2);</span><br><span class="line">		</span><br><span class="line">		es2.add(season.Sp);</span><br><span class="line">		System.out.println(es2);</span><br><span class="line">		</span><br><span class="line">		EnumSet es3 = EnumSet.complementOf(es1);</span><br><span class="line">		es3.add(season.Fal);</span><br><span class="line">		System.out.println(es3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>** 当试图复制一个Collection集合里面的值的时候来创建EnumSet集合时，必须保证Collection集合里面的元素都是同一个枚举类的枚举值。</p>
+<h4 id="set类的性能分析以及使用决策"><a href="#set类的性能分析以及使用决策" class="headerlink" title="set类的性能分析以及使用决策"></a>set类的性能分析以及使用决策</h4><ul>
+<li>HashSet总是比TreeSet好，特别是常用的添加、查询元素。只有当需要维持一个排序的集合的时候才选择TreeSet.</li>
+<li>HashSet与Lin kedHashSet的比较：hashSet的插入、删除操作要更快一些。LinkedHashSet的遍历操作会更快一些。</li>
+<li>EnumSet 是所有Set实现类中性能最好的，但是只能保存同一个枚举类的枚举值作为集合元素。</li>
+<li>三个实现类都是线程不安全的，如果有多个线程访问set的时候，则必须手动保证该Se t集合的同步。<br>通常可以使用synchronizedSortedSet方法来包装<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SortedSet s = Collections.synchronizedSortedSet(<span class="keyword">new</span> TreeSet());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="List集合"><a href="#List集合" class="headerlink" title="List集合"></a>List集合</h2><p>Lsit集合代表一个元素有序、可重复的集合，集合中每个元素都有其对应的顺序索引。list集合允许使用重复元素，可以通过索引来访问指定位置的集合元素。<br>List集合可以使用collection集合的所有操作方法。<br>list里面增加了一些根据索引来操作集合元素的方法。</p>
+<ul>
+<li>void add(int index ,obj ele) </li>
+<li>boolean addAll(int index,Collection c )</li>
+<li>object get(int index) 返回集合index索引处的元素</li>
+<li>int indexOf(Object o) 返回对象o 在list集合中第一次出现的位置索引</li>
+<li>int lastIndexOf(obj o) 返回对象o在list中最后一次出现的位置索引</li>
+<li>obj remove(int index) 删除并返回index索引处的元素</li>
+<li>List subList(int fromIndex,int toIndex) 返回从索引fromIndex 到索引toIndex处所有集合元素组成的子集合</li>
+<li>Object set(int index,Object element) 将index索引处的元素替换成element对象<br> 当调用List集合的set的方法的时候，指定的索引必须是Lis t集合的有效索引，不能添加一个大于list长度的索引值。</li>
+<li><ul>
+<li>集合元素判断两个元素相等的方式是 equals 方法。<br><em>equals判断相等的方法是值相等，== 判断相等的方法是指向同一个对象。</em></li>
+</ul>
+</li>
+</ul>
+<h4 id="list还额外提供了一个listIterator-方法，该方法返回一个ListIterator对象-增加了下面的方法"><a href="#list还额外提供了一个listIterator-方法，该方法返回一个ListIterator对象-增加了下面的方法" class="headerlink" title="list还额外提供了一个listIterator()方法，该方法返回一个ListIterator对象,增加了下面的方法"></a>list还额外提供了一个listIterator()方法，该方法返回一个ListIterator对象,增加了下面的方法</h4><ul>
+<li>boolean hasPrevious() 返回该迭代器关联的集合是否还有上一个元素</li>
+<li>Object previous() 返回该迭代器的上一个元素</li>
+<li>void add() 在指定的位置增加一个元素<h3 id="ArrayList和Vector实现类"><a href="#ArrayList和Vector实现类" class="headerlink" title="ArrayList和Vector实现类"></a>ArrayList和Vector实现类</h3>（vector 是一个古老的集合，有很多缺点，不建议使用，Ar ra yList是线程不安全的，Vector是线程安全的）</li>
+<li>完全支持前面提到的List接口的全部功能</li>
+<li>都是基于数组实现的List类</li>
+<li>这两个对象都是使用initialCapacity 参数来设置数组的长度，当数组的长度改变的时候可以initialCapacity回自动增加</li>
+<li>void ensureCapacity(int minCapacity) 当向实现类中增加大量的元素的时候，该方法可以一次性的增加mincapacity大小的</li>
+<li>void trimToSize() 调整ArrayList或vector集合的Obj[] 数组长度为当前元素的个数。减少使用空间</li>
+<li>vector 集合实现了一个Stack的子类。实现了栈的方法，peek(),pop(),push()方法。<h3 id="固定长度的List"><a href="#固定长度的List" class="headerlink" title="固定长度的List"></a>固定长度的List</h3>前面讲数组的时候介绍了一个操作数组的工具类：Arrays,该工具类里提供了asList(object …a) 方法，该方法可以把一个数组或指定个数的对象转换成List集，这个list既不是ArrayList实现类的实例，也不是Vector实现类的实例，而是Arrays的内部类ArrayList的实例。<br>Arrays.ArrayList是一个固定长度的List集合，程序只能遍历访问该集合里面的元素，不能增加、删除该集合里面的元素。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List fixedList = Arrays.asList(<span class="string">"疯狂Java讲义"</span>,<span class="string">"轻量级Java EE企业级应用实战"</span>);</span><br><span class="line">	System.out.println(fixedList.getClass());</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;fixedList.size();i++) &#123;</span><br><span class="line">		System.out.println(fixedList.get(i));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//试图增加、删除元素都会引发异常</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Queue集合"><a href="#Queue集合" class="headerlink" title="Queue集合"></a>Queue集合</h3><p>用于模拟队列这种数据结构，队列通常是指“先进先出”的容器。</p>
+<p>Queue接口中定义了以下几个方法：</p>
+<ul>
+<li>void add(Object e): 将指定元素加入到这个队列的尾部</li>
+<li>Object element(): 获取队列头部的元素，但是不删除队列中该元素</li>
+<li>boolean offer(Object e) 将指定元素加入到此队列的尾部</li>
+<li>Object peek() 获取队列头部的元素 但是不删除该元素，队列为空就返回null</li>
+<li>Object poll() 获取队列头部元素，并且删除这个元素</li>
+</ul>
+<p>Queue接口有一个PriorityQueue 实现类。Queue还有一个Deque接口，Deque代表一个“双端队列”,双端队列可以同时从两端来添加、删除元素。</p>
+<h4 id="PriorityQueue实现类"><a href="#PriorityQueue实现类" class="headerlink" title="PriorityQueue实现类"></a>PriorityQueue实现类</h4><p>这个队列是一个比较标准的队列实现类，之所以说它是比较标准的队列实现，是因为这个队列的保存不是按照加入队列的顺序保存的，而是按照队列元素的大小进行重新排序，取出的时候是先取出元素最小的那个元素，而不是首先插入的元素。(在这个意义上已经违背了队列的先进先出)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PriorityQueue&lt;Integer&gt; pro = <span class="keyword">new</span> PriorityQueue&lt;Integer&gt;();</span><br><span class="line">	pro.offer(<span class="number">3</span>);</span><br><span class="line">	pro.offer(<span class="number">9</span>);</span><br><span class="line">	pro.offer(<span class="number">1</span>);</span><br><span class="line">	System.out.println(pro);</span><br><span class="line">	System.out.println(pro.poll());</span><br><span class="line">	System.out.println(pro.poll());</span><br><span class="line">	System.out.println(pro.poll());</span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>可以发现，如果是直接输出队列的话，会使用toString()返回值，受String的影响，会导致输出的序列没有按照顺序输出，但是如果我们使用poll()的话，就是按照从小到大的顺序。</p>
+<p>PriorityQueue 不允许插入null元素，因为它需要对队列中元素进行排序。</p>
+<ul>
+<li>自然排序<br>自然排序的元素必须实现了Comparable接口。</li>
+<li>定制排序<br> 创建PriorityQueue队列的时候，传入一个Comparator 对象，该对象负责对队列中的所有元素进行排序，不要求队列元素实现Comparator的接口。<h4 id="Deque-接口与ArrayDeque实现类"><a href="#Deque-接口与ArrayDeque实现类" class="headerlink" title="Deque 接口与ArrayDeque实现类"></a>Deque 接口与ArrayDeque实现类</h4>Deque接口是Queue接口的子接口，代表了一个双端队列，允许从两端来操作队列的元素。<strong><em>可以当作双端队列或者栈使用</em></strong></li>
+<li>addFirst()</li>
+<li>addLast()</li>
+<li>Iterator descendingIterator() 返回该双端队列对应的迭代器，该迭代器按照逆向顺序迭代队列</li>
+<li>getFirst()</li>
+<li>getLast()</li>
+<li>offerFiirst()</li>
+<li>offerLast()</li>
+<li>peekFirst()</li>
+<li>peekLast()</li>
+<li>pollFirst()</li>
+<li>pollLast()</li>
+<li>pop() 相当于removeFirst</li>
+<li>push() 相当于addFirst</li>
+<li>obj removeFirst() 获取并删除该双端队列的第一个元素</li>
+<li>obj removeFirstOccurrence(obj o) 删除该双端队列的第一个出现的元素o</li>
+<li>removeLast()获取并删除该双端队列的最后一个元素</li>
+<li>removeLastOccurrence(obj o) 删除该双端队列最后一次出现的元素o<br>ArrayDeque是Deque的基于数组的实现类。<h4 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h4>是List接口的实现类，意味着这是Lis t的一个集合，可以根据索引来随机访问集合中的元素，还实现了De que接口，因此也可以当作双端队列使用，也可以当作栈使用。</li>
+</ul>
+<p>LinkedList是一个功能非常强大的集合，与ArrayList以及ArrayDeque的实现机制完全不同，Array是按照数组形式来保存数据的，因此在访问集合元素的时候性能比较好，Linkedlist是根据链表来存储数据的，访问数据的时候性能比较差，但是在插入、删除元素的时候性能比较好。</p>
+<h3 id="各种线性表的性能分析"><a href="#各种线性表的性能分析" class="headerlink" title="各种线性表的性能分析"></a>各种线性表的性能分析</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>实现机制</th>
+<th>随机访问排名</th>
+<th>迭代操作</th>
+<th>插入操作</th>
+<th>删除操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数组</td>
+<td>连续内存区保存元素</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>ArrayList/ArrayDeque</td>
+<td>以数组保存元素</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Vector</td>
+<td>以数组保存元素</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>以链表保存元素</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="java堆内存大小的修改"><a href="#java堆内存大小的修改" class="headerlink" title="java堆内存大小的修改"></a>java堆内存大小的修改</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Xms128m -Xmx512m PerformanceTest</span><br></pre></td></tr></table></figure>
+<p>-Xms 表示设置的JVM的堆内存的初始大小<br>-Xmx 表示设置的JVM的堆内存的最大大小（不要超过物理内存）</p>
+<h4 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h4><ul>
+<li>如果是遍历List集合 <ul>
+<li>ArrayList、Vector使用get来遍历集合元素</li>
+<li>LinkedList集合 使用迭代器遍历</li>
+</ul>
+</li>
+<li>如果需要经常执行插入删除 操作 则使用LinkedList。如果使用ArrayList或者Vector的话，通常需要重分配内部数组的大小，时间开销经常是LinkedList的几十倍。</li>
+<li>多线程访问集合的时候，应该考虑集合的线程安全集合</li>
+</ul>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>map的key是不允许重复的，在一个Map对象的任何两个key通过equals方法比较总是返回false。<br>Set与Map的关系非常的密切，从源码来看，Java是通过先实现了Map，然后通过包装一个所有value都为null的Map就实现了Set集合。<br>通用方法总结<br>-clear() 删除该Map对象中所有的key-value对</p>
+<ul>
+<li>bool containsKey()</li>
+<li>bool containsValue() </li>
+<li>Set entrySe() 返回Map集合中所有的key-value对</li>
+<li>obj get(key)</li>
+<li>isEmpty()</li>
+<li>Set keySet()</li>
+<li>obj put(key,value)</li>
+<li>void putAll(map)</li>
+<li>obj remove(key)</li>
+<li>int size() </li>
+<li>Collection values()</li>
+</ul>
+<p>map中的每一个实体类的方法：</p>
+<ul>
+<li>obj getKey()</li>
+<li>obj getValue()</li>
+<li>obj setValue()<h3 id="HashMap-和-Hashtable实现类"><a href="#HashMap-和-Hashtable实现类" class="headerlink" title="HashMap 和 Hashtable实现类"></a>HashMap 和 Hashtable实现类</h3>HashTable与HashMap都是Map接口的典型实现，它们之间的关系类似于ArrayList与Vector的关系。HashTable是一个古老的Map实现类。<br>区别：</li>
+<li>Hashtable是一个线程安全的实现，HashMap是线程不安全的。</li>
+<li>Hashtable不允许使用null作为key和value ,HashMap是可以的。<br>Hashtable和HashMap类用作key的对象都必须实现hashCode()方法和equals()方法。<br>Hashtable与HashMap 列表判断值相等的方法是equals()方法<h4 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h4>LinkedhashMap 使用双向链表来维护key-value对的次序，该链表负责维护Map的迭代顺序，保证顺序与插入的链表一致。<h4 id="Properties-读写属性文件"><a href="#Properties-读写属性文件" class="headerlink" title="Properties 读写属性文件"></a>Properties 读写属性文件</h4>（windows中的ini文件就是一种属性文件）<br>Properties 类是Hashtable 类的子类，该对象在处理属性文件的时候特别方便。该类可以把Map 对象和属性文件关联起来，从而可以把Map对象中的key-value 对写入属性文件中，也可以把属性文件中的“属性名= 属性值”加载到Map 对象中。<br>一共有三个方法修改Properties里面的key和value值</li>
+<li>String getProperty(String key) : 获取属性文件中指定属性名对应的属性值</li>
+<li>String getProperty(String key,String defaultValue) 如果文件中不存在指定的key值的时候，会设置default作为默认值。</li>
+<li>Object setProperty(String key,String value) 设置属性</li>
+<li>void load(InputStream inStream) 从属性文件中加载key-value对，把加载到的key-value对追加到Propertie里面，不保证次序</li>
+<li>void store(OutputStream out,String ) 将properties 中的key-value对输出到指定的属性文件中。</li>
+</ul>
+<p>这里提供一个读取java中的properties文件的示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Properties pro = <span class="keyword">new</span> Properties();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">// 读取</span></span><br><span class="line">			pro.load(<span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(<span class="string">"./pro.properties"</span>)));</span><br><span class="line">			String xx = pro.getProperty(<span class="string">"ee"</span>);</span><br><span class="line">			System.out.println(xx);</span><br><span class="line">			pro.setProperty(<span class="string">"p"</span>, <span class="string">"12323"</span>);</span><br><span class="line">			System.out.println(pro.getProperty(<span class="string">"p"</span>));</span><br><span class="line">			<span class="comment">//存储</span></span><br><span class="line">			pro.store(<span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">"./pro.properties"</span>)),<span class="string">"test line"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="SortedMap接口和TreeMap实现类"><a href="#SortedMap接口和TreeMap实现类" class="headerlink" title="SortedMap接口和TreeMap实现类"></a>SortedMap接口和TreeMap实现类</h4><p>SortedMap接口也有一个TreeMap的实现类，TreeMap就是一个红黑树数据结构，每个key-value对即作为红黑树的一个节点。TreeMap存储key-value对的时候，需要根据key对节点进行排序。TreeMap可以保证所有的key-value对处于有序状态。</p>
+<ul>
+<li>自然排序<br>key必须实现Comparable接口，而且所有的ke y应该是同一个类的对象。</li>
+<li><p>自定义排序<br> 创建Treemap的时候，需要传入一个Comparator对象，该对象负责对Treemap 中的所有的key进行排序。</p>
+<p>如果使用自定义作为Treemap的key的时候，如果想要让TreeMap良好的工作，则重写该类的equals()方法和compareTo()方法时保持一致的返回结果，两个key 通过equals()方法比较返回true时，它们通过compareTo()方法。</p>
+</li>
+<li><p>Map.Entry firstEntry()：返回该Map中的最小值，如果该Map为空或不存在这样的key，则都返回null</p>
+</li>
+<li>firstKey() 返回该Map中最小key值，如果该Map为空，则返回null</li>
+<li>Map.Entry lastEntry(): 返回map中最大key值</li>
+<li>Map.Entry higherEntry(obj key) 返回该Map中位于后一位的key-value 对。如果该Map为空，则返回null</li>
+<li>Object higherKey(object key) 返回该Map中位于key后一位的key值</li>
+<li>Map.Entry lowerEntry(obj key) 返回该Map中位于key 前一位的key-value对</li>
+<li>Object lowerKey(obj key) 返回该Map中位于key前一位的ke y值</li>
+<li>NavigableMap subMap(obj fromkey, bool from, obj toKey ,bool toin) 返回map的子集，是否包含fromKey 与 toKey主要取决于 后面的bool值</li>
+<li>SortedMap tailMap(obj fromKey) 返回map的子map,其key 的范围是大于fromKey的。</li>
+<li>SortedMap headMap(obj toKey) 返回该map的子Map,其key的范围是小于hokey的所有的key</li>
+<li>Navigatable headMap(obj tokey,bool inclu) tokey是否包含取决于bool的值<h4 id="weakHashMap实现类"><a href="#weakHashMap实现类" class="headerlink" title="weakHashMap实现类"></a>weakHashMap实现类</h4>与HashMap的用法是一样的，只不过HashMap是强引用的，只要HashMap对象不被销毁，那么所有的key就都不会被垃圾回收机制回收，也不会自动删除这些key对应的key-value对。但是weakHashMap是弱引用的，如果该对象的key 没有被强引用变量引用，则这些key所引用的对象可能被垃圾回收，也可能自动删除这些key 所对应的key-value对。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	WeakHashMap&lt;String, String&gt; whm = <span class="keyword">new</span> WeakHashMap&lt;String, String&gt;();</span><br><span class="line">	whm.put(<span class="keyword">new</span> String(<span class="string">"语文"</span>), <span class="keyword">new</span> String(<span class="string">"良好"</span>));</span><br><span class="line">	whm.put(<span class="keyword">new</span> String(<span class="string">"数学"</span>), <span class="keyword">new</span> String(<span class="string">"及格"</span>));</span><br><span class="line">	whm.put(<span class="keyword">new</span> String(<span class="string">"英文"</span>), <span class="keyword">new</span> String(<span class="string">"中等"</span>));</span><br><span class="line">	System.out.println(whm);</span><br><span class="line">	whm.put(<span class="string">"java"</span>,<span class="string">"dsdfs"</span>);</span><br><span class="line">	System.gc();</span><br><span class="line">	System.runFinalization();</span><br><span class="line">	System.out.println(whm);</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//结果</span></span><br><span class="line">&#123;英文=中等, 数学=及格, 语文=良好&#125;</span><br><span class="line">&#123;java=dsdfs&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>从上面的程序中，我们可以看出，在系统进行垃圾回收的时候，前面new的对象全部被回收了，但是使用字符串java的变量还在，这是因为前面三个都是匿名的对象，weakHashMap只保留了它的弱引用，但是第四个的key是一个字符串直接量，系统会保留它的强引用，所以垃圾回收机制不会回收。</p>
+<h4 id="IdentityHashMap实现类"><a href="#IdentityHashMap实现类" class="headerlink" title="IdentityHashMap实现类"></a>IdentityHashMap实现类</h4><p>这个实现类与HashMap的类是实现机制是相同的，主要的区别在于当且仅当两个key严格相等的时候(key1 == key2)的时候，该类才能判定两个ke y相等。对于普通的HashMap而言，只要key1 和key2 通过equals()方法比较返回true,且它们的hashCode值相等即可。</p>
+<h4 id="EnumMap-实现类"><a href="#EnumMap-实现类" class="headerlink" title="EnumMap 实现类"></a>EnumMap 实现类</h4><p>EnumMap是一个与枚举类一起使用的map实现，EnumMap中的所有key必须是单个枚举类的枚举值。创建EnumMap的时候，必须显示或者隐示的指定它对应的枚举类。<br>根据key的自然顺序来维护key-value 对的顺序。<br>EnumMap 不允许使用null作为key，但是允许使用null作为value.<br>创建EnumMap的时候，必须指定一个枚举类，从而将该EnumMap和指定枚举类关联起来。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.EnumMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> Season&#123;</span><br><span class="line">	SPRING,SUMMER,FALL,WINTER</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	EnumMap&lt;Season, String&gt; sE = <span class="keyword">new</span> EnumMap&lt;Season, String&gt;(Season.class);</span><br><span class="line">	sE.put(Season.FALL, <span class="string">"dsdf"</span>);</span><br><span class="line">	sE.put(Season.SPRING, <span class="string">"dsdfsd"</span>);</span><br><span class="line">	System.out.println(sE);</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Map实现类的性能分析"><a href="#Map实现类的性能分析" class="headerlink" title="Map实现类的性能分析"></a>Map实现类的性能分析</h4><ul>
+<li>HashMap与Hashtable的效率大致相同，实现机制几乎一样，但是Hashtable是线程同步的。</li>
+<li>TreeMap 通常比HashMap、Hashtable要慢，因为TreeMap 底层采用红黑树来管理。</li>
+<li>对于一般的应用场景，程序应该多考虑使用HashMap，因为HashMap正是为查询设计的。</li>
+<li>LinkedHashMap比HashMap 慢一点，因为它需要维护链表来保持Map中的key-value时的添加顺序。<h4 id="HashSet-和-HashMap的性能选项"><a href="#HashSet-和-HashMap的性能选项" class="headerlink" title="HashSet 和 HashMap的性能选项"></a>HashSet 和 HashMap的性能选项</h4>对于HashSet及其子类而言，它们采用hash算法来决定集合中元素的存储位置，并通过hash算法来控制集合的大小；对于HashMap、Hashtable及其子类而言，它们采用hash算法来决定Map中key的存储，并通过hash算法来增加key集合的大小。<br>hash表里面可以存储元素的位置被称为“桶”，通常情况下，单个“桶”里面存储一个元素，此时有最好的性能。<h2 id="操作集合的工具类：Collections"><a href="#操作集合的工具类：Collections" class="headerlink" title="操作集合的工具类：Collections"></a>操作集合的工具类：Collections</h2>Java提供了一个Set、List和Map的工具类：Collection,该工具类里面提供了大量的方法可以对集合进行排序、删除、查找、设置集合为不可变、对集合对象实现同步控制等方法。<h3 id="排序操作"><a href="#排序操作" class="headerlink" title="排序操作"></a>排序操作</h3></li>
+<li>static void reverse(List list) 反转指定集合的元素</li>
+<li>static void shuffle(List list) 对集合元素进行随机排序</li>
+<li>static void sort(List list) 根据自然排序对集合进行升序排序</li>
+<li>static void sort(List list,Comparator c) 根据指定的规则对集合进行排序</li>
+<li>satic void swap(List list, int I,int j) 将指定的Lis t集合中的I处的元素和j处的元素进行交换。</li>
+<li>static void rotate(List list, int distance) <ul>
+<li>distance 为正数的时候，将list集合的后distance 个元素“整体”移到前面</li>
+<li>为负数的时候，将list集合的前distance 个元素整体移到后面<br>使用语法：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; ls = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">	ls.add(<span class="number">1</span>);</span><br><span class="line">	ls.add(<span class="number">2</span>);</span><br><span class="line">	ls.add(<span class="number">3</span>);</span><br><span class="line">	ls.add(<span class="number">4</span>);</span><br><span class="line">	System.out.println(ls);</span><br><span class="line">	Collections.reverse(ls);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="查找替换操作"><a href="#查找替换操作" class="headerlink" title="查找替换操作"></a>查找替换操作</h3><ul>
+<li>static int binarySearch(List list,Object key) 使用二分搜索方法 搜索指定的集合，获得指定对象在集合中的索引</li>
+<li>static Object max(Collect coll) 根据元素的自然排序，返回集合中的最大元素</li>
+<li>static Object max(Collection Coll,Comparator comp) 根据指定的排序方法，返回最大的值</li>
+<li>min 同理</li>
+<li>static void fill(List list,Object obj) 使用指定元素obj替换指定 List集合中的所有元素</li>
+<li>static int frequency(Collection c ,Object o) 返回指定集合中指定元素出现的次数</li>
+<li>static int indexOfSubList(List source,List target): 返回子list对象在父List对象中第一次出现的位置索引；如果父List中没有出现，则返回-1</li>
+<li>static int lastIndexOfSubList(List source,List target) 返回子List对象在父List中最后一次出现的位置索引</li>
+<li>static boolean replaceAll(List list,Object oldVal,Object newVal) 使用一个新值newVal替换List对象的所有旧的oldVal<h3 id="同步控制"><a href="#同步控制" class="headerlink" title="同步控制"></a>同步控制</h3>Collections类中提供了多个synchronizedXxx() 方法，可以将指定的集合包装成线程同步的集合<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Collection c = Collections.synchronizedCollection(<span class="keyword">new</span> ArrayList())</span><br><span class="line">List ls = Collections.synchronizedList(<span class="keyword">new</span> ArrayList());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="设置不可变对象"><a href="#设置不可变对象" class="headerlink" title="设置不可变对象"></a>设置不可变对象</h3><ul>
+<li>emptyXxx() 返回一个空的、不可变的集合对象</li>
+<li>singletonXxx() 返回一个只包含指定对象的、不可变的集合对象</li>
+<li>unmodiifiableXxx() 返回指定集合对象的不可变视图<br>上面的意思是生成的集合只能读取</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/12/25/Java集合总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Java集合总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-华为云RDS操作实践" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1350,263 +1926,6 @@ java.io.InputStream getResourceAsStream(java.lang.String path)
 
 
   
-    <article id="post-emmm-spark商业数据分析案例讲解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/10/24/emmm-spark商业数据分析案例讲解/" class="article-date">
-  	<time datetime="2020-10-24T03:29:10.250Z" itemprop="datePublished">2020-10-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/24/emmm-spark商业数据分析案例讲解/">
-        emmm-spark商业数据分析案例讲解
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><p>这篇记录为啥以emmm开头呢？哈哈（～～）～因为我的阿里云还有一个月就要到期了。这意味着又是一波放血～～不过对于一个忠实的阿里粉来说，还是用了自己一个月的生活费，又续租了一年。（这东西有点上瘾，用上了就不想放弃了～～哈哈，这是真好用，所以不能对不起这一个月的生活费不是！当然，如果以后真的有机会进了阿里，阿里爸爸会不会给我免费服务的机会呀！😂）</p>
-<h2 id="Jupyter-notebook-阿里云搭建"><a href="#Jupyter-notebook-阿里云搭建" class="headerlink" title="Jupyter notebook 阿里云搭建"></a>Jupyter notebook 阿里云搭建</h2><p>刚说完，要充分利用，那就赶快利用起来吧！ 本来是搭建在我MAC上的，现在就把它迁移到阿里云上吧！也能让我随时随地的进行编程了～～</p>
-<p>名称 Jupyter 是由Julia、Python和R三个单词组合而成的。Jupyter Notebook是一种Web应用，它能让用户将说明文本、数学方程、代码和可视化内容全部组合到一个易于共享的文档中，非常方便研究和教学。Jupyter Notebook特别适合做数据处理，其用途可以包括数据清理和探索、可视化、机器学习和大数据分析。</p>
-<h2 id="服务原理"><a href="#服务原理" class="headerlink" title="服务原理"></a>服务原理</h2><p><img src="https://img-blog.csdnimg.cn/20201021112803503.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<h2 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h2><p>Anaconda是一个开源的Python发行版本，其包含了conda、Python等180多个科学包及其依赖项。Anaconda中已经集成了Jupyter Notebook，因此，可以首先安装Anaconda，然后再配置Jupyter Notebook。</p>
-<p>Anaconda的安装过程，这里就不在记录了！</p>
-<p>安装好Anaconda之后，检查里面是否已经集成了jupyter Notebook。一般这里面都是集成了的，如果没有的话，那就在安装一下吧！<br>因为我搭建在了云上，这里的安全性还是要保护一下的。因为我的目的是随时随地，随机都可以进行编程！</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/hadoop/anaconda3/bin</span><br><span class="line">./python</span><br></pre></td></tr></table></figure>
-<p>这里来生成一下密码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="keyword">from</span> notebook.auth <span class="keyword">import</span> passwd</span><br><span class="line">&gt;&gt;&gt;passwd()</span><br></pre></td></tr></table></figure></p>
-<p>然后系统会生成一个密码字符串，比如sha1；记得将这个密码串保存下来，用来配置你的密码。</p>
-<p>退出python之后，找到配置文件。<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.ip=<span class="string">'*'</span>                     <span class="comment"># 就是设置所有ip皆可访问  </span></span><br><span class="line">c.NotebookApp.password = <span class="string">'sha1:7c7990750e83:965c1466a4fab0849051ca5f3c5661110813795b'</span>     <span class="comment"># 上面复制的那个sha密文'  </span></span><br><span class="line">c.NotebookApp.open_browser = False       <span class="comment"># 禁止自动打开浏览器  </span></span><br><span class="line">c.NotebookApp.port =8888                 <span class="comment"># 端口</span></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">'/home/hadoop/jupyternotebook'</span>  <span class="comment">#设置Notebook启动进入的目录</span></span><br></pre></td></tr></table></figure>
-<p>配置完成之后，使用jupyter notebook启动即可！这时候在本机访问是没有问题的，如果想要通过其他电脑访问还需要进行下一步的策略！</p>
-<h2 id="教训"><a href="#教训" class="headerlink" title="教训"></a>教训</h2><p>还记得HDFS实验中，有一个问题没有解决吗？哈哈哈 其实有点傻了。<br>在配置notebook的时候，我使用的是8888端口，阿里云是对这些端口进行保护了的。主要有两层保护：第一层是阿里云本身的防火墙，第二层是控制台的安全组规则。这个经验本来是在mysql的配置的时候解决过的！但是忘记了。所以在执行HDFS分布式文件读取的时候，一直没有成功！但是这里配置的时候，忽然想起了这个事情，所以就把这个问题解决了。HDFS 使用本机用户分布式读取也没问题了。但是写权限还是不够的。</p>
-<h2 id="案例讲解"><a href="#案例讲解" class="headerlink" title="案例讲解"></a>案例讲解</h2><p>数据来源：<a href="https://www.kaggle.com/yelp-dataset/yelp-dataset" target="_blank" rel="noopener">YELP数据集</a><strong>仅用来学习</strong> </p>
-<h3 id="json-数据集"><a href="#json-数据集" class="headerlink" title="json 数据集"></a>json 数据集</h3><p>这里的数据集格式是属于NoSQL的中的文档数据集格式之一的json数据集格式。<br>因为，这也是我第一次对这类数据进行处理，这里做一个简单的学习记录。</p>
-<ol>
-<li><p>简介<br>JSON:一种与开发语言无关的、轻量级的数据存储格式，全称JavaScript Object Notation，一种数据格式的标准规范，起初来源于JavaScript这门语言，后来随着使用的广泛，几乎每门开发语言都有处理JSON的API。<br><strong>优点：易于人的阅读和编写，易于程序解析与生产。</strong>（看了一下真的是便于阅读与处理）</p>
-<p>JSON样例：首先一个花括号{}，整个代表一个对象，同时里面是一种Key-Value的存储形式，它还有不同的数据类型来区分。</p>
-</li>
-<li><p>数据类型表示<br>数据结构：Object、Array<br>基本类型：string，number，true，false，null<br>（1）Object<br>{key:value,key:value…}<br>key：string类型<br>value：任何基本类型或数据结构<br>（2）Array<br>[value,value…]<br>value：任何基本类型或数据结构。<br>比如：{“name”:”李广”, “values”:[1,2,45,”你好”] }</p>
-</li>
-<li><p>实际json数据格式<br>这个格式的文件可以通过t x t或者网页等方式打开，当然还有许多工具。<br>我这里用的是Xcode。好了这就是我们要处理的数据了。<br><img src="https://img-blog.csdnimg.cn/20201021204557992.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-</li>
-<li><p>数据集提前分析<br>我这里取出来一条信息，先来看看信息是啥样子的。</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">"business_id"</span>:<span class="string">"f9NumwFMBDn751xgFiRbNA"</span>,</span><br><span class="line">        <span class="string">"name"</span>:<span class="string">"The Range At Lake Norman"</span>,</span><br><span class="line">  <span class="string">"address"</span>:<span class="string">"10913 Bailey Rd"</span>,</span><br><span class="line"> <span class="string">"city"</span>:<span class="string">"Cornelius"</span>,</span><br><span class="line"> <span class="string">"state"</span>:<span class="string">"NC"</span>,</span><br><span class="line"> <span class="string">"postal_code"</span>:<span class="string">"28031"</span>,</span><br><span class="line"> <span class="string">"latitude"</span>:35.4627242,</span><br><span class="line"> <span class="string">"longitude"</span>:-80.8526119,</span><br><span class="line"> <span class="string">"stars"</span>:3.5,</span><br><span class="line"> <span class="string">"review_count"</span>:36,</span><br><span class="line"> <span class="string">"is_open"</span>:1,</span><br><span class="line"> <span class="string">"attributes"</span>:&#123;<span class="string">"BusinessAcceptsCreditCards"</span>:<span class="string">"True"</span>,<span class="string">"BikeParking"</span>:<span class="string">"True"</span>,<span class="string">"GoodForKids"</span>:<span class="string">"False"</span>,<span class="string">"BusinessParking"</span>:<span class="string">"&#123;'garage': False, 'street': False, 'validated': False, 'lot': True, 'valet': False&#125;"</span>,<span class="string">"ByAppointmentOnly"</span>:<span class="string">"False"</span>,<span class="string">"RestaurantsPriceRange2"</span>:<span class="string">"3"</span>&#125;,</span><br><span class="line"> <span class="string">"categories"</span>:<span class="string">"Active Life, Gun\/Rifle Ranges, Guns &amp; Ammo, Shopping"</span>,</span><br><span class="line"> <span class="string">"hours"</span>:&#123;<span class="string">"Monday"</span>:<span class="string">"10:0-18:0"</span>,</span><br><span class="line"> <span class="string">"Tuesday"</span>:<span class="string">"11:0-20:0"</span>,</span><br><span class="line"> <span class="string">"Wednesday"</span>:<span class="string">"10:0-18:0"</span>,</span><br><span class="line"> <span class="string">"Thursday"</span>:<span class="string">"11:0-20:0"</span>,</span><br><span class="line"> <span class="string">"Friday"</span>:<span class="string">"11:0-20:0"</span>,</span><br><span class="line"> <span class="string">"Saturday"</span>:<span class="string">"11:0-20:0"</span>,</span><br><span class="line"> <span class="string">"Sunday"</span>:<span class="string">"13:0-18:0"</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>上面描述的就是这个文档中所有数据集中其中的一条数据。<br>可以发现json数据格式是按照键值对的形式进行存储的。</p>
-<ul>
-<li>business_id ： 商业店铺的id,用来唯一的标识这一个商铺</li>
-<li>name : 商业店铺的名称</li>
-<li>address : 商铺的位置</li>
-<li>city : 城镇</li>
-<li>state : 州县</li>
-<li>postal_code : 邮政编码</li>
-<li>latitude :纬度</li>
-<li>longitude :经度</li>
-<li>starts : 星级评分</li>
-<li>review_count：评论数</li>
-<li>is_open： 商家是否营业</li>
-<li>attributes ：商家所进行的业务</li>
-<li>categories: 类别</li>
-<li>hours : 商家的营业时间</li>
-</ul>
-<h3 id="主要任务"><a href="#主要任务" class="headerlink" title="主要任务"></a>主要任务</h3><ol>
-<li>统计出所有的商业类别，并且进行计算出商业类别的Top 10(categories)。</li>
-<li>每个城市各种商业类型的商家数量,并且计算出商家数量最多的十个城市(city,categories)。</li>
-<li>消费者评价最多的10种商业类别(review_count,categories)。</li>
-<li>最受消费者欢迎的10种商业类别(starts)。</li>
-<li>商业额外业务的评价情况。</li>
-</ol>
-<h3 id="主要的解决步骤"><a href="#主要的解决步骤" class="headerlink" title="主要的解决步骤"></a>主要的解决步骤</h3><ol>
-<li>第一步 对数据进行预处理，剔除异常值</li>
-<li>第二步 进行数据集的分析</li>
-<li>第三步 对数据进行可视化分析</li>
-</ol>
-<h2 id="代码解读"><a href="#代码解读" class="headerlink" title="代码解读"></a>代码解读</h2><h3 id="所需要的包"><a href="#所需要的包" class="headerlink" title="所需要的包"></a>所需要的包</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf,SparkContext</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">import</span> pyspark.sql.functions <span class="keyword">as</span> f</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>pyspark<br>PySpark 是 Spark 为 Python 开发者提供的 API</p>
-<ul>
-<li>SparkContext<br>是程序的入口点，负责连接Spark集群。集群通过SparkContext进行资源管理器的通信以及进行资源的申请、任务的分配和监控，需要从SparkSession中获得</li>
-<li>SparkConf<br>创建SparkContext前得使用SparkConf进行配置，以键值对形式进行</li>
-</ul>
-</li>
-<li><p>pyspark.sql<br>一种解析传统SQL到大数据运算模型的引擎</p>
-<ul>
-<li>SparkSession<br>其为用户提供了一个统一的切入点来使用Spark的各项功能，并且允许用户通过它调用DataFrame和Dataset相关API来编写Spark程序</li>
-<li>DataFrame（表）是Spark SQL对结构化数据的抽象。可以将DataFrame看做RDD</li>
-<li>Dataset是数据的分布式集合</li>
-</ul>
-</li>
-<li>pyspark.sql.function<br>可用于dataFram的内置功能列表</li>
-<li>os<br>主要是针对操作系统的包，用来与操作系统进行交互，创建文件等。</li>
-<li>json<br>Python里的json模块主要用于“Python数据与JSON格式的数据间相互转换”</li>
-<li>pandas<br>pandas是一个强大的分析结构化数据的工具集；它的使用基础是Numpy（提供高性能的矩阵运算）；用于数据挖掘和数据分析，同时也提供数据清洗功能。</li>
-<li>matplotlib.pyplot<br>是matlib的python版实现，用于绘图操作。</li>
-</ul>
-<h3 id="获取spark操作对象"><a href="#获取spark操作对象" class="headerlink" title="获取spark操作对象"></a>获取spark操作对象</h3><p>建立一个会话对象<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立配置文件</span></span><br><span class="line"><span class="comment">#builder用来创建一个Sparksession实例</span></span><br><span class="line"><span class="comment">#config 配置相关</span></span><br><span class="line"><span class="comment">#getOrCreate 有就获取没有就创建</span></span><br><span class="line">spark = SparkSession.builder.config(conf=SparkConf()).getOrCreate()</span><br></pre></td></tr></table></figure></p>
-<h3 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h3><p>下面对数据清洗 进行一个详细的分析。主要将数据中存在值缺失的数据，商家位置错误的数据（这里可以称为离群值）进行筛选。代码的详解解读，如下所示：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据清洗</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_process</span><span class="params">(raw_data_path)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 通过数据路径，读取数据，这里是json数据</span></span><br><span class="line">    business = spark.read.json(raw_data_path)</span><br><span class="line">    <span class="comment">#split(str, pattern, limit=-1)</span></span><br><span class="line">    <span class="comment">#str – 我们要分割的字符串</span></span><br><span class="line">    <span class="comment">#pattern 分割所用的正则表达式</span></span><br><span class="line">    split_col = f.split(business[<span class="string">'categories'</span>], <span class="string">','</span>)</span><br><span class="line">    <span class="comment">#withColumn(colName, col)</span></span><br><span class="line">    <span class="comment">#withColumn 负责在原有表的基础上新添加一列 colName是添加一列后的新的列名，col是新列的值 ？列名一样会怎么样处理（这里应该是会直接替代原来的，有待验证）</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">#filter 使用给定的条件 过滤行 这里是在所有的categories中过滤掉城市</span></span><br><span class="line">    <span class="comment"># dropna 至少又一个空缺值的行都会被删除</span></span><br><span class="line">    business = business.withColumn(<span class="string">"categories"</span>, split_col).filter(business[<span class="string">"city"</span>] != <span class="string">""</span>).dropna()</span><br><span class="line">    <span class="comment">#创建一个数据的临时视图，这个视图的周期与sparkSession相关联</span></span><br><span class="line">    business.createOrReplaceTempView(<span class="string">"business"</span>)</span><br><span class="line">    <span class="comment">#解析传统的sql到大数据运算模型 筛选出所需要的内容</span></span><br><span class="line">    <span class="comment">#cache 按照默认的存储级别 持久化dataFrame</span></span><br><span class="line">    b_etl = spark.sql(<span class="string">"SELECT business_id, name, city, state, latitude, longitude, stars, review_count, is_open, categories, attributes FROM business"</span>).cache()</span><br><span class="line">    <span class="comment">#将筛选完的数据 在进行一个临时视图 方便下一步的sql分析</span></span><br><span class="line">    b_etl.createOrReplaceTempView(<span class="string">"b_etl"</span>)</span><br><span class="line">    <span class="comment">#这里是筛选掉 离群值 （距离洲内商家平均位置的欧式距离）</span></span><br><span class="line">    <span class="comment">#b1 作为business的原始数据表 b2是在原始数据表的基础上计算每个州县的平均 经纬度 然后计算每一个商家在这个州县的欧式距离 并根据计算结果降序排列</span></span><br><span class="line">    outlier = spark.sql(</span><br><span class="line">        <span class="string">"SELECT b1.business_id, SQRT(POWER(b1.latitude - b2.avg_lat, 2) + POWER(b1.longitude - b2.avg_long, 2)) \</span></span><br><span class="line"><span class="string">        as dist FROM b_etl b1 INNER JOIN (SELECT state, AVG(latitude) as avg_lat, AVG(longitude) as avg_long \</span></span><br><span class="line"><span class="string">        FROM b_etl GROUP BY state) b2 ON b1.state = b2.state ORDER BY dist DESC"</span>)</span><br><span class="line">    <span class="comment">#创建一个新的临时视图 outlier</span></span><br><span class="line">    outlier.createOrReplaceTempView(<span class="string">"outlier"</span>)</span><br><span class="line">    <span class="comment">#从b_et1中 筛选出所有的距离小于10 的值。这对应到经纬度上面 已经是比较大的值了</span></span><br><span class="line">    joined = spark.sql(<span class="string">"SELECT b.* FROM b_etl b INNER JOIN outlier o ON b.business_id = o.business_id WHERE o.dist&lt;10"</span>)</span><br><span class="line">    <span class="comment">#将筛选后的数据进行存储 存储为parquet的格式</span></span><br><span class="line">    joined.write.parquet(<span class="string">"file:///home/hadoop/yelp-etl/business_etl"</span>, mode=<span class="string">"overwrite"</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="内容补充"><a href="#内容补充" class="headerlink" title="内容补充"></a>内容补充</h4><ol>
-<li>parquet 文件格式<br>parquet采用不同的压缩比，能达到有效的压缩比。减少磁盘的使用。<br>parquet结合spark，可以完美的实现支持分区过滤。如，需要某个产品某段时间的数据，则hdfs只取这个文件夹。<br>列修剪：其实说简单点就是我们要取回的那些列的数据</li>
-<li>离群值<br>离群值(outlier)，也称逸出值，是指在数据中有一个或几个数值与其他数值相比差异较大.</li>
-<li>withColumn(colName, col)<br>  这里要解决的问题是，我们在项目中遗留的一个问题，withColumn往数据里面执行添加操作的时候，当colName的名字与原表中的名字一样的时候，添加操作是如何进行的。</li>
-</ol>
-<h3 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h3><p>这一部分主要对清理后的数据进行分析。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">analysis</span><span class="params">(data_path)</span>:</span></span><br><span class="line">    <span class="comment"># 读取清理后的数据路径，存储的parque数据，并持久化到磁盘中</span></span><br><span class="line">    business = spark.read.parquet(data_path).cache()</span><br><span class="line">    <span class="comment">#将新的数据建立一个新的视图 business</span></span><br><span class="line">    business.createOrReplaceTempView(<span class="string">"business"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#从上面处理过的数据中，选择各种商业类别的洲县、城镇、星级评分、评论数</span></span><br><span class="line">    <span class="comment">#explode 在sql语句中用来处理array类型的数据。</span></span><br><span class="line">    part_business = spark.sql(<span class="string">"SELECT state, city, stars,review_count, explode(categories) AS category FROM business"</span>).cache()</span><br><span class="line">    <span class="comment">#默认显示前 20 行 并提示only showing top 20 rows</span></span><br><span class="line">    part_business.show()</span><br></pre></td></tr></table></figure>
-<p>Start analysis data!<br>+—–+—————-+—–+————+——————–+<br>|state|            city|stars|review_count|            category|<br>+—–+—————-+—–+————+——————–+<br>|   AZ|         Phoenix|  4.0|          41|            Notaries|<br>|   AZ|         Phoenix|  4.0|          41|     Mailbox Centers|<br>|   AZ|         Phoenix|  4.0|          41|   Printing Services|<br>|   AZ|         Phoenix|  4.0|          41|      Local Services|<br>|   AZ|         Phoenix|  4.0|          41|    Shipping Centers|<br>|   NV|       Las Vegas|  4.0|         681|         Restaurants|<br>|   NV|       Las Vegas|  4.0|         681|                Bars|<br>|   NV|       Las Vegas|  4.0|         681|           Nightlife|<br>|   NV|       Las Vegas|  4.0|         681|      American (New)|<br>|   NV|       Las Vegas|  4.0|         681|             Seafood|<br>|   QC|Vaudreuil-Dorion|  4.0|           7|                Food|<br>|   QC|Vaudreuil-Dorion|  4.0|           7|            Bakeries|<br>|   AZ|      Scottsdale|  3.5|           5|            Shopping|<br>|   AZ|      Scottsdale|  3.5|           5|       Home &amp; Garden|<br>|   AZ|      Scottsdale|  3.5|           5|          Mattresses|<br>|   NC|       Charlotte|  3.0|          64|                Gyms|<br>|   NC|       Charlotte|  3.0|          64|        Sports Clubs|<br>|   NC|       Charlotte|  3.0|          64|         Active Life|<br>|   NC|       Charlotte|  3.0|          64| Fitness &amp; Instru…|<br>|   ON|     Mississauga|  4.5|          12|         Restaurants|<br>+—–+—————-+—–+————+——————–+<br>only showing top 20 rows</p>
-<p>上述就是对处理完的数据进行一个显示以及筛选。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将筛选的商业类别的相关信息 创建一个新的视图</span></span><br><span class="line">    part_business.createOrReplaceTempView(<span class="string">'part_business_1'</span>)</span><br><span class="line">    <span class="comment">#选择洲 城市 星级评定，评论数 </span></span><br><span class="line">    <span class="comment">#  REPLACE(category, ' ','')as new_category 的含义是对category 这一行进行‘’ 替换成‘’ 然后创建一个新的代表商家类别的列（相当于对这一列的数据进行了一个备份）</span></span><br><span class="line">    part_business = spark.sql(<span class="string">"SELECT state, city, stars, review_count, REPLACE(category, ' ','')as new_category FROM part_business_1"</span>)</span><br><span class="line">    <span class="comment"># 创建一个新的视图</span></span><br><span class="line">    part_business.createOrReplaceTempView(<span class="string">'part_business'</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 所有的不同的商家类别</span></span><br><span class="line">    print(<span class="string">"## All distinct categories"</span>)</span><br><span class="line">    <span class="comment"># 筛选所有种类的商家 分别是商家的id 以及 商家的种类</span></span><br><span class="line">    all_categories = spark.sql(<span class="string">"SELECT business_id, explode(categories) AS category FROM business"</span>)</span><br><span class="line">    <span class="comment">#将筛选出的数据重新创建一个新的视图</span></span><br><span class="line">    all_categories.createOrReplaceTempView(<span class="string">'all_categories'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 祛除重复的数据 并计算出所有种类的个数</span></span><br><span class="line">    distinct = spark.sql(<span class="string">"SELECT COUNT(DISTINCT(new_category)) FROM part_business"</span>)</span><br><span class="line">    distinct.show()</span><br></pre></td></tr></table></figure>
-<p>上述过程是统计出所有种类的商家。</p>
-<p> All distinct categories<br>+—————————-+<br>|count(DISTINCT new_category)|<br>+—————————-+<br>|                        1318|<br>+—————————-+</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"## Top 10 business categories"</span>)</span><br><span class="line">    <span class="comment">#统计出没种种类的商家的个数 并且按照降序排列</span></span><br><span class="line">    top_cat = spark.sql(<span class="string">"SELECT new_category, COUNT(*) as freq FROM part_business GROUP BY new_category ORDER BY freq DESC"</span>)</span><br><span class="line">    <span class="comment">#显示出排名前10的商家的种类</span></span><br><span class="line">    top_cat.show(<span class="number">10</span>) </span><br><span class="line">    <span class="comment">#将统计出的数据 存储为 json文件</span></span><br><span class="line">    top_cat.write.json(<span class="string">"file:///usr/local/spark/yelp/analysis/top_category"</span>, mode=<span class="string">'overwrite'</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20201023212023388.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在每个城市中商业种类的个数 仅按照商业种类的个数显示 前20条 </span></span><br><span class="line">   print(<span class="string">"## Top business categories - in every city"</span>)</span><br><span class="line">   top_cat_city = spark.sql(<span class="string">"SELECT city, new_category, COUNT(*) as freq FROM part_business GROUP BY city, new_category ORDER BY freq DESC"</span>)</span><br><span class="line">   top_cat_city.show()  </span><br><span class="line">   <span class="comment">#将数据存储到json中</span></span><br><span class="line">   top_cat.write.json(<span class="string">"file:///usr/local/spark/yelp/analysis/top_category_city"</span>, mode=<span class="string">'overwrite'</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 商业数量最多的城市</span></span><br><span class="line">    print(<span class="string">"## Cities with most businesses"</span>)</span><br><span class="line">    bus_city = spark.sql(<span class="string">"SELECT city, COUNT(business_id) as no_of_bus FROM business GROUP BY city ORDER BY no_of_bus DESC"</span>)</span><br><span class="line">    bus_city.show(<span class="number">10</span>)   </span><br><span class="line">    bus_city.write.json(<span class="string">"file:///usr/local/spark/yelp/analysis/top_business_city"</span>, mode=<span class="string">'overwrite'</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20201023212642926.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#每种商业种类的 平均评论数 </span></span><br><span class="line">    print(<span class="string">"## Average review count by category"</span>)</span><br><span class="line">    avg_city = spark.sql(</span><br><span class="line">        <span class="string">"SELECT new_category, AVG(review_count)as avg_review_count FROM part_business GROUP BY new_category ORDER BY avg_review_count DESC"</span>)</span><br><span class="line">    avg_city.show()  </span><br><span class="line">    avg_city.write.json(<span class="string">"file:///usr/local/spark/yelp/analysis/average_review_category"</span>, mode=<span class="string">'overwrite'</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20201023212832651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>这里其实也是显示了20行，就不截图太多了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#每种商业类别的 平均星级水平</span></span><br><span class="line">    print(<span class="string">"## Average stars by category"</span>)</span><br><span class="line">    avg_state = spark.sql(</span><br><span class="line">        <span class="string">"SELECT new_category, AVG(stars) as avg_stars FROM part_business GROUP BY new_category ORDER BY avg_stars DESC"</span>)</span><br><span class="line">    avg_state.show()   </span><br><span class="line">    avg_state.write.json(<span class="string">"file:///usr/local/spark/yelp/analysis/average_stars_category"</span>, mode=<span class="string">'overwrite'</span>)</span><br></pre></td></tr></table></figure>
-<p>由于字段 attribute 中的RestaurantsTakeout可能NULL的情况，所以需要利用dropna()处理缺失值的问题。该项对商家是否有’Take out’服务进行分析，统计出两种不同情况的商家的平均星级评分.对应的代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 商家所进行的业务分析</span></span><br><span class="line">    print(<span class="string">"## Data based on Attribute"</span>)</span><br><span class="line">    <span class="comment">#仅筛选出 商家所进行的业务，星级，以及划分到的商业类别</span></span><br><span class="line">    for_att = spark.sql(<span class="string">"SELECT attributes, stars, explode(categories) AS category FROM business"</span>)</span><br><span class="line">    <span class="comment">#将筛选出的数据 创建一个新的视图</span></span><br><span class="line">    for_att.createOrReplaceTempView(<span class="string">"for_att"</span>)</span><br><span class="line">    <span class="comment">#对 商家是否 有外卖这个 业务进行分析</span></span><br><span class="line">    attribute = <span class="string">'RestaurantsTakeout'</span></span><br><span class="line">    attribute_score(attribute)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attribute_score</span><span class="params">(attribute)</span>:</span></span><br><span class="line">    <span class="comment"># 这里的format 表示用attribute的值代替attr的值</span></span><br><span class="line">    att = spark.sql(<span class="string">"SELECT attributes.&#123;attr&#125; as &#123;attr&#125;, category, stars FROM for_att"</span>.format(attr=attribute)).dropna()</span><br><span class="line">    att.createOrReplaceTempView(<span class="string">"att"</span>)</span><br><span class="line">    att_group = spark.sql(<span class="string">"SELECT &#123;attr&#125;, AVG(stars) AS stars FROM att GROUP BY &#123;attr&#125; ORDER BY stars"</span>.format(attr=attribute))</span><br><span class="line">    att_group.show()    </span><br><span class="line">    att_group.write.json(<span class="string">"file:///usr/local/spark/yelp/analysis/&#123;attr&#125;"</span>.format(attr=attribute), mode=<span class="string">'overwrite'</span>)</span><br></pre></td></tr></table></figure></p>
-<p>到这里所有的数据分析的代码就讲解完了。接下来我们来看一下，对于我们统计出来的这些数据，我们那如何更直观的查看。也就是数据的可视化</p>
-<h3 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h3><p>这里我们进行的数据可视化是通过 python中的matlib包进行绘图表示的。</p>
-<h4 id="数据的读取"><a href="#数据的读取" class="headerlink" title="数据的读取"></a>数据的读取</h4><p>我们先将上面已经分析过的数据并存储在磁盘上的数据路径自定义。（这一块系统可是无法自己找到）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AVE_REVIEW_CATEGORY = <span class="string">'/usr/local/spark/yelp/analysis/average_review_category'</span></span><br><span class="line">TOP_CATEGORY_CITY = <span class="string">'/usr/local/spark/yelp/analysis/top_category_city'</span></span><br><span class="line">TOP_BUSINESS_CITY = <span class="string">'/usr/local/spark/yelp/analysis/top_business_city'</span></span><br><span class="line">TOP_CATEGORY = <span class="string">'/usr/local/spark/yelp/analysis/top_category'</span></span><br><span class="line">AVE_STARS_CATEGORY = <span class="string">'/usr/local/spark/yelp/analysis/average_stars_category'</span></span><br><span class="line">TAKEOUT = <span class="string">'/usr/local/spark/yelp/analysis/RestaurantsTakeout'</span></span><br></pre></td></tr></table></figure>
-<h4 id="定义数据读取的函数"><a href="#定义数据读取的函数" class="headerlink" title="定义数据读取的函数"></a>定义数据读取的函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_json</span><span class="params">(file_path)</span>:</span></span><br><span class="line">    <span class="comment">#读取这个路径下的所有文件的名称</span></span><br><span class="line">    json_path_names = os.listdir(file_path)</span><br><span class="line">    data = []</span><br><span class="line">    <span class="comment">#遍历所有的文件</span></span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(json_path_names)):</span><br><span class="line">        <span class="comment">#拼接路径名称</span></span><br><span class="line">        json_path = file_path + <span class="string">'/'</span> + json_path_names[idx]</span><br><span class="line">        <span class="comment">#判断文件是不是json文件 如果是的话 就打开读取</span></span><br><span class="line">        <span class="keyword">if</span> json_path.endswith(<span class="string">'.json'</span>):</span><br><span class="line">            <span class="keyword">with</span> open(json_path) <span class="keyword">as</span> f:</span><br><span class="line">                <span class="comment">#将读取的数据拼接到data中 返回读取到的数据</span></span><br><span class="line">                <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">                    data.append(json.loads(line))</span><br><span class="line">    <span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
-<p>获得读取的所有的数据 </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ave_review_category_list = read_json(AVE_REVIEW_CATEGORY)</span><br><span class="line">open_close_list = read_json(OPEN_CLOSE)</span><br><span class="line">top_category_city_list = read_json(TOP_CATEGORY_CITY)</span><br><span class="line">top_business_city_list = read_json(TOP_BUSINESS_CITY)</span><br><span class="line">top_category_list = read_json(TOP_CATEGORY)</span><br><span class="line">ave_stars_category_list = read_json(AVE_STARS_CATEGORY)</span><br><span class="line">takeout_list = read_json(TAKEOUT)</span><br></pre></td></tr></table></figure>
-<h4 id="下面是数据的图形化展示"><a href="#下面是数据的图形化展示" class="headerlink" title="下面是数据的图形化展示"></a>下面是数据的图形化展示</h4><p>对于这一部分，对一部分进行讲解，因为其余的图形的绘画 的思路是一样的。不一样的地方，在于画图的语法不一样。（这里可以自行学习）<br><a href="https://matplotlib.org/gallery/index.html" target="_blank" rel="noopener">学习链接（marplotlib画图）</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在每个城市中商业种类的个数 仅按照商业种类的个数显示 前10条 根据商业种类出现的次数进行 排名 从小到大</span></span><br><span class="line">    top_category_list.sort(key=<span class="keyword">lambda</span> x: x[<span class="string">'freq'</span>], reverse=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment">#商业种类的名称</span></span><br><span class="line">    top_category_key = []</span><br><span class="line">    <span class="comment">#商业种类的统计个数</span></span><br><span class="line">    top_category_value = []</span><br><span class="line">    <span class="comment">#数据填充</span></span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        one = top_category_list[idx]</span><br><span class="line">        top_category_key.append(one[<span class="string">'new_category'</span>])</span><br><span class="line">        top_category_value.append(one[<span class="string">'freq'</span>])</span><br><span class="line">    <span class="comment">#绘制条形图 截取前10名</span></span><br><span class="line">    plt.barh(top_category_key[:<span class="number">10</span>], top_category_value[:<span class="number">10</span>], tick_label=top_category_key[:<span class="number">10</span>])</span><br><span class="line">    <span class="comment">#标题</span></span><br><span class="line">    plt.title(<span class="string">'Top 10 Categories'</span>, size = <span class="number">16</span>)</span><br><span class="line">    <span class="comment">#x 的label为Frequency 条形图的宽度为 8 颜色 black</span></span><br><span class="line">    plt.xlabel(<span class="string">'Frequency'</span>,size =<span class="number">8</span>, color = <span class="string">'Black'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Category'</span>,size = <span class="number">8</span>, color = <span class="string">'Black'</span>)</span><br><span class="line">    <span class="comment"># 会自动填充子图参数 让子图能够填充整个图像区域。（仅仅检查 坐标轴的标签，刻度标签以及标题的部分）</span></span><br><span class="line">    plt.tight_layout()</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20201024111407659.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20201024112306697.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>这样是不是看起来就更加直观了呢！</p>
-<p>显示的图片不是很清晰，或者标题的字体格式等也是可以调的，这里就不在详细的介绍了。</p>
-<p>源码就存在我的jupyter上了（不过需要我开启服务器才可以访问）<a href="http://www.itgorge.ltd:8888/notebooks/PYSparkTest.ipynb" target="_blank" rel="noopener">源码</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2020/10/24/emmm-spark商业数据分析案例讲解/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="emmm-spark商业数据分析案例讲解">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-大数据分析之阿里云安装Spark" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/10/16/大数据分析之阿里云安装Spark/" class="article-date">
-  	<time datetime="2020-10-16T14:31:12.930Z" itemprop="datePublished">2020-10-16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/16/大数据分析之阿里云安装Spark/">
-        大数据分析之阿里云安装Spark
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在我们已经安装好Hadoop的阿里云上，进行如下操作</p>
-<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://www.apache.org/dyn/closer.lua/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz" target="_blank" rel="noopener">下载链接</a><br>使用wget在linux上进行下载即可</p>
-<h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf spark-3.0.1-bin-hadoop2.7.tgz -C /usr/<span class="built_in">local</span></span><br></pre></td></tr></table></figure>
-<h2 id="改名-修改文件权限"><a href="#改名-修改文件权限" class="headerlink" title="改名+修改文件权限"></a>改名+修改文件权限</h2><p>因为我在搭建hadoop的时候，在root用户上新创建了一个新的用户，因此，要把权限给hadoop用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mv ./spark-3.0.1-bin-hadoop2.7 ./spark</span><br><span class="line">sudo chown -R hadoop ./spark</span><br></pre></td></tr></table></figure>
-<h2 id="更改为可执行文件"><a href="#更改为可执行文件" class="headerlink" title="更改为可执行文件"></a>更改为可执行文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp ./conf/spark-env.sh.template ./conf/spark-env.sh</span><br></pre></td></tr></table></figure>
-<p>编辑spark-env.sh文件(vim ./conf/spark-env.sh)，在第一行添加以下配置信息:</p>
-<p>export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)</p>
-<p>有了上面的配置信息以后，Spark就可以把数据存储到Hadoop分布式文件系统HDFS中，也可以从HDFS中读取数据。如果没有配置上面信息，Spark就只能读写本地数据，无法读写HDFS数据。<br>配置完成后就可以直接使用，不需要像Hadoop运行启动命令。<br>通过运行Spark自带的示例，验证Spark是否安装成功。</p>
-<h2 id="启动进入spark-shell交互式执行环境"><a href="#启动进入spark-shell交互式执行环境" class="headerlink" title="启动进入spark-shell交互式执行环境"></a>启动进入spark-shell交互式执行环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/spark</span><br><span class="line">./bin/spark-shell</span><br></pre></td></tr></table></figure>
-<p>我们就可以看到Spark的信息，这样spark就安装成功了<br>如果想要退出spark的话，执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; :quit</span><br></pre></td></tr></table></figure>
-<h2 id="测试Spark是否可以正常访问Ubuntu系统中的本地文件"><a href="#测试Spark是否可以正常访问Ubuntu系统中的本地文件" class="headerlink" title="测试Spark是否可以正常访问Ubuntu系统中的本地文件"></a>测试Spark是否可以正常访问Ubuntu系统中的本地文件</h2><p>在本地创建一个文本文件，里面输入hello word</p>
-<p>开启spark ,写入测试文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cala&gt; val line=sc.textFile(<span class="string">"file:///home/hadoop/a.txt"</span>)</span><br><span class="line">line: org.apache.spark.rdd.RDD[String] = file:///home/hadoop/a.txt MapPartitionsRDD[1] at textFile at &lt;console&gt;:24</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="built_in">print</span>(line.count())</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<h2 id="测试Spark是否能够正常访问Hadoop中的HDFS"><a href="#测试Spark是否能够正常访问Hadoop中的HDFS" class="headerlink" title="测试Spark是否能够正常访问Hadoop中的HDFS"></a>测试Spark是否能够正常访问Hadoop中的HDFS</h2><p>首先执行一下jps检查一下，hadoop是否已经正常启动。<br>接下来，我们将在HDFS中已经准备好的测试文件，来查看一下主要的文件信息<br>，这里假设大家都已经掌握了Hadoop的基本知识。 这是在我的主文件下。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/hdfs dfs -cat /user/hadoop/text.txt</span><br></pre></td></tr></table></figure></p>
-<p>我们再来执行一下<br>val line=sc.textFile(“/user/hadoop/text.txt”)<br> println(line.count())<br> 来检查一下。<br> <em>注意：在spark-shell交互式环境中，要访问HDFS中的文件时，可以直接使 sc.textFile(“/user/linziyu/word.txt”)和sc.textFile(“word.txt”)这两种路径格式</em><br> 这样我们的Spark就搭建完了。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2020/10/16/大数据分析之阿里云安装Spark/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="大数据分析之阿里云安装Spark">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1617,7 +1936,7 @@ java.io.InputStream getResourceAsStream(java.lang.String path)
   <div class="outer">
     <div id="footer-info">
       <div class="footer-left">
-        &copy; 2020 Gorge
+        &copy; 2021 Gorge
       </div>
         <div class="footer-right">
           <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>

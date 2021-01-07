@@ -191,6 +191,157 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Code" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/06/Code/" class="article-date">
+  	<time datetime="2019-04-06T03:37:02.336Z" itemprop="datePublished">2019-04-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/06/Code/">
+        Code&#39;s principle
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Hex编码"><a href="#Hex编码" class="headerlink" title="Hex编码"></a>Hex编码</h2><h3 id="编码原理"><a href="#编码原理" class="headerlink" title="编码原理"></a>编码原理</h3><p>Hex编码就是把一个8位的字节数据用两个十六进制数展示出来，编码的时候，将8位二进制码重新分组成两个4位字节，其中一个字节的低4位是原来字节的高4位，另外一个字节的低4位是原来数据的低四位，高4位都补零，然后输出这两个字节的对应16进制数字作为编码。Hexo编码后的长度是源数据的2倍。<br>C:\Users\hp\MyEclipse\Common\binary\com.sun.java.jdk.win32.x86_64_1.6.0.013\bin\javaw.exe</p>
+<ol>
+<li><strong>Hex编码的编码表</strong> ；<br> <img src="../../photo/2.JPG" alt="在这里插入图片描述"></li>
+<li>**ASCII码A的 Hex编码的过程<br><img src="../../photo/1.JPG" alt="在这里插入图片描述"><h1 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h1><h2 id="bin码"><a href="#bin码" class="headerlink" title="bin码"></a>bin码</h2>bin码就是二进制码，文件名的后缀为 .bin<h2 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h2>ASCII码就是把他们看成字符来对待，每8个bit位来存储一个字母，所以说一个字母占用一个字节，同样由于编码原因，一个汉字占用两个字节。<h2 id="BCD码"><a href="#BCD码" class="headerlink" title="BCD码"></a>BCD码</h2>BCD码就是从低位开始，每4个bit表示一个位数，BCD码就是十进制的二进制数。<h2 id="Base-64"><a href="#Base-64" class="headerlink" title="Base 64"></a>Base 64</h2>Base 64编码就是要求把3个8位字节，转化为4个6位字节，之后在6位的前面补两个0，形成8位一个字节的形式。<br>例如<br>11010101 11000101 00110011<br>转化后：<br>00110101 00011100 00010100 00110011<br>用十进制表示即为： 53 34 20 51<br>这个并不是最终的结果，还需要根据Base 64的编码表 查询转换后的值，<br>下面就是Base 64 的编码表：<br><img src="https://img-blog.csdnimg.cn/20190406111813267.png" alt="在这里插入图片描述"><br>以上一共是64个编码，这也是Base 64 的名称的由来，编码的编号对应的是得出的新字节的十进制值。因此，上例中字符串经过编码后就变成了字符串 “liuz”了。<br>当编码量不是3的整数倍的时候，代码量/3的余数就是2或者1了。转换的时候，结果不够6位的用 0 来补上相应的位置，之后在6位的前面补两个0。转换完空的结果就用“=”来补位了。</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2019/04/06/Code/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Code&#39;s principle">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Exif" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/05/Exif/" class="article-date">
+  	<time datetime="2019-04-05T04:13:40.943Z" itemprop="datePublished">2019-04-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/05/Exif/">
+        Exif
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Exif图片隐写"><a href="#Exif图片隐写" class="headerlink" title="Exif图片隐写"></a>Exif图片隐写</h1><p>对于这一道题目，我先是在网上查找了exif的在线转换器，然后并没有发现什么特殊的信息，通过提示然后，使用ExifTool进行解决题目</p>
+<p><strong>首先是什么是Exif</strong><br>可交换图像文件格式常被简称为Exif（Exchangeable image file format），是专门为数码相机的照片设定的，可以记录数码照片的属性信息和拍摄数据。Exif 可以被附加在 JPEG、TIFF、RIFF 等文件之中，为其增加有关数码相机拍摄信息的内容和缩略图或图像处理软件的一些版本信息。</p>
+<h2 id="ExifTool的安装"><a href="#ExifTool的安装" class="headerlink" title="ExifTool的安装"></a>ExifTool的安装</h2><p>百度搜索即可找到<br>下载之后，在安装的文件夹下，执行exiftool的命令<br>1、先是打开图片文件<br>exiftool 图片路径/图片名.jpg<br>可以查看到图片的信息<br><img src="https://img-blog.csdnimg.cn/20190405122515252.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>#解析出来的信息的理解<br>   查看网上的信息，解释的这种类似题目的解题思路一般是查看File Type,对比自己解析出来的信息，File Type并没有什么特殊的地方，这个题目是编码的问题。<br>   于是仔细的查看解析出来的数据，根据自己对编码的理解进行对照，找到了跟ASCII码最为相似的Credit .<br>   于是尝试破解：</p>
+<pre><code>   #include &lt;iostream&gt;
+   using namespace std;
+
+    int main()
+ {
+int arr [22] = {102,108,97,103,123,101,120,105,102,95,
+104,105,100,100,101,110,95,102,108,52,103,125};
+
+for(int i =0;i&lt;22;i++)
+{
+    char a = arr[i];
+    cout&lt;&lt;a;
+}
+return 0;
+}
+</code></pre><p>   尝试执行后：flag{exif_hidden_fl4g}</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2019/04/05/Exif/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Exif">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-git+hexo" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -416,7 +567,7 @@
   <div class="outer">
     <div id="footer-info">
       <div class="footer-left">
-        &copy; 2020 Gorge
+        &copy; 2021 Gorge
       </div>
         <div class="footer-right">
           <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>

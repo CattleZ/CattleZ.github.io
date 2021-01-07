@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Java集合总结 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java的集合类主要是由两个接口派生出来的：Collection 和Map  Collection Set 无序集合 不可重复 EnumSet SortedSet  TreeSet HashSet  LinkedHashSet   Queue 队列 Deque ArrayDeque LinkedList PriorityQueue   List 有序集合 元素可以重复 ArrayList Link">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java集合总结">
+<meta property="og:url" content="http://yoursite.com/2020/12/25/Java集合总结/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="Java的集合类主要是由两个接口派生出来的：Collection 和Map  Collection Set 无序集合 不可重复 EnumSet SortedSet  TreeSet HashSet  LinkedHashSet   Queue 队列 Deque ArrayDeque LinkedList PriorityQueue   List 有序集合 元素可以重复 ArrayList Link">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-01-07T11:39:04.303Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java集合总结">
+<meta name="twitter:description" content="Java的集合类主要是由两个接口派生出来的：Collection 和Map  Collection Set 无序集合 不可重复 EnumSet SortedSet  TreeSet HashSet  LinkedHashSet   Queue 队列 Deque ArrayDeque LinkedList PriorityQueue   List 有序集合 元素可以重复 ArrayList Link">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Java集合总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/12/25/Java集合总结/" class="article-date">
+  	<time datetime="2020-12-25T12:35:38.840Z" itemprop="datePublished">2020-12-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java集合总结
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2020/12/25/Java集合总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Java集合总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java的集合类主要是由两个接口派生出来的：Collection 和Map</p>
+<ul>
+<li>Collection<ul>
+<li>Set 无序集合 不可重复<ul>
+<li>EnumSet</li>
+<li>SortedSet<br>  TreeSet</li>
+<li>HashSet<br>  LinkedHashSet</li>
+</ul>
+</li>
+<li>Queue 队列<ul>
+<li>Deque<br> ArrayDeque<br> LinkedList</li>
+<li>PriorityQueue</li>
+</ul>
+</li>
+<li>List 有序集合 元素可以重复<ul>
+<li>ArrayList</li>
+<li>LinkedList</li>
+<li>Vector<br> stack</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Map<ul>
+<li>EnumMap</li>
+<li>IdentityHashMap</li>
+<li>HashMap(线程不安全，key value 可以为null)<ul>
+<li>LinkedHashMap</li>
+</ul>
+</li>
+<li>Hashtable (线程安全key value 不能为null )<ul>
+<li>Properties</li>
+</ul>
+</li>
+<li>SortedMap<ul>
+<li>TreeMap</li>
+</ul>
+</li>
+<li>WeekHashMap</li>
+</ul>
+</li>
+<li>Iterator 用来集合遍历<h1 id="各个集合的特点"><a href="#各个集合的特点" class="headerlink" title="各个集合的特点"></a>各个集合的特点</h1><h2 id="Set集合"><a href="#Set集合" class="headerlink" title="Set集合"></a>Set集合</h2><h3 id="HashSet-类"><a href="#HashSet-类" class="headerlink" title="HashSet 类"></a>HashSet 类</h3>特点：</li>
+</ul>
+<ol>
+<li>不能保证元素的排列顺序，顺序有可能发生变换</li>
+<li>不是同步的，如果是多线程程序，需要使用线程代码，来保证同步</li>
+<li>集合元素可以为null</li>
+<li>HashSet 集合判断两个元素相等是通过两个对象执行equals()方法比较并且两个对象的hashCode()方法返回值也要相等。</li>
+</ol>
+<p>补充： hash 算法的功能 - hash算法的价值在于速度，它可以保证查询速度被快速执行。当需要查询集合中某个元素的时候，hash算法可以直接根据该元素计算出该元素的存储位置，从而可以让程序快速定位该元素。</p>
+<p>HashSet中每个能存储元素的“槽位”通常称为“桶”，如果有多个元素的hashCo de值相同，但他们通过equals()方法返回false,这样一个“桶”里面就会放多个元素，会导致性能下降。</p>
+<h3 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h3><p>是HashSet的子类，与父类的不同在于该类使用链表维护元素的次序，这样使得元素看起来是按照插入顺序保存的。<br>LinkedHashSet是因为使用了链表维护元素的次序，因此性能相对低于父类，但是迭代访问的时候将会有很好的性能。</p>
+<h3 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h3><p>TreeSet可以确保集合元素处于排序状态（排序状态指的是根据值的实际大小），除了haseset的方法之外，treeset提供了一些额外的方法</p>
+<ul>
+<li>Comparator comparator() 如果truest 采用了定制的排序，则该方法返回定制排序所使用的Comparator ,如果采用的是自然的排序，那么这个方法返回null</li>
+<li>first() 返回集合元素中的第一个元素</li>
+<li>last() 返回集合元素中的最后一个元素</li>
+<li>lower(object e) 返回集合元素中位于指定元素之前的元素（即小于指定元素的最大元素）</li>
+<li>higher(object e) 返回集合中位于指定元素之后的元素 （即大于指定元素的最小元素）</li>
+<li>subSet(from,to) 返回集合的子集合，范围从from 到to</li>
+<li>headSet(toele) 返回集合的子集，由小于toele的元素组成</li>
+<li>tailSet(fromele) 返回集合的子集，由大于或等于fromele的元素组成</li>
+</ul>
+<h4 id="treeset的排序"><a href="#treeset的排序" class="headerlink" title="treeset的排序"></a>treeset的排序</h4><p>TreeSet 按照红黑树的数据结构进行存储，支持两种排序。<br><strong><em>如果想要在集合treeSet中添加对象的话，该对象就需要实现Comparable接口。</em></strong><br>comparable该接口定义了一个compareTo(Object obj)方法，该方法返回一个整数值。obj1.compareTo(obj2)如果该方法返回0，则表明这两个对象是相等的，如果返回一个正整数，则表明obj1 大于obj2，如果该方法返回一个负整数，则表明obj1小于obj2。</p>
+<ul>
+<li>自然排序<br>默认情况下是按照自然排序的方法进行排序的，即比较集合的大小，然后按照升序排列。<br>注意：如果添加的对象的比较是根据一个可变Field的字段，进行比较的情况。<br>如果是修改了Field字段，再次试图删除该对象的时候，Treeset里面的元素处于无序的状态，删除一个没有改变过的数据后集合中的元素会进行重新索引，接下来就可以删除集合中的所有的元素了。</li>
+<li>定制排序<br>如果实现定制排序，则可以通过Comparator 接口的帮助。该接口里包含一个in t compare(T o1,T o2)方法，该方法可以用于比较o1和o2的大小。如果需要实现定制排序，则需要在创建TreeSet集合对象的时候，提供一个Comparator对象与该TreeSet 集合关联。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">M</span> </span>&#123;</span><br><span class="line"> <span class="keyword">int</span> age ;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">M</span><span class="params">(<span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">	 <span class="keyword">this</span>.age = age;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	 <span class="keyword">return</span> <span class="string">"M[age:"</span>+age+<span class="string">"]"</span>;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Comparator;</span><br><span class="line"><span class="keyword">import</span> java.util.TreeSet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest4</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		TreeSet&lt;M&gt; ts = <span class="keyword">new</span> TreeSet&lt;M&gt;(<span class="keyword">new</span> Comparator&lt;M&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(M o1, M o2)</span> </span>&#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">				M m1 = o1;</span><br><span class="line">				M m2 = o2;</span><br><span class="line">				<span class="keyword">return</span> m1.age&gt;m2.age?-<span class="number">1</span>:m1.age &lt;m2.age?<span class="number">1</span>:<span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;);</span><br><span class="line">		</span><br><span class="line">		ts.add(<span class="keyword">new</span> M(<span class="number">5</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> M(-<span class="number">3</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> M(<span class="number">9</span>));</span><br><span class="line">		System.out.println(ts);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="EnumSet类"><a href="#EnumSet类" class="headerlink" title="EnumSet类"></a>EnumSet类</h3><p>EnumSet是一个专门为枚举类设计的集合类，EnumSet中的所有元素必须是指定枚举类型的枚举，集合元素是有顺序，顺序是由定义顺序决定的。</p>
+<p>EnumSet内部是以位向量的形式存储的，这种存储形式非常高效，占用内存小，运行效率好，进行批量操作的执行速度非常快。</p>
+<p>EnumSet 集合不允许加入null元素。<br>EnumSet 类没有暴露任何构造器来创建该类的实例，程序应该通过它提供的static方法来创建EnumSet对象。</p>
+<h4 id="EnumSet类提供了如下常用的static方法来创建对象"><a href="#EnumSet类提供了如下常用的static方法来创建对象" class="headerlink" title="EnumSet类提供了如下常用的static方法来创建对象"></a>EnumSet类提供了如下常用的static方法来创建对象</h4><ul>
+<li>allof(Class ele)：创建一个包含指定枚举类里所有枚举值的EnumSet集合</li>
+<li>complementOf(EnumSet s) 创建一个其元素类型与指定EnumSet里元素类型相同的EnumSet集合</li>
+<li>copyOf(Collection c) 使用一个普通集合来创建EnumSet集合</li>
+<li>copyOf(EnumSet s) 创建一个与指定EnumSet 具有相同元素类型、相同集合元素的EnumSet集合</li>
+<li>noneOf(Class elementType) 创建一个元素类型为指定枚举类型的空EnumSet</li>
+<li>range(E from ,E rest) 创建包含一个或多个枚举值的EnumSet 集合，传入的多个枚举值必须属于同一个枚举类</li>
+<li>of(E first,E rest) 创建一个包含一个或多个枚举值的EnumSet集合</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mport java.util.EnumSet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> season&#123;</span><br><span class="line">	Sp,Sum,Fal,Win</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest4</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		EnumSet es1 = EnumSet.allOf(season.class);</span><br><span class="line">		System.out.println(es1);</span><br><span class="line">		</span><br><span class="line">		EnumSet es2 = EnumSet.noneOf(season.class);</span><br><span class="line">		System.out.println(es2);</span><br><span class="line">		</span><br><span class="line">		es2.add(season.Sp);</span><br><span class="line">		System.out.println(es2);</span><br><span class="line">		</span><br><span class="line">		EnumSet es3 = EnumSet.complementOf(es1);</span><br><span class="line">		es3.add(season.Fal);</span><br><span class="line">		System.out.println(es3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>** 当试图复制一个Collection集合里面的值的时候来创建EnumSet集合时，必须保证Collection集合里面的元素都是同一个枚举类的枚举值。</p>
+<h4 id="set类的性能分析以及使用决策"><a href="#set类的性能分析以及使用决策" class="headerlink" title="set类的性能分析以及使用决策"></a>set类的性能分析以及使用决策</h4><ul>
+<li>HashSet总是比TreeSet好，特别是常用的添加、查询元素。只有当需要维持一个排序的集合的时候才选择TreeSet.</li>
+<li>HashSet与Lin kedHashSet的比较：hashSet的插入、删除操作要更快一些。LinkedHashSet的遍历操作会更快一些。</li>
+<li>EnumSet 是所有Set实现类中性能最好的，但是只能保存同一个枚举类的枚举值作为集合元素。</li>
+<li>三个实现类都是线程不安全的，如果有多个线程访问set的时候，则必须手动保证该Se t集合的同步。<br>通常可以使用synchronizedSortedSet方法来包装<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SortedSet s = Collections.synchronizedSortedSet(<span class="keyword">new</span> TreeSet());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="List集合"><a href="#List集合" class="headerlink" title="List集合"></a>List集合</h2><p>Lsit集合代表一个元素有序、可重复的集合，集合中每个元素都有其对应的顺序索引。list集合允许使用重复元素，可以通过索引来访问指定位置的集合元素。<br>List集合可以使用collection集合的所有操作方法。<br>list里面增加了一些根据索引来操作集合元素的方法。</p>
+<ul>
+<li>void add(int index ,obj ele) </li>
+<li>boolean addAll(int index,Collection c )</li>
+<li>object get(int index) 返回集合index索引处的元素</li>
+<li>int indexOf(Object o) 返回对象o 在list集合中第一次出现的位置索引</li>
+<li>int lastIndexOf(obj o) 返回对象o在list中最后一次出现的位置索引</li>
+<li>obj remove(int index) 删除并返回index索引处的元素</li>
+<li>List subList(int fromIndex,int toIndex) 返回从索引fromIndex 到索引toIndex处所有集合元素组成的子集合</li>
+<li>Object set(int index,Object element) 将index索引处的元素替换成element对象<br> 当调用List集合的set的方法的时候，指定的索引必须是Lis t集合的有效索引，不能添加一个大于list长度的索引值。</li>
+<li><ul>
+<li>集合元素判断两个元素相等的方式是 equals 方法。<br><em>equals判断相等的方法是值相等，== 判断相等的方法是指向同一个对象。</em></li>
+</ul>
+</li>
+</ul>
+<h4 id="list还额外提供了一个listIterator-方法，该方法返回一个ListIterator对象-增加了下面的方法"><a href="#list还额外提供了一个listIterator-方法，该方法返回一个ListIterator对象-增加了下面的方法" class="headerlink" title="list还额外提供了一个listIterator()方法，该方法返回一个ListIterator对象,增加了下面的方法"></a>list还额外提供了一个listIterator()方法，该方法返回一个ListIterator对象,增加了下面的方法</h4><ul>
+<li>boolean hasPrevious() 返回该迭代器关联的集合是否还有上一个元素</li>
+<li>Object previous() 返回该迭代器的上一个元素</li>
+<li>void add() 在指定的位置增加一个元素<h3 id="ArrayList和Vector实现类"><a href="#ArrayList和Vector实现类" class="headerlink" title="ArrayList和Vector实现类"></a>ArrayList和Vector实现类</h3>（vector 是一个古老的集合，有很多缺点，不建议使用，Ar ra yList是线程不安全的，Vector是线程安全的）</li>
+<li>完全支持前面提到的List接口的全部功能</li>
+<li>都是基于数组实现的List类</li>
+<li>这两个对象都是使用initialCapacity 参数来设置数组的长度，当数组的长度改变的时候可以initialCapacity回自动增加</li>
+<li>void ensureCapacity(int minCapacity) 当向实现类中增加大量的元素的时候，该方法可以一次性的增加mincapacity大小的</li>
+<li>void trimToSize() 调整ArrayList或vector集合的Obj[] 数组长度为当前元素的个数。减少使用空间</li>
+<li>vector 集合实现了一个Stack的子类。实现了栈的方法，peek(),pop(),push()方法。<h3 id="固定长度的List"><a href="#固定长度的List" class="headerlink" title="固定长度的List"></a>固定长度的List</h3>前面讲数组的时候介绍了一个操作数组的工具类：Arrays,该工具类里提供了asList(object …a) 方法，该方法可以把一个数组或指定个数的对象转换成List集，这个list既不是ArrayList实现类的实例，也不是Vector实现类的实例，而是Arrays的内部类ArrayList的实例。<br>Arrays.ArrayList是一个固定长度的List集合，程序只能遍历访问该集合里面的元素，不能增加、删除该集合里面的元素。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List fixedList = Arrays.asList(<span class="string">"疯狂Java讲义"</span>,<span class="string">"轻量级Java EE企业级应用实战"</span>);</span><br><span class="line">	System.out.println(fixedList.getClass());</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;fixedList.size();i++) &#123;</span><br><span class="line">		System.out.println(fixedList.get(i));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//试图增加、删除元素都会引发异常</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Queue集合"><a href="#Queue集合" class="headerlink" title="Queue集合"></a>Queue集合</h3><p>用于模拟队列这种数据结构，队列通常是指“先进先出”的容器。</p>
+<p>Queue接口中定义了以下几个方法：</p>
+<ul>
+<li>void add(Object e): 将指定元素加入到这个队列的尾部</li>
+<li>Object element(): 获取队列头部的元素，但是不删除队列中该元素</li>
+<li>boolean offer(Object e) 将指定元素加入到此队列的尾部</li>
+<li>Object peek() 获取队列头部的元素 但是不删除该元素，队列为空就返回null</li>
+<li>Object poll() 获取队列头部元素，并且删除这个元素</li>
+</ul>
+<p>Queue接口有一个PriorityQueue 实现类。Queue还有一个Deque接口，Deque代表一个“双端队列”,双端队列可以同时从两端来添加、删除元素。</p>
+<h4 id="PriorityQueue实现类"><a href="#PriorityQueue实现类" class="headerlink" title="PriorityQueue实现类"></a>PriorityQueue实现类</h4><p>这个队列是一个比较标准的队列实现类，之所以说它是比较标准的队列实现，是因为这个队列的保存不是按照加入队列的顺序保存的，而是按照队列元素的大小进行重新排序，取出的时候是先取出元素最小的那个元素，而不是首先插入的元素。(在这个意义上已经违背了队列的先进先出)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PriorityQueue&lt;Integer&gt; pro = <span class="keyword">new</span> PriorityQueue&lt;Integer&gt;();</span><br><span class="line">	pro.offer(<span class="number">3</span>);</span><br><span class="line">	pro.offer(<span class="number">9</span>);</span><br><span class="line">	pro.offer(<span class="number">1</span>);</span><br><span class="line">	System.out.println(pro);</span><br><span class="line">	System.out.println(pro.poll());</span><br><span class="line">	System.out.println(pro.poll());</span><br><span class="line">	System.out.println(pro.poll());</span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>可以发现，如果是直接输出队列的话，会使用toString()返回值，受String的影响，会导致输出的序列没有按照顺序输出，但是如果我们使用poll()的话，就是按照从小到大的顺序。</p>
+<p>PriorityQueue 不允许插入null元素，因为它需要对队列中元素进行排序。</p>
+<ul>
+<li>自然排序<br>自然排序的元素必须实现了Comparable接口。</li>
+<li>定制排序<br> 创建PriorityQueue队列的时候，传入一个Comparator 对象，该对象负责对队列中的所有元素进行排序，不要求队列元素实现Comparator的接口。<h4 id="Deque-接口与ArrayDeque实现类"><a href="#Deque-接口与ArrayDeque实现类" class="headerlink" title="Deque 接口与ArrayDeque实现类"></a>Deque 接口与ArrayDeque实现类</h4>Deque接口是Queue接口的子接口，代表了一个双端队列，允许从两端来操作队列的元素。<strong><em>可以当作双端队列或者栈使用</em></strong></li>
+<li>addFirst()</li>
+<li>addLast()</li>
+<li>Iterator descendingIterator() 返回该双端队列对应的迭代器，该迭代器按照逆向顺序迭代队列</li>
+<li>getFirst()</li>
+<li>getLast()</li>
+<li>offerFiirst()</li>
+<li>offerLast()</li>
+<li>peekFirst()</li>
+<li>peekLast()</li>
+<li>pollFirst()</li>
+<li>pollLast()</li>
+<li>pop() 相当于removeFirst</li>
+<li>push() 相当于addFirst</li>
+<li>obj removeFirst() 获取并删除该双端队列的第一个元素</li>
+<li>obj removeFirstOccurrence(obj o) 删除该双端队列的第一个出现的元素o</li>
+<li>removeLast()获取并删除该双端队列的最后一个元素</li>
+<li>removeLastOccurrence(obj o) 删除该双端队列最后一次出现的元素o<br>ArrayDeque是Deque的基于数组的实现类。<h4 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h4>是List接口的实现类，意味着这是Lis t的一个集合，可以根据索引来随机访问集合中的元素，还实现了De que接口，因此也可以当作双端队列使用，也可以当作栈使用。</li>
+</ul>
+<p>LinkedList是一个功能非常强大的集合，与ArrayList以及ArrayDeque的实现机制完全不同，Array是按照数组形式来保存数据的，因此在访问集合元素的时候性能比较好，Linkedlist是根据链表来存储数据的，访问数据的时候性能比较差，但是在插入、删除元素的时候性能比较好。</p>
+<h3 id="各种线性表的性能分析"><a href="#各种线性表的性能分析" class="headerlink" title="各种线性表的性能分析"></a>各种线性表的性能分析</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>实现机制</th>
+<th>随机访问排名</th>
+<th>迭代操作</th>
+<th>插入操作</th>
+<th>删除操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数组</td>
+<td>连续内存区保存元素</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>ArrayList/ArrayDeque</td>
+<td>以数组保存元素</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Vector</td>
+<td>以数组保存元素</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>以链表保存元素</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="java堆内存大小的修改"><a href="#java堆内存大小的修改" class="headerlink" title="java堆内存大小的修改"></a>java堆内存大小的修改</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Xms128m -Xmx512m PerformanceTest</span><br></pre></td></tr></table></figure>
+<p>-Xms 表示设置的JVM的堆内存的初始大小<br>-Xmx 表示设置的JVM的堆内存的最大大小（不要超过物理内存）</p>
+<h4 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h4><ul>
+<li>如果是遍历List集合 <ul>
+<li>ArrayList、Vector使用get来遍历集合元素</li>
+<li>LinkedList集合 使用迭代器遍历</li>
+</ul>
+</li>
+<li>如果需要经常执行插入删除 操作 则使用LinkedList。如果使用ArrayList或者Vector的话，通常需要重分配内部数组的大小，时间开销经常是LinkedList的几十倍。</li>
+<li>多线程访问集合的时候，应该考虑集合的线程安全集合</li>
+</ul>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>map的key是不允许重复的，在一个Map对象的任何两个key通过equals方法比较总是返回false。<br>Set与Map的关系非常的密切，从源码来看，Java是通过先实现了Map，然后通过包装一个所有value都为null的Map就实现了Set集合。<br>通用方法总结<br>-clear() 删除该Map对象中所有的key-value对</p>
+<ul>
+<li>bool containsKey()</li>
+<li>bool containsValue() </li>
+<li>Set entrySe() 返回Map集合中所有的key-value对</li>
+<li>obj get(key)</li>
+<li>isEmpty()</li>
+<li>Set keySet()</li>
+<li>obj put(key,value)</li>
+<li>void putAll(map)</li>
+<li>obj remove(key)</li>
+<li>int size() </li>
+<li>Collection values()</li>
+</ul>
+<p>map中的每一个实体类的方法：</p>
+<ul>
+<li>obj getKey()</li>
+<li>obj getValue()</li>
+<li>obj setValue()<h3 id="HashMap-和-Hashtable实现类"><a href="#HashMap-和-Hashtable实现类" class="headerlink" title="HashMap 和 Hashtable实现类"></a>HashMap 和 Hashtable实现类</h3>HashTable与HashMap都是Map接口的典型实现，它们之间的关系类似于ArrayList与Vector的关系。HashTable是一个古老的Map实现类。<br>区别：</li>
+<li>Hashtable是一个线程安全的实现，HashMap是线程不安全的。</li>
+<li>Hashtable不允许使用null作为key和value ,HashMap是可以的。<br>Hashtable和HashMap类用作key的对象都必须实现hashCode()方法和equals()方法。<br>Hashtable与HashMap 列表判断值相等的方法是equals()方法<h4 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h4>LinkedhashMap 使用双向链表来维护key-value对的次序，该链表负责维护Map的迭代顺序，保证顺序与插入的链表一致。<h4 id="Properties-读写属性文件"><a href="#Properties-读写属性文件" class="headerlink" title="Properties 读写属性文件"></a>Properties 读写属性文件</h4>（windows中的ini文件就是一种属性文件）<br>Properties 类是Hashtable 类的子类，该对象在处理属性文件的时候特别方便。该类可以把Map 对象和属性文件关联起来，从而可以把Map对象中的key-value 对写入属性文件中，也可以把属性文件中的“属性名= 属性值”加载到Map 对象中。<br>一共有三个方法修改Properties里面的key和value值</li>
+<li>String getProperty(String key) : 获取属性文件中指定属性名对应的属性值</li>
+<li>String getProperty(String key,String defaultValue) 如果文件中不存在指定的key值的时候，会设置default作为默认值。</li>
+<li>Object setProperty(String key,String value) 设置属性</li>
+<li>void load(InputStream inStream) 从属性文件中加载key-value对，把加载到的key-value对追加到Propertie里面，不保证次序</li>
+<li>void store(OutputStream out,String ) 将properties 中的key-value对输出到指定的属性文件中。</li>
+</ul>
+<p>这里提供一个读取java中的properties文件的示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Properties pro = <span class="keyword">new</span> Properties();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">// 读取</span></span><br><span class="line">			pro.load(<span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(<span class="string">"./pro.properties"</span>)));</span><br><span class="line">			String xx = pro.getProperty(<span class="string">"ee"</span>);</span><br><span class="line">			System.out.println(xx);</span><br><span class="line">			pro.setProperty(<span class="string">"p"</span>, <span class="string">"12323"</span>);</span><br><span class="line">			System.out.println(pro.getProperty(<span class="string">"p"</span>));</span><br><span class="line">			<span class="comment">//存储</span></span><br><span class="line">			pro.store(<span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">"./pro.properties"</span>)),<span class="string">"test line"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="SortedMap接口和TreeMap实现类"><a href="#SortedMap接口和TreeMap实现类" class="headerlink" title="SortedMap接口和TreeMap实现类"></a>SortedMap接口和TreeMap实现类</h4><p>SortedMap接口也有一个TreeMap的实现类，TreeMap就是一个红黑树数据结构，每个key-value对即作为红黑树的一个节点。TreeMap存储key-value对的时候，需要根据key对节点进行排序。TreeMap可以保证所有的key-value对处于有序状态。</p>
+<ul>
+<li>自然排序<br>key必须实现Comparable接口，而且所有的ke y应该是同一个类的对象。</li>
+<li><p>自定义排序<br> 创建Treemap的时候，需要传入一个Comparator对象，该对象负责对Treemap 中的所有的key进行排序。</p>
+<p>如果使用自定义作为Treemap的key的时候，如果想要让TreeMap良好的工作，则重写该类的equals()方法和compareTo()方法时保持一致的返回结果，两个key 通过equals()方法比较返回true时，它们通过compareTo()方法。</p>
+</li>
+<li><p>Map.Entry firstEntry()：返回该Map中的最小值，如果该Map为空或不存在这样的key，则都返回null</p>
+</li>
+<li>firstKey() 返回该Map中最小key值，如果该Map为空，则返回null</li>
+<li>Map.Entry lastEntry(): 返回map中最大key值</li>
+<li>Map.Entry higherEntry(obj key) 返回该Map中位于后一位的key-value 对。如果该Map为空，则返回null</li>
+<li>Object higherKey(object key) 返回该Map中位于key后一位的key值</li>
+<li>Map.Entry lowerEntry(obj key) 返回该Map中位于key 前一位的key-value对</li>
+<li>Object lowerKey(obj key) 返回该Map中位于key前一位的ke y值</li>
+<li>NavigableMap subMap(obj fromkey, bool from, obj toKey ,bool toin) 返回map的子集，是否包含fromKey 与 toKey主要取决于 后面的bool值</li>
+<li>SortedMap tailMap(obj fromKey) 返回map的子map,其key 的范围是大于fromKey的。</li>
+<li>SortedMap headMap(obj toKey) 返回该map的子Map,其key的范围是小于hokey的所有的key</li>
+<li>Navigatable headMap(obj tokey,bool inclu) tokey是否包含取决于bool的值<h4 id="weakHashMap实现类"><a href="#weakHashMap实现类" class="headerlink" title="weakHashMap实现类"></a>weakHashMap实现类</h4>与HashMap的用法是一样的，只不过HashMap是强引用的，只要HashMap对象不被销毁，那么所有的key就都不会被垃圾回收机制回收，也不会自动删除这些key对应的key-value对。但是weakHashMap是弱引用的，如果该对象的key 没有被强引用变量引用，则这些key所引用的对象可能被垃圾回收，也可能自动删除这些key 所对应的key-value对。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	WeakHashMap&lt;String, String&gt; whm = <span class="keyword">new</span> WeakHashMap&lt;String, String&gt;();</span><br><span class="line">	whm.put(<span class="keyword">new</span> String(<span class="string">"语文"</span>), <span class="keyword">new</span> String(<span class="string">"良好"</span>));</span><br><span class="line">	whm.put(<span class="keyword">new</span> String(<span class="string">"数学"</span>), <span class="keyword">new</span> String(<span class="string">"及格"</span>));</span><br><span class="line">	whm.put(<span class="keyword">new</span> String(<span class="string">"英文"</span>), <span class="keyword">new</span> String(<span class="string">"中等"</span>));</span><br><span class="line">	System.out.println(whm);</span><br><span class="line">	whm.put(<span class="string">"java"</span>,<span class="string">"dsdfs"</span>);</span><br><span class="line">	System.gc();</span><br><span class="line">	System.runFinalization();</span><br><span class="line">	System.out.println(whm);</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//结果</span></span><br><span class="line">&#123;英文=中等, 数学=及格, 语文=良好&#125;</span><br><span class="line">&#123;java=dsdfs&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>从上面的程序中，我们可以看出，在系统进行垃圾回收的时候，前面new的对象全部被回收了，但是使用字符串java的变量还在，这是因为前面三个都是匿名的对象，weakHashMap只保留了它的弱引用，但是第四个的key是一个字符串直接量，系统会保留它的强引用，所以垃圾回收机制不会回收。</p>
+<h4 id="IdentityHashMap实现类"><a href="#IdentityHashMap实现类" class="headerlink" title="IdentityHashMap实现类"></a>IdentityHashMap实现类</h4><p>这个实现类与HashMap的类是实现机制是相同的，主要的区别在于当且仅当两个key严格相等的时候(key1 == key2)的时候，该类才能判定两个ke y相等。对于普通的HashMap而言，只要key1 和key2 通过equals()方法比较返回true,且它们的hashCode值相等即可。</p>
+<h4 id="EnumMap-实现类"><a href="#EnumMap-实现类" class="headerlink" title="EnumMap 实现类"></a>EnumMap 实现类</h4><p>EnumMap是一个与枚举类一起使用的map实现，EnumMap中的所有key必须是单个枚举类的枚举值。创建EnumMap的时候，必须显示或者隐示的指定它对应的枚举类。<br>根据key的自然顺序来维护key-value 对的顺序。<br>EnumMap 不允许使用null作为key，但是允许使用null作为value.<br>创建EnumMap的时候，必须指定一个枚举类，从而将该EnumMap和指定枚举类关联起来。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.EnumMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> Season&#123;</span><br><span class="line">	SPRING,SUMMER,FALL,WINTER</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	EnumMap&lt;Season, String&gt; sE = <span class="keyword">new</span> EnumMap&lt;Season, String&gt;(Season.class);</span><br><span class="line">	sE.put(Season.FALL, <span class="string">"dsdf"</span>);</span><br><span class="line">	sE.put(Season.SPRING, <span class="string">"dsdfsd"</span>);</span><br><span class="line">	System.out.println(sE);</span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Map实现类的性能分析"><a href="#Map实现类的性能分析" class="headerlink" title="Map实现类的性能分析"></a>Map实现类的性能分析</h4><ul>
+<li>HashMap与Hashtable的效率大致相同，实现机制几乎一样，但是Hashtable是线程同步的。</li>
+<li>TreeMap 通常比HashMap、Hashtable要慢，因为TreeMap 底层采用红黑树来管理。</li>
+<li>对于一般的应用场景，程序应该多考虑使用HashMap，因为HashMap正是为查询设计的。</li>
+<li>LinkedHashMap比HashMap 慢一点，因为它需要维护链表来保持Map中的key-value时的添加顺序。<h4 id="HashSet-和-HashMap的性能选项"><a href="#HashSet-和-HashMap的性能选项" class="headerlink" title="HashSet 和 HashMap的性能选项"></a>HashSet 和 HashMap的性能选项</h4>对于HashSet及其子类而言，它们采用hash算法来决定集合中元素的存储位置，并通过hash算法来控制集合的大小；对于HashMap、Hashtable及其子类而言，它们采用hash算法来决定Map中key的存储，并通过hash算法来增加key集合的大小。<br>hash表里面可以存储元素的位置被称为“桶”，通常情况下，单个“桶”里面存储一个元素，此时有最好的性能。<h2 id="操作集合的工具类：Collections"><a href="#操作集合的工具类：Collections" class="headerlink" title="操作集合的工具类：Collections"></a>操作集合的工具类：Collections</h2>Java提供了一个Set、List和Map的工具类：Collection,该工具类里面提供了大量的方法可以对集合进行排序、删除、查找、设置集合为不可变、对集合对象实现同步控制等方法。<h3 id="排序操作"><a href="#排序操作" class="headerlink" title="排序操作"></a>排序操作</h3></li>
+<li>static void reverse(List list) 反转指定集合的元素</li>
+<li>static void shuffle(List list) 对集合元素进行随机排序</li>
+<li>static void sort(List list) 根据自然排序对集合进行升序排序</li>
+<li>static void sort(List list,Comparator c) 根据指定的规则对集合进行排序</li>
+<li>satic void swap(List list, int I,int j) 将指定的Lis t集合中的I处的元素和j处的元素进行交换。</li>
+<li>static void rotate(List list, int distance) <ul>
+<li>distance 为正数的时候，将list集合的后distance 个元素“整体”移到前面</li>
+<li>为负数的时候，将list集合的前distance 个元素整体移到后面<br>使用语法：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; ls = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">	ls.add(<span class="number">1</span>);</span><br><span class="line">	ls.add(<span class="number">2</span>);</span><br><span class="line">	ls.add(<span class="number">3</span>);</span><br><span class="line">	ls.add(<span class="number">4</span>);</span><br><span class="line">	System.out.println(ls);</span><br><span class="line">	Collections.reverse(ls);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="查找替换操作"><a href="#查找替换操作" class="headerlink" title="查找替换操作"></a>查找替换操作</h3><ul>
+<li>static int binarySearch(List list,Object key) 使用二分搜索方法 搜索指定的集合，获得指定对象在集合中的索引</li>
+<li>static Object max(Collect coll) 根据元素的自然排序，返回集合中的最大元素</li>
+<li>static Object max(Collection Coll,Comparator comp) 根据指定的排序方法，返回最大的值</li>
+<li>min 同理</li>
+<li>static void fill(List list,Object obj) 使用指定元素obj替换指定 List集合中的所有元素</li>
+<li>static int frequency(Collection c ,Object o) 返回指定集合中指定元素出现的次数</li>
+<li>static int indexOfSubList(List source,List target): 返回子list对象在父List对象中第一次出现的位置索引；如果父List中没有出现，则返回-1</li>
+<li>static int lastIndexOfSubList(List source,List target) 返回子List对象在父List中最后一次出现的位置索引</li>
+<li>static boolean replaceAll(List list,Object oldVal,Object newVal) 使用一个新值newVal替换List对象的所有旧的oldVal<h3 id="同步控制"><a href="#同步控制" class="headerlink" title="同步控制"></a>同步控制</h3>Collections类中提供了多个synchronizedXxx() 方法，可以将指定的集合包装成线程同步的集合<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Collection c = Collections.synchronizedCollection(<span class="keyword">new</span> ArrayList())</span><br><span class="line">List ls = Collections.synchronizedList(<span class="keyword">new</span> ArrayList());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="设置不可变对象"><a href="#设置不可变对象" class="headerlink" title="设置不可变对象"></a>设置不可变对象</h3><ul>
+<li>emptyXxx() 返回一个空的、不可变的集合对象</li>
+<li>singletonXxx() 返回一个只包含指定对象的、不可变的集合对象</li>
+<li>unmodiifiableXxx() 返回指定集合对象的不可变视图<br>上面的意思是生成的集合只能读取</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/01/02/类的加载机制与反射机制/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          类的加载机制与反射机制
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/17/华为云RDS操作实践/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">华为云RDS操作实践</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Java集合总结" data-title="Java集合总结" data-url="http://yoursite.com/2020/12/25/Java集合总结/" data-images="../../photo/head.jpg" data-content="Java集合总结">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
