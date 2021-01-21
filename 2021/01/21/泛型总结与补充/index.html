@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>泛型总结与补充 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当把对象放进java集合中的时候，集合就会忘记这个对象的数据类型，从而保证了通用性，但是也产生了一些问题。对于java集合，在编译的时候是不检查类型的，因此取出集合的时候是需要进行强制类型转换的，可能会引发ClassCastException异常。JDK5之后，发展起来的。 所谓泛型就是在定义类、接口、方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候使用类型形参，这个类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="泛型总结与补充">
+<meta property="og:url" content="http://yoursite.com/2021/01/21/泛型总结与补充/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="当把对象放进java集合中的时候，集合就会忘记这个对象的数据类型，从而保证了通用性，但是也产生了一些问题。对于java集合，在编译的时候是不检查类型的，因此取出集合的时候是需要进行强制类型转换的，可能会引发ClassCastException异常。JDK5之后，发展起来的。 所谓泛型就是在定义类、接口、方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候使用类型形参，这个类型">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-01-21T07:14:26.284Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="泛型总结与补充">
+<meta name="twitter:description" content="当把对象放进java集合中的时候，集合就会忘记这个对象的数据类型，从而保证了通用性，但是也产生了一些问题。对于java集合，在编译的时候是不检查类型的，因此取出集合的时候是需要进行强制类型转换的，可能会引发ClassCastException异常。JDK5之后，发展起来的。 所谓泛型就是在定义类、接口、方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候使用类型形参，这个类型">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-泛型总结与补充" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/01/21/泛型总结与补充/" class="article-date">
+  	<time datetime="2021-01-21T07:04:43.630Z" itemprop="datePublished">2021-01-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      泛型总结与补充
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2021/01/21/泛型总结与补充/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="泛型总结与补充">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当把对象放进java集合中的时候，集合就会忘记这个对象的数据类型，从而保证了通用性，但是也产生了一些问题。<br>对于java集合，在编译的时候是不检查类型的，因此取出集合的时候是需要进行强制类型转换的，可能会引发ClassCastException异常。JDK5之后，发展起来的。</p>
+<p><strong><em>所谓泛型就是在定义类、接口、方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候动态的指定（即传入实际的类型参数、可以称为类型实参）。</em></strong></p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; s = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="comment">//JDK7之前是不支持的</span></span><br><span class="line">ArrayList&lt;String&gt; s = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>泛型的实质是：允许在定义接口、类时声明类型形参，类型形参在整个接口、类体内可当成类型使用。几乎所有可使用普通类型的地方都可以使用这种类型形参。</li>
+<li>类名中添加了泛型之后，在写类的构造器的时候，不需要添加</li>
+<li>泛型具有继承性</li>
+<li>不管泛型的实际类型参数是什么，他们在运行的时候总有同样的类.在内存中也只占用一块内存，因此在静态方法，静态代码块，静态变量的声明过程中，都不允许使用类型形参。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; s = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  ArrayList&lt;Integer&gt; s2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  System.out.println(s.getClass()==s2.getClass()); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于系统中并不会真正的生成泛型类，所以instanceof 运算符后不能使用泛型类<h2 id="使用类型通配符"><a href="#使用类型通配符" class="headerlink" title="使用类型通配符"></a>使用类型通配符</h2>为了表示各种类型List的父类，我们使用类型统配符，类型统配符是一个问号（?），将一个问号作为类型实参传给List集合，写作：List&lt;?&gt; (意思是未知类型元素的List)。这个问号（?）被称为统配符，它的元素类型可以匹配任何类型。</li>
+</ul>
+<p>下面这个程序中使用的时候需要注意，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;?&gt; s = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">  s.add(<span class="keyword">new</span> Object());</span><br><span class="line"><span class="comment">// 这样写会出错的</span></span><br></pre></td></tr></table></figure>
+<p>因为，add方法是有类型参数E作为集合的元素类型，所以传递给add的参数必须是E类的对象或者子类，但是添加null是可以的，因为null是所有引用类型的实例。<br>如果调用get方法是可以的，其返回值是一个未知类型，但是可以肯定的是它总是一个Object。</p>
+<h2 id="类型通配符的上限"><a href="#类型通配符的上限" class="headerlink" title="类型通配符的上限"></a>类型通配符的上限</h2><p>如果我们不想List&lt;?&gt;是所有类型的父亲类，只想表示它是某一类泛型List的父类。可以使用下面例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shape是 一个抽象类 ，那么list中就可以使用继承自shape的类</span></span><br><span class="line">List&lt;? extends Shape&gt;</span><br></pre></td></tr></table></figure>
+<p>因为我们不知道这个受限制通配符的具体类型，因此，我们也不能将Shape类的子类添加到List中。</p>
+<h2 id="设定类型形参的上限"><a href="#设定类型形参的上限" class="headerlink" title="设定类型形参的上限"></a>设定类型形参的上限</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Number 是List 类型形参的上限</span></span><br><span class="line">List&lt;T extends Number&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h2><p>我们在定义方法的时候，可以使用类型形参，所谓的泛型方法就是在声明方法的时候定义一个或多个类型形参。使用格式如下：<br><strong>修饰符 &lt;T,S&gt; 返回值类型 方法名(形参列表 ){<br>//方法体<br>}</strong><br>多个形参类型之间以逗号隔开，所有的类型形参声明放在方法修饰和方法返回值类型之间</p>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">fromArrayTocollection</span><span class="params">(T[] a,Collection&lt;T&gt; c)</span></span>&#123;</span><br><span class="line"><span class="keyword">for</span>(T O : a)&#123;</span><br><span class="line">   c.add(o)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generical</span> </span>&#123;</span><br><span class="line"> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">addArray</span><span class="params">(T[] a,Collection &lt;T&gt; c)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(T o:a) &#123;</span><br><span class="line">   c.add(o);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  Object [] oa = <span class="keyword">new</span> Object[<span class="number">10</span>];</span><br><span class="line">  Collection &lt;Object&gt; coll  = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  addArray(oa,coll);</span><br><span class="line">  String [] ss = <span class="keyword">new</span> String[<span class="number">3</span>];</span><br><span class="line">  Collection&lt;String&gt; coll2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  addArray(ss,coll2);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法声明的形参只能在该方法里面使用，而接口、类声明中定义的类型形参则可以在整个接口以及类中使用。</p>
+<h3 id="泛型方法和类型统配符的区别"><a href="#泛型方法和类型统配符的区别" class="headerlink" title="泛型方法和类型统配符的区别"></a>泛型方法和类型统配符的区别</h3><p>大多数时候都可以使用泛型方法来代替类型统配符。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">containAll</span><span class="params">(Collection&lt;?&gt; c)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span></span></span><br><span class="line"><span class="function">可以 替换成 </span></span><br><span class="line"><span class="function">&lt;T&gt; <span class="keyword">boolean</span> <span class="title">containAll</span><span class="params">(Collection&lt;T&gt; c)</span></span>;</span><br><span class="line">&lt;T extends E&gt; <span class="function"><span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;T&gt; c)</span></span></span><br></pre></td></tr></table></figure>
+<p>上面两个方法中类型形参T只使用了一次，类型形参T使用的产生的唯一效果是可以在不同的调用点传入不同的实际类型。类型统配符就是被设计用来支持灵活的子类化的。<br>泛型方法允许类型形参被用来表示方法的一个或多个参数之间的类型依赖关系，或者方法返回值与参数之间的类型依赖关系，如果没有依赖关系就不要使用泛型。</p>
+<h3 id="泛型构造器"><a href="#泛型构造器" class="headerlink" title="泛型构造器"></a>泛型构造器</h3><p>Java 允许在构造器签名中声明类型形参。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"> <span class="keyword">public</span> &lt;T&gt; Foo(T t)&#123;</span><br><span class="line">  System.out.println(t);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">new</span> Foo(<span class="string">"CEHSI"</span>);</span><br><span class="line">  <span class="keyword">new</span> Foo(<span class="number">20</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Java7新增加的“菱形”"><a href="#Java7新增加的“菱形”" class="headerlink" title="Java7新增加的“菱形”"></a>Java7新增加的“菱形”</h3><p>前面介绍的Java7新增“菱形”语法，它允许调用构造器时在构造器后使用一对尖括号来代表泛型信息。但如果程序显示指定了泛型构造器中声明的类型形参的实际类型，则不可以使用“菱形”语法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"> <span class="keyword">public</span> &lt;T&gt; Foo(T t)&#123;</span><br><span class="line">  System.out.println(t);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generical</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  Foo&lt;String&gt; mc1 = <span class="keyword">new</span> Foo&lt;&gt;(<span class="number">5</span>);</span><br><span class="line">  Foo&lt;String&gt; mc2 = <span class="keyword">new</span> &lt;Integer&gt;Foo&lt;String&gt;(<span class="number">5</span>);</span><br><span class="line">  <span class="comment">//编译会错误 因为即指定了泛型构造器中的类型形参是Integter类型，又想使用“菱形”语法</span></span><br><span class="line">  Foo&lt;String&gt; mc3 = <span class="keyword">new</span> &lt;Integer&gt;Foo&lt;&gt;(<span class="number">5</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="设定统配符下限"><a href="#设定统配符下限" class="headerlink" title="设定统配符下限"></a>设定统配符下限</h3><p>为了表达A元素与B元素相同或者是B元素的父类，这种约束关系，java允许设定统配符的下限&lt;? super Type&gt; 这个统配符表示它必须是Type本身或者是Type 的父类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">copy</span><span class="params">(Collection&lt;? <span class="keyword">super</span> T&gt; dest,Collection&lt;T&gt; src)</span> </span>&#123;</span><br><span class="line">  T last = <span class="keyword">null</span>;</span><br><span class="line">  <span class="keyword">for</span>(T ele : src) &#123;</span><br><span class="line">   last = ele;</span><br><span class="line">   dest.add(ele);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> last;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  List&lt;Number&gt; ln = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  List&lt;Integer&gt; li = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  li.add(<span class="number">5</span>);</span><br><span class="line">  Integer d = copy(ln,li);</span><br><span class="line">  System.out.println(d);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="泛型方法与方法重载"><a href="#泛型方法与方法重载" class="headerlink" title="泛型方法与方法重载"></a>泛型方法与方法重载</h4><p>因为泛型既可以允许设定统配符的上限，也允许设定统配符的下限，但是在Jdk-1.8 之后就不支持。这里的jdk1.8是我现在使用的版本。在jdk1.8之前具体到哪一个版本，没有测试。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">copy</span><span class="params">(Collection&lt;T&gt; dest,Collection&lt;? extends T&gt; src)</span> </span>&#123;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">copy</span><span class="params">(Collection&lt;? <span class="keyword">super</span> T&gt; dest,Collection&lt;T&gt; src)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="擦除和转换"><a href="#擦除和转换" class="headerlink" title="擦除和转换"></a>擦除和转换</h4><p>在严格的泛型代码里面，带泛型声明的类总应该带着类型参数。但是为了与老的JAVA代码保持一致，也允许在使用带泛型声明的类时不指定实际的类型参数。如果没有为这个泛型类指定实际的类型参数，则该类型参数被称作是原始类型，默认是声明该参数的第一个上限类型。</p>
+<p>当把一个具有泛型信息的对象赋值给另一个没有泛型信息的变量的时候，所有在尖括号之间的类型信息都将会被扔掉。<br>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Apple</span> &lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt;</span>&#123;</span><br><span class="line">T size;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Apple</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Apple</span><span class="params">(T size)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.size = size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSize</span><span class="params">(T size)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.size = size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">this</span>.size;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Apple&lt;Integer&gt; a = <span class="keyword">new</span> Apple&lt;&gt;(<span class="number">6</span>);</span><br><span class="line"><span class="comment">//a 的getsize方法返回Integer</span></span><br><span class="line">Integer as = a.getSize();</span><br><span class="line"><span class="comment">//把a 的对象赋值给Apple变量，丢失尖括号里面的里类型信息</span></span><br><span class="line">Apple b = a;</span><br><span class="line"><span class="comment">//b 只能知道size的类型是Number</span></span><br><span class="line">Number size1 = b.getSize();</span><br><span class="line"><span class="comment">//Integer size2 = b.getSize();</span></span><br></pre></td></tr></table></figure>
+<p>可以看到上面的一个示例，我们首先创建了一个Apple的类，是带有泛型声明为Integer的，其类型的上限是Number,这个类型形参用来定义Apple类的size变量，然后又创建了一个Apple的类，该类是没有泛型的，当我们把带有泛型信息的a对象的泛型信息赋值给不带有泛型信息的b对象的时候，即所有尖括号里面的信息都会丢失—–因为Apple 的类型形参的上限是Number类，编译器依然知道b的getsize()方法返回的是Number类型，但是具体是哪一个就不清楚了。</p>
+<p><em>当我们将一个有着泛型类型的类a,赋值给没有泛型类型的类b的时候，就会出现丢失类的变量类型信息的现象，称为擦除。</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Apple&lt;Integer&gt; a = <span class="keyword">new</span> Apple&lt;&gt;(<span class="number">6</span>);</span><br><span class="line"><span class="comment">//a 的getsize方法返回Integer</span></span><br><span class="line">Integer as = a.getSize();</span><br><span class="line"><span class="comment">//把a 的对象赋值给Apple变量，丢失尖括号里面的里类型信息</span></span><br><span class="line">Apple b = a;</span><br><span class="line"><span class="comment">//b 只能知道size的类型是Number</span></span><br><span class="line">Number size1 = b.getSize();</span><br><span class="line">Apple&lt;Double&gt; c = b;</span><br><span class="line">Double size2 = (Double)c.getSize();</span><br></pre></td></tr></table></figure>
+<p>我们在将没有泛型类型的类b,赋值给一个带有泛型类型的类c,这时候是可以编译通过的，只是会出现“未经检查的转换”警告。实际上引用的还是Apple<integer>的这个类型，当我们尝试通过强制转换把它转换成一个Double的类型的时候，就会出现运行时异常<strong><em>java.lang.ClassCastException</em></strong></integer></p>
+<h4 id="泛型与数组"><a href="#泛型与数组" class="headerlink" title="泛型与数组"></a>泛型与数组</h4><p>java5的泛型有一个很重要的设计原则，如果一段代码在编译的时候没有提出“[unchecked]”未经检验的异常的时候，那么程序在运行的时候是不会引发ClassCastException的异常的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这种操作是错误的原因是 数组不能包含类型变量或者类型形参 </span></span><br><span class="line"> List&lt;String&gt; [] test = <span class="keyword">new</span> List&lt;String&gt;[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></p>
+<p>如果我们把上面的形式改为下面的格式，则为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个在java 5 中在编译的时候会出现 [unchecked] 异常</span></span><br><span class="line"> List&lt;String&gt; [] test = <span class="keyword">new</span> List[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+<p>在java 7 中是允许出现这个情况的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; [] test = <span class="keyword">new</span> ArrayList[<span class="number">10</span>];</span><br><span class="line">List&lt;String&gt; li = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">li.add(<span class="string">"2"</span>);</span><br><span class="line">test[<span class="number">0</span>] = li;</span><br><span class="line">System.out.println(test[<span class="number">0</span>].get(<span class="number">0</span>));</span><br></pre></td></tr></table></figure></p>
+<p>Java 8 允许使用无上限的泛型通配符，但是在Java 5中，如果使用无上限的泛型通配符是需要进行 强制类型转换的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java允许使用无上限的泛型统配符</span></span><br><span class="line">List&lt;?&gt; [] test = <span class="keyword">new</span> ArrayList&lt;?&gt;[<span class="number">10</span>];</span><br><span class="line">List&lt;String&gt; li = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">li.add(<span class="string">"2"</span>);</span><br><span class="line">List&lt;Integer&gt; li2 = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">li2.add(<span class="number">3</span>);</span><br><span class="line">test[<span class="number">0</span>] = li;</span><br><span class="line">test[<span class="number">1</span>] = li2;</span><br><span class="line">System.out.println(test[<span class="number">0</span>].get(<span class="number">0</span>));</span><br><span class="line">System.out.println(test[<span class="number">1</span>].get(<span class="number">0</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/01/20/内网穿透/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">内网穿透</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="泛型总结与补充" data-title="泛型总结与补充" data-url="http://yoursite.com/2021/01/21/泛型总结与补充/" data-images="../../photo/head.jpg" data-content="泛型总结与补充">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -191,6 +191,185 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-泛型总结与补充" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/01/21/泛型总结与补充/" class="article-date">
+  	<time datetime="2021-01-21T07:04:43.630Z" itemprop="datePublished">2021-01-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/21/泛型总结与补充/">
+        泛型总结与补充
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当把对象放进java集合中的时候，集合就会忘记这个对象的数据类型，从而保证了通用性，但是也产生了一些问题。<br>对于java集合，在编译的时候是不检查类型的，因此取出集合的时候是需要进行强制类型转换的，可能会引发ClassCastException异常。JDK5之后，发展起来的。</p>
+<p><strong><em>所谓泛型就是在定义类、接口、方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候使用类型形参，这个类型形参将在声明变量、创建对象、调用方法的时候动态的指定（即传入实际的类型参数、可以称为类型实参）。</em></strong></p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; s = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="comment">//JDK7之前是不支持的</span></span><br><span class="line">ArrayList&lt;String&gt; s = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>泛型的实质是：允许在定义接口、类时声明类型形参，类型形参在整个接口、类体内可当成类型使用。几乎所有可使用普通类型的地方都可以使用这种类型形参。</li>
+<li>类名中添加了泛型之后，在写类的构造器的时候，不需要添加</li>
+<li>泛型具有继承性</li>
+<li>不管泛型的实际类型参数是什么，他们在运行的时候总有同样的类.在内存中也只占用一块内存，因此在静态方法，静态代码块，静态变量的声明过程中，都不允许使用类型形参。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; s = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  ArrayList&lt;Integer&gt; s2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  System.out.println(s.getClass()==s2.getClass()); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于系统中并不会真正的生成泛型类，所以instanceof 运算符后不能使用泛型类<h2 id="使用类型通配符"><a href="#使用类型通配符" class="headerlink" title="使用类型通配符"></a>使用类型通配符</h2>为了表示各种类型List的父类，我们使用类型统配符，类型统配符是一个问号（?），将一个问号作为类型实参传给List集合，写作：List&lt;?&gt; (意思是未知类型元素的List)。这个问号（?）被称为统配符，它的元素类型可以匹配任何类型。</li>
+</ul>
+<p>下面这个程序中使用的时候需要注意，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;?&gt; s = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">  s.add(<span class="keyword">new</span> Object());</span><br><span class="line"><span class="comment">// 这样写会出错的</span></span><br></pre></td></tr></table></figure>
+<p>因为，add方法是有类型参数E作为集合的元素类型，所以传递给add的参数必须是E类的对象或者子类，但是添加null是可以的，因为null是所有引用类型的实例。<br>如果调用get方法是可以的，其返回值是一个未知类型，但是可以肯定的是它总是一个Object。</p>
+<h2 id="类型通配符的上限"><a href="#类型通配符的上限" class="headerlink" title="类型通配符的上限"></a>类型通配符的上限</h2><p>如果我们不想List&lt;?&gt;是所有类型的父亲类，只想表示它是某一类泛型List的父类。可以使用下面例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shape是 一个抽象类 ，那么list中就可以使用继承自shape的类</span></span><br><span class="line">List&lt;? extends Shape&gt;</span><br></pre></td></tr></table></figure>
+<p>因为我们不知道这个受限制通配符的具体类型，因此，我们也不能将Shape类的子类添加到List中。</p>
+<h2 id="设定类型形参的上限"><a href="#设定类型形参的上限" class="headerlink" title="设定类型形参的上限"></a>设定类型形参的上限</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Number 是List 类型形参的上限</span></span><br><span class="line">List&lt;T extends Number&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h2><p>我们在定义方法的时候，可以使用类型形参，所谓的泛型方法就是在声明方法的时候定义一个或多个类型形参。使用格式如下：<br><strong>修饰符 &lt;T,S&gt; 返回值类型 方法名(形参列表 ){<br>//方法体<br>}</strong><br>多个形参类型之间以逗号隔开，所有的类型形参声明放在方法修饰和方法返回值类型之间</p>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">fromArrayTocollection</span><span class="params">(T[] a,Collection&lt;T&gt; c)</span></span>&#123;</span><br><span class="line"><span class="keyword">for</span>(T O : a)&#123;</span><br><span class="line">   c.add(o)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generical</span> </span>&#123;</span><br><span class="line"> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">addArray</span><span class="params">(T[] a,Collection &lt;T&gt; c)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(T o:a) &#123;</span><br><span class="line">   c.add(o);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  Object [] oa = <span class="keyword">new</span> Object[<span class="number">10</span>];</span><br><span class="line">  Collection &lt;Object&gt; coll  = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  addArray(oa,coll);</span><br><span class="line">  String [] ss = <span class="keyword">new</span> String[<span class="number">3</span>];</span><br><span class="line">  Collection&lt;String&gt; coll2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  addArray(ss,coll2);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法声明的形参只能在该方法里面使用，而接口、类声明中定义的类型形参则可以在整个接口以及类中使用。</p>
+<h3 id="泛型方法和类型统配符的区别"><a href="#泛型方法和类型统配符的区别" class="headerlink" title="泛型方法和类型统配符的区别"></a>泛型方法和类型统配符的区别</h3><p>大多数时候都可以使用泛型方法来代替类型统配符。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">containAll</span><span class="params">(Collection&lt;?&gt; c)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span></span></span><br><span class="line"><span class="function">可以 替换成 </span></span><br><span class="line"><span class="function">&lt;T&gt; <span class="keyword">boolean</span> <span class="title">containAll</span><span class="params">(Collection&lt;T&gt; c)</span></span>;</span><br><span class="line">&lt;T extends E&gt; <span class="function"><span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;T&gt; c)</span></span></span><br></pre></td></tr></table></figure>
+<p>上面两个方法中类型形参T只使用了一次，类型形参T使用的产生的唯一效果是可以在不同的调用点传入不同的实际类型。类型统配符就是被设计用来支持灵活的子类化的。<br>泛型方法允许类型形参被用来表示方法的一个或多个参数之间的类型依赖关系，或者方法返回值与参数之间的类型依赖关系，如果没有依赖关系就不要使用泛型。</p>
+<h3 id="泛型构造器"><a href="#泛型构造器" class="headerlink" title="泛型构造器"></a>泛型构造器</h3><p>Java 允许在构造器签名中声明类型形参。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line"> <span class="keyword">public</span> &lt;T&gt; Foo(T t)&#123;</span><br><span class="line">  System.out.println(t);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">new</span> Foo(<span class="string">"CEHSI"</span>);</span><br><span class="line">  <span class="keyword">new</span> Foo(<span class="number">20</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Java7新增加的“菱形”"><a href="#Java7新增加的“菱形”" class="headerlink" title="Java7新增加的“菱形”"></a>Java7新增加的“菱形”</h3><p>前面介绍的Java7新增“菱形”语法，它允许调用构造器时在构造器后使用一对尖括号来代表泛型信息。但如果程序显示指定了泛型构造器中声明的类型形参的实际类型，则不可以使用“菱形”语法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"> <span class="keyword">public</span> &lt;T&gt; Foo(T t)&#123;</span><br><span class="line">  System.out.println(t);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generical</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  Foo&lt;String&gt; mc1 = <span class="keyword">new</span> Foo&lt;&gt;(<span class="number">5</span>);</span><br><span class="line">  Foo&lt;String&gt; mc2 = <span class="keyword">new</span> &lt;Integer&gt;Foo&lt;String&gt;(<span class="number">5</span>);</span><br><span class="line">  <span class="comment">//编译会错误 因为即指定了泛型构造器中的类型形参是Integter类型，又想使用“菱形”语法</span></span><br><span class="line">  Foo&lt;String&gt; mc3 = <span class="keyword">new</span> &lt;Integer&gt;Foo&lt;&gt;(<span class="number">5</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="设定统配符下限"><a href="#设定统配符下限" class="headerlink" title="设定统配符下限"></a>设定统配符下限</h3><p>为了表达A元素与B元素相同或者是B元素的父类，这种约束关系，java允许设定统配符的下限&lt;? super Type&gt; 这个统配符表示它必须是Type本身或者是Type 的父类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">copy</span><span class="params">(Collection&lt;? <span class="keyword">super</span> T&gt; dest,Collection&lt;T&gt; src)</span> </span>&#123;</span><br><span class="line">  T last = <span class="keyword">null</span>;</span><br><span class="line">  <span class="keyword">for</span>(T ele : src) &#123;</span><br><span class="line">   last = ele;</span><br><span class="line">   dest.add(ele);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> last;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">  List&lt;Number&gt; ln = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  List&lt;Integer&gt; li = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  li.add(<span class="number">5</span>);</span><br><span class="line">  Integer d = copy(ln,li);</span><br><span class="line">  System.out.println(d);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="泛型方法与方法重载"><a href="#泛型方法与方法重载" class="headerlink" title="泛型方法与方法重载"></a>泛型方法与方法重载</h4><p>因为泛型既可以允许设定统配符的上限，也允许设定统配符的下限，但是在Jdk-1.8 之后就不支持。这里的jdk1.8是我现在使用的版本。在jdk1.8之前具体到哪一个版本，没有测试。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">copy</span><span class="params">(Collection&lt;T&gt; dest,Collection&lt;? extends T&gt; src)</span> </span>&#123;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">copy</span><span class="params">(Collection&lt;? <span class="keyword">super</span> T&gt; dest,Collection&lt;T&gt; src)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="擦除和转换"><a href="#擦除和转换" class="headerlink" title="擦除和转换"></a>擦除和转换</h4><p>在严格的泛型代码里面，带泛型声明的类总应该带着类型参数。但是为了与老的JAVA代码保持一致，也允许在使用带泛型声明的类时不指定实际的类型参数。如果没有为这个泛型类指定实际的类型参数，则该类型参数被称作是原始类型，默认是声明该参数的第一个上限类型。</p>
+<p>当把一个具有泛型信息的对象赋值给另一个没有泛型信息的变量的时候，所有在尖括号之间的类型信息都将会被扔掉。<br>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Apple</span> &lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt;</span>&#123;</span><br><span class="line">T size;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Apple</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Apple</span><span class="params">(T size)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.size = size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSize</span><span class="params">(T size)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.size = size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">this</span>.size;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Apple&lt;Integer&gt; a = <span class="keyword">new</span> Apple&lt;&gt;(<span class="number">6</span>);</span><br><span class="line"><span class="comment">//a 的getsize方法返回Integer</span></span><br><span class="line">Integer as = a.getSize();</span><br><span class="line"><span class="comment">//把a 的对象赋值给Apple变量，丢失尖括号里面的里类型信息</span></span><br><span class="line">Apple b = a;</span><br><span class="line"><span class="comment">//b 只能知道size的类型是Number</span></span><br><span class="line">Number size1 = b.getSize();</span><br><span class="line"><span class="comment">//Integer size2 = b.getSize();</span></span><br></pre></td></tr></table></figure>
+<p>可以看到上面的一个示例，我们首先创建了一个Apple的类，是带有泛型声明为Integer的，其类型的上限是Number,这个类型形参用来定义Apple类的size变量，然后又创建了一个Apple的类，该类是没有泛型的，当我们把带有泛型信息的a对象的泛型信息赋值给不带有泛型信息的b对象的时候，即所有尖括号里面的信息都会丢失—–因为Apple 的类型形参的上限是Number类，编译器依然知道b的getsize()方法返回的是Number类型，但是具体是哪一个就不清楚了。</p>
+<p><em>当我们将一个有着泛型类型的类a,赋值给没有泛型类型的类b的时候，就会出现丢失类的变量类型信息的现象，称为擦除。</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Apple&lt;Integer&gt; a = <span class="keyword">new</span> Apple&lt;&gt;(<span class="number">6</span>);</span><br><span class="line"><span class="comment">//a 的getsize方法返回Integer</span></span><br><span class="line">Integer as = a.getSize();</span><br><span class="line"><span class="comment">//把a 的对象赋值给Apple变量，丢失尖括号里面的里类型信息</span></span><br><span class="line">Apple b = a;</span><br><span class="line"><span class="comment">//b 只能知道size的类型是Number</span></span><br><span class="line">Number size1 = b.getSize();</span><br><span class="line">Apple&lt;Double&gt; c = b;</span><br><span class="line">Double size2 = (Double)c.getSize();</span><br></pre></td></tr></table></figure>
+<p>我们在将没有泛型类型的类b,赋值给一个带有泛型类型的类c,这时候是可以编译通过的，只是会出现“未经检查的转换”警告。实际上引用的还是Apple<integer>的这个类型，当我们尝试通过强制转换把它转换成一个Double的类型的时候，就会出现运行时异常<strong><em>java.lang.ClassCastException</em></strong></integer></p>
+<h4 id="泛型与数组"><a href="#泛型与数组" class="headerlink" title="泛型与数组"></a>泛型与数组</h4><p>java5的泛型有一个很重要的设计原则，如果一段代码在编译的时候没有提出“[unchecked]”未经检验的异常的时候，那么程序在运行的时候是不会引发ClassCastException的异常的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这种操作是错误的原因是 数组不能包含类型变量或者类型形参 </span></span><br><span class="line"> List&lt;String&gt; [] test = <span class="keyword">new</span> List&lt;String&gt;[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></p>
+<p>如果我们把上面的形式改为下面的格式，则为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个在java 5 中在编译的时候会出现 [unchecked] 异常</span></span><br><span class="line"> List&lt;String&gt; [] test = <span class="keyword">new</span> List[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+<p>在java 7 中是允许出现这个情况的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; [] test = <span class="keyword">new</span> ArrayList[<span class="number">10</span>];</span><br><span class="line">List&lt;String&gt; li = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">li.add(<span class="string">"2"</span>);</span><br><span class="line">test[<span class="number">0</span>] = li;</span><br><span class="line">System.out.println(test[<span class="number">0</span>].get(<span class="number">0</span>));</span><br></pre></td></tr></table></figure></p>
+<p>Java 8 允许使用无上限的泛型通配符，但是在Java 5中，如果使用无上限的泛型通配符是需要进行 强制类型转换的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java允许使用无上限的泛型统配符</span></span><br><span class="line">List&lt;?&gt; [] test = <span class="keyword">new</span> ArrayList&lt;?&gt;[<span class="number">10</span>];</span><br><span class="line">List&lt;String&gt; li = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">li.add(<span class="string">"2"</span>);</span><br><span class="line">List&lt;Integer&gt; li2 = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">li2.add(<span class="number">3</span>);</span><br><span class="line">test[<span class="number">0</span>] = li;</span><br><span class="line">test[<span class="number">1</span>] = li2;</span><br><span class="line">System.out.println(test[<span class="number">0</span>].get(<span class="number">0</span>));</span><br><span class="line">System.out.println(test[<span class="number">1</span>].get(<span class="number">0</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2021/01/21/泛型总结与补充/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="泛型总结与补充">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-内网穿透" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/01/20/内网穿透/" class="article-date">
+  	<time datetime="2021-01-20T13:30:11.630Z" itemprop="datePublished">2021-01-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/20/内网穿透/">
+        内网穿透
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>教程<a href="https://github.com/fatedier/frp" target="_blank" rel="noopener">内网穿透</a><br>在windows上面设置的时候，需要添加一个远程连接用户</p>
+<h3 id="配置一个含有公网ip的linux为代理服务器，配置windows为客户端"><a href="#配置一个含有公网ip的linux为代理服务器，配置windows为客户端" class="headerlink" title="配置一个含有公网ip的linux为代理服务器，配置windows为客户端"></a>配置一个含有公网ip的linux为代理服务器，配置windows为客户端</h3><p><a href="https://www.cnblogs.com/dsliang/p/10720728.html" target="_blank" rel="noopener">教程</a></p>
+<h3 id="配置一个含有公网ip的linux为代理服务器，配置mac-os-为客户端"><a href="#配置一个含有公网ip的linux为代理服务器，配置mac-os-为客户端" class="headerlink" title="配置一个含有公网ip的linux为代理服务器，配置mac os 为客户端"></a>配置一个含有公网ip的linux为代理服务器，配置mac os 为客户端</h3><p><a href="https://zengwu.com.cn/p/a02d24c0.html" target="_blank" rel="noopener">教程</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2021/01/20/内网穿透/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="内网穿透">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-类的加载机制与反射机制" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1717,194 +1896,6 @@ java.io.InputStream getResourceAsStream(java.lang.String path)
         
 <div class="counter-tag counter">
     <span id="/2020/11/10/Servlet技术使用总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Servlet技术使用总结">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-青岛崂山区过去24小时气候变化可视化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/11/06/青岛崂山区过去24小时气候变化可视化/" class="article-date">
-  	<time datetime="2020-11-06T02:18:56.950Z" itemprop="datePublished">2020-11-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/06/青岛崂山区过去24小时气候变化可视化/">
-        青岛崂山区过去24小时气候变化可视化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>前面已经介绍过几个方便的可视化工具了！今天又发现了一个python里面非常便捷的Echarts的改版（为python而生的）！抽时间学了一下,随手做了一个简单的小项目！<br>项目逻辑比较简单，简单介绍一下过程以及工具的使用！(以后pytho n处理完数据之后，就可以直接使用了)</p>
-<h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>大体过程是：用python语言对中国气象台的网站进行气象数据的爬取，然后将爬取下来的数据使用pyecharts进行可视化分析。<br><strong><em>声明：数据的爬取，仅用于本次练习，非商业用途</em></strong></p>
-<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>之前的文章有讲解过使用java的webMagic进行数据的爬取！但是当前使用爬虫最火的还要数python！等有时间在出一篇关于python 爬虫的记录！<br><a href="http://www.nmc.cn/publish/forecast" target="_blank" rel="noopener">中央气象台</a><br>首先，打开中央气象台的网站，然后在城市预报中随便选择一个热门城市！然后打开we b控制台，手动切换省份以及城市的名称对页面进行分析。<br>在python中web的学习可以参考<a href="https://requests.readthedocs.io/en/latest/" target="_blank" rel="noopener">requests库</a>，当然还有urllib urllib2等库。大佬说建议全面放弃！我就不介绍这两个了！版本也有点老了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获得请求数据的函数 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_html</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment">#请求的连接</span></span><br><span class="line">    r=requests.get(url)</span><br><span class="line">    <span class="keyword">return</span> r.text</span><br></pre></td></tr></table></figure>
-<p>通过分析可以找到 URL1 = ‘<a href="http://www.nmc.cn/f/rest/province/ASD&#39;" target="_blank" rel="noopener">http://www.nmc.cn/f/rest/province/ASD&#39;</a><br>这个连接是代表的省份 其中ASD表示的是山东省的代码<br> URL = ‘<a href="http://www.nmc.cn/f/rest/passed/55538‘这个链接是某一个城市过去24小时的气候信息，其中的55538是某一个城市的代号。这里使用的是json格式的。" target="_blank" rel="noopener">http://www.nmc.cn/f/rest/passed/55538‘这个链接是某一个城市过去24小时的气候信息，其中的55538是某一个城市的代号。这里使用的是json格式的。</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在这个网站中 城市与代号之间的对应关系 是 </span><br><span class="line">省会 - 城市 - 代号</span><br><span class="line">所以我们要先获得城市的代码，然后找到要使用的城市的名称 然后获得代号</span><br></pre></td></tr></table></figure>
-<p>这样我们通过上述代码就可以获得每一部分的数据！通过查看单个链接数据可以发现数据格式是json数据格式，因此我们需要对数据进行一个简单的解析。</p>
-<p>我们首先解析一个城市到城市代码的 映射<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_citymap</span><span class="params">(url)</span>:</span></span><br><span class="line">    obj = get_html(url)</span><br><span class="line">    parse_json = json.loads(obj)</span><br><span class="line">    code_citymap = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> parse_json:</span><br><span class="line">        code_citymap[a[<span class="string">'city'</span>]] = a[<span class="string">'code'</span>]</span><br><span class="line">    <span class="keyword">return</span> code_citymap</span><br></pre></td></tr></table></figure></p>
-<p>然后根据城市映射，构建一个新的请求链接。直接获得要请求的数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">geturl</span><span class="params">(cityname,url)</span>:</span></span><br><span class="line">    URL = <span class="string">'http://www.nmc.cn/f/rest/passed/'</span></span><br><span class="line">    code = get_citymap(url)[cityname]</span><br><span class="line">    <span class="keyword">return</span> URL+code</span><br></pre></td></tr></table></figure>
-<p>对请求的数据进行json解析</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obb = get_html(geturl(<span class="string">'崂山'</span>,URL1))</span><br><span class="line">parse_dajson = json.loads(obb)</span><br></pre></td></tr></table></figure>
-<p>根据解析出来的数据，将我们要关注的天气信息进行统计</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">time = []</span><br><span class="line">rain = []</span><br><span class="line">temperature = []</span><br><span class="line">humidity = []</span><br><span class="line">pressure = []</span><br><span class="line">windSpeed = []</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> parse_dajson:</span><br><span class="line">    time.append(a[<span class="string">'time'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'rain1h'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(rain)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'rain1h'</span>]= rain[<span class="number">-1</span>]</span><br><span class="line">    rain.append(a[<span class="string">'rain1h'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'temperature'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(temperature)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'temperature'</span>]=temperature[<span class="number">-1</span>]</span><br><span class="line">    temperature.append(a[<span class="string">'temperature'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'humidity'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(humidity)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'humidity'</span>]=humidity[<span class="number">-1</span>]</span><br><span class="line">    humidity.append(a[<span class="string">'humidity'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'pressure'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(pressure)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'pressure'</span>]=pressure[<span class="number">-1</span>]</span><br><span class="line">    pressure.append(a[<span class="string">'pressure'</span>])</span><br><span class="line">    <span class="keyword">if</span> a[<span class="string">'windSpeed'</span>]==<span class="number">9999.0</span> <span class="keyword">and</span> len(windSpeed)!=<span class="number">0</span>:</span><br><span class="line">        a[<span class="string">'windSpeed'</span>]=windSpeed[<span class="number">-1</span>]</span><br><span class="line">    windSpeed.append(a[<span class="string">'windSpeed'</span>])</span><br></pre></td></tr></table></figure>
-<p>统计完信息之后，我们就要进行可视化处理了！就要用到python版本的p yecharts。对于pyecharts在网络上主要有两个版本。我们尽量使用最新版！这个也是让我对python感到非常头疼的。版本更新，语法不兼容！<br>对于pyecharts的学习建议大家直接学习<a href="https://pyecharts.org/#/zh-cn/intro" target="_blank" rel="noopener">官方学习文档</a><br>官方为大家提供了足够的使用<a href="https://gallery.pyecharts.org/#/README" target="_blank" rel="noopener">模板</a>可修改性是比较强的。<br>下面就是使用官方文档进行的一个可视化过程。<br>使用之前需要导入所需要的包</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyecharts.options <span class="keyword">as</span> opts</span><br><span class="line"><span class="keyword">from</span> pyecharts.charts <span class="keyword">import</span> Line,Bar,Page,PictorialBar</span><br><span class="line"><span class="keyword">from</span> pyecharts.globals <span class="keyword">import</span> ThemeType,SymbolType</span><br></pre></td></tr></table></figure>
-<p>为了将所有的可视化结果全部显示在一个网页上，我们需要设置一下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">page = Page(layout=Page.DraggablePageLayout)</span><br><span class="line">...</span><br><span class="line">这部分是a,b,c,d模块</span><br><span class="line">...</span><br><span class="line">page.add(a,b,c,d)</span><br><span class="line">page.render(<span class="string">"/Users/gorge/Desktop/temperature_change_line_chart.html"</span>)</span><br></pre></td></tr></table></figure>
-<p>对于a ,bcc,d模块的写法如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 气温</span></span><br><span class="line">a=(</span><br><span class="line">    Line(init_opts=opts.InitOpts(width=<span class="string">"1600px"</span>, height=<span class="string">"400px"</span>))</span><br><span class="line">    .add_xaxis(xaxis_data=time)</span><br><span class="line">    .add_yaxis(</span><br><span class="line">        series_name=<span class="string">"气温"</span>,</span><br><span class="line">        y_axis=temperature,</span><br><span class="line">        markpoint_opts=opts.MarkPointOpts(</span><br><span class="line">            data=[</span><br><span class="line">                opts.MarkPointItem(type_=<span class="string">"max"</span>, name=<span class="string">"最大值"</span>),</span><br><span class="line">                opts.MarkPointItem(type_=<span class="string">"min"</span>, name=<span class="string">"最小值"</span>),</span><br><span class="line">            ]</span><br><span class="line">        ),</span><br><span class="line">        markline_opts=opts.MarkLineOpts(</span><br><span class="line">            data=[opts.MarkLineItem(type_=<span class="string">"average"</span>, name=<span class="string">"平均值"</span>)]</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">    .set_global_opts(</span><br><span class="line">        title_opts=opts.TitleOpts(title=<span class="string">"青岛过去24小时气温变化"</span>, subtitle=<span class="string">"数据真实"</span>),</span><br><span class="line">        tooltip_opts=opts.TooltipOpts(trigger=<span class="string">"axis"</span>),</span><br><span class="line">        toolbox_opts=opts.ToolboxOpts(is_show=<span class="literal">True</span>),</span><br><span class="line">        xaxis_opts=opts.AxisOpts(type_=<span class="string">"category"</span>, boundary_gap=<span class="literal">False</span>),</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">b= (</span><br><span class="line">    Bar(&#123;<span class="string">"theme"</span>: ThemeType.MACARONS&#125;)</span><br><span class="line">    .add_xaxis(time)</span><br><span class="line">    .add_yaxis(<span class="string">"temperature"</span>, temperature)</span><br><span class="line">    .add_yaxis(<span class="string">"humidity"</span>, humidity)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">c = (</span><br><span class="line">    PictorialBar()</span><br><span class="line">    .add_xaxis(time)</span><br><span class="line">    .add_yaxis(</span><br><span class="line">        <span class="string">""</span>,</span><br><span class="line">        windSpeed,</span><br><span class="line">        label_opts=opts.LabelOpts(is_show=<span class="literal">False</span>),</span><br><span class="line">        symbol_size=<span class="number">18</span>,</span><br><span class="line">        symbol_repeat=<span class="string">"fixed"</span>,</span><br><span class="line">        symbol_offset=[<span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">        is_symbol_clip=<span class="literal">True</span>,</span><br><span class="line">        symbol=SymbolType.ROUND_RECT,</span><br><span class="line">    )</span><br><span class="line">    .reversal_axis()</span><br><span class="line">    .set_global_opts(</span><br><span class="line">        title_opts=opts.TitleOpts(title=<span class="string">"青岛过去24小时风速图"</span>),</span><br><span class="line">        xaxis_opts=opts.AxisOpts(is_show=<span class="literal">False</span>),</span><br><span class="line">        yaxis_opts=opts.AxisOpts(</span><br><span class="line">            axistick_opts=opts.AxisTickOpts(is_show=<span class="literal">False</span>),</span><br><span class="line">            axisline_opts=opts.AxisLineOpts(</span><br><span class="line">                linestyle_opts=opts.LineStyleOpts(opacity=<span class="number">0</span>)</span><br><span class="line">            ),</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">d = (</span><br><span class="line">    Line()</span><br><span class="line">    .add_xaxis(time)</span><br><span class="line">    .add_yaxis(<span class="string">"降雨量/mm"</span>, rain, is_smooth=<span class="literal">True</span>)</span><br><span class="line">    .set_global_opts(title_opts=opts.TitleOpts(title=<span class="string">"青岛过去24小时降水图"</span>))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>通过上述操作，我们就可以获得一个可以动态显示的网页版的可视化界面了！这样看起来是不是要比Echarts的好多了呀！<br><img src="https://img-blog.csdnimg.cn/20201106101501842.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20201106101550734.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20201106101612963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2020/11/06/青岛崂山区过去24小时气候变化可视化/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="青岛崂山区过去24小时气候变化可视化">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Spark基础笔记" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/10/25/Spark基础笔记/" class="article-date">
-  	<time datetime="2020-10-25T09:09:06.200Z" itemprop="datePublished">2020-10-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/Spark基础笔记/">
-        Spark基础笔记
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Spark是由美国加州大学伯克利分校的AMP实验室于2009年开发的，是<em>基于内存计算的并行计算框架</em>，可用于构建<em>大型的、低延迟</em>的数据分析应用程序。<br>spark的主要特点：</p>
-<ul>
-<li>运行速度快<br> Spark使用先进的DAG（有向无环图）执行引擎，用来支持循环数据流与内存计算，基于内存的执行速度比hadoop mapReduce快上百倍，基于磁盘的执行速度也能快上十倍。</li>
-<li>容易使用<br> 支持java、python、Scala和R语言进行编程，编程相对简洁</li>
-<li>通用性<br> 提供了完整而强大的技术栈，包括SQL查询、流式计算、机器学习和图算法组件，这些<em>组件可以无缝整合在一个应用中</em>，可以应对复杂的运算。同时支持批处理、交互式查询和流数据处理。</li>
-<li>运行模式多样<br> 可运行于独立的集群中或者hadoop中。<h2 id="Spark与Hadoop的对比"><a href="#Spark与Hadoop的对比" class="headerlink" title="Spark与Hadoop的对比"></a>Spark与Hadoop的对比</h2></li>
-<li>Hadoop的主要缺点<br>hadoop的主要两个组成部分，一部分是h d f s分布式存储，另一个方面是Ma pReduce计算模型。<ol>
-<li>表达能力有限。计算都必须转化为Map和Reduce两个操作。这不是适合所有的情况。</li>
-<li>磁盘的IO开销比较大。每次执行都需要从磁盘读取数据，并且在计算完成后需要将结果写入到磁盘中，IO开销过大。</li>
-<li>延迟高。一次计算可能需要分解成<em>一系列按顺序执行的MapReduce任务</em>，任务之间的衔接由于涉及到IO开销。会产生较高的延迟。在前一个结束之前，其他任务无法开始。</li>
-</ol>
-</li>
-<li>Spark的主要优点<br> 在借鉴了mapReduce的优点基础上，还有以下优点：<ol>
-<li>Spark的计算模式也属于Hadoop MapReduce，但是并不局限于Ma p和Reduce，还提供了多种数据集的类型，编程模型比mapReduce更灵活。</li>
-<li>提供了内存计算，中间结果放在内存中，带来了更高的迭代运算效率，但是同时也对计算机的硬件要求更高。</li>
-<li>基于DAG的任务调度机制，要比MapReduce的迭代执行机制更优越。</li>
-</ol>
-</li>
-</ul>
-<p>但是Spark并不能完全替代hadoop，spark只是优化了mapReduce的计算模型，hadoop的分布式文件系统的优越性还是不能忽视的。Spark专注于BDAS架构中数据的处理与分析，数据存储还是主要依靠h d f s。</p>
-<h2 id="Spark生态系统的主要组件"><a href="#Spark生态系统的主要组件" class="headerlink" title="Spark生态系统的主要组件"></a>Spark生态系统的主要组件</h2><p>这里我们先知道有这些东西的存在就好了，等具体使用的时候，我们在具体的学习。</p>
-<ul>
-<li>Spark Core<br>主要面向批数据处理，是spark的基本功能，主要包括内存计算、任务调度、部署模式、故障恢复、存储管理等。</li>
-<li>Spark SQL<br>能够统一处理关系表和RDD，使得开发人员不需要自己编写Spark应用程序，轻松使用SQL命令进行查询。</li>
-<li>Spark Streaming<br>支持高吞吐量、可容错性的实时流数据处理，核心思路是将流数据分解成一系列的短小的批处理作业。每个短小的批处理作业都可以使用spark core进行快速处理。支持TCP套接字等。</li>
-<li>MLlib（ 机器学习）<br>提供了常用的机器学习算法的实现，包括聚类、分类、回归、协同过滤等。降低了机器学习的门槛，开发人员只要具备一定的伦理只是就能进行机器学习的工作。</li>
-<li>GraphX<br>是基于图计算的API，能在海量数据上自如的运行复杂的图算法。<h2 id="Spark-的运行架构"><a href="#Spark-的运行架构" class="headerlink" title="Spark 的运行架构"></a>Spark 的运行架构</h2><img src="https://img-blog.csdnimg.cn/20201022200451934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
-</ul>
-<p><img src="https://img-blog.csdnimg.cn/20201022200745461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>一个应用由一个任务控制节点（Driver） 和 若干作业（Jo b）构成，一个作业由多个阶段（Stage）构成，一个阶段由多个（Tas k）组成。当执行任务的时候一个任务控制节点会向集群管理器（Clu ster Manager）申请资源。启动Executor,并向Exe cutor发送应用程序代码和文件，然后在Executor上执行任务，运行结束之后执行结果会返回给任务控制节点，或者写入HDFS中或者数据库中。<br>具体的过程，我们后期会做一个实验，在实验中感受一下执行过程。</p>
-<h4 id="使用Executor执行任务的优势"><a href="#使用Executor执行任务的优势" class="headerlink" title="使用Executor执行任务的优势"></a>使用Executor执行任务的优势</h4><ol>
-<li>利用多线程来执行具体的任务，减少了任务启动的开销。</li>
-<li>Executor中有一个BlockManager存储模块，会将内存和磁盘共同作为存储设备，当进行迭代计算的时候，中间结果可以暂时的存储在这些模块中，减少了IO开销。</li>
-</ol>
-<h2 id="RDD弹性分布式数据集"><a href="#RDD弹性分布式数据集" class="headerlink" title="RDD弹性分布式数据集"></a>RDD弹性分布式数据集</h2><h3 id="出现背景"><a href="#出现背景" class="headerlink" title="出现背景"></a>出现背景</h3><p>在实际应用中，有很多的迭代算和交互式数据挖掘工具，不同阶段之间会重用中间结果。目前的mapReduce框架都是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销。</p>
-<h3 id="RDD概念"><a href="#RDD概念" class="headerlink" title="RDD概念"></a>RDD概念</h3><p>就是一个分布式分区对象集合，本质上只是一个只读的分区记录集合。每个RDD可以分成多个分区，每个分区就是一个数据集片段，并且一个RDD的不同分区可以被保存到集群中不同的节点上，从而可以在集群中的不同节点上进行并行计算。RDD的只读不能直接修改的特点（要想修改只能基于稳定的物理存储中的数据集）决定了RDD适合执行批处理，不适合细粒度的、异步的应用。比如web系统、增量式的网络爬虫等。</p>
-<h4 id="RDD-实现高效计算的原因"><a href="#RDD-实现高效计算的原因" class="headerlink" title="RDD 实现高效计算的原因"></a>RDD 实现高效计算的原因</h4><p>（1）高效的容错性<br>在RDD的设计中，数据只读，不可修改。如果需要修改数据，必须从父RDD 转换到子RDD，由此在不同的RDD之间建立了血缘关系。检查容错可以直接通过父节点进行重新计算，而不需要回滚整个系统或者通过数据冗余的方式。<br>（2）中间结果持久化到内存 。数据在内存中的多个RDD操作之间进行传递，不需要落地到磁盘，避免了不必要的读写磁盘开销。<br>（3）存放的数据可以是JAVA对象，避免了不必要的对象的序列化和反序列化开销。</p>
-<h4 id="RDD之间的依赖关系"><a href="#RDD之间的依赖关系" class="headerlink" title="RDD之间的依赖关系"></a>RDD之间的依赖关系</h4><ol>
-<li>窄依赖</li>
-<li>宽依赖</li>
-</ol>
-<h4 id="RDD中阶段的划分"><a href="#RDD中阶段的划分" class="headerlink" title="RDD中阶段的划分"></a>RDD中阶段的划分</h4><p>上面我们说了数据的执行是基于数据的阶段进行执行的，那么数据的阶段是怎么样划分的呢？<br><img src="https://img-blog.csdnimg.cn/20201024200214371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>具体划分方法：<br>在DAG中进行反向解析，遇到宽依赖就断开，遇到窄依赖就把当前的RDD加入到当前的阶段中，将窄依赖尽量划分在同一个阶段中，可以实现流水线计算。<br>如上图所示：HDFS中读入数据，生成3个不同的RDD（A,C,E），通过一系列的转化操作后，再将数据存储到HDFS中。对DAG进行解析的时候，RDD A到RDDB 以及从RDD B以及RDD F到RDD G的转化都是宽依赖的，因此需要在此断开，会生成3个阶段。在阶段2中 map和union 操作都是窄依赖，这两个操作可以形成一个流水线操作。<br>（先入个门吧）<br><a href="http://dblab.xmu.edu.cn/blog/972-2/" target="_blank" rel="noopener">学习链接</a><br><a href="http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#module-pyspark.sql.functions" target="_blank" rel="noopener">Spark API</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2020/10/25/Spark基础笔记/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Spark基础笔记">
          &nbsp;
         view
     </span>
