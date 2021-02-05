@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码 | Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="首先使用管理员权限登录CMD右键系统菜单–&amp;gt;选择Windows PowerShell(管理员)（A）启动管理员cmd 查看现有进程是否含有mysql使用tasklist能列出所有的进程，和相应的信息。如果包含Mysql的开头的进程，一律杀死即可tskill能查杀进程，语法很简单：tskill 程序名！！ 切换命令行路径到Mysql的bin目录下我是一步一步退出在重新进入的。1234567PS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码">
+<meta property="og:url" content="http://yoursite.com/2021/02/05/Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="首先使用管理员权限登录CMD右键系统菜单–&amp;gt;选择Windows PowerShell(管理员)（A）启动管理员cmd 查看现有进程是否含有mysql使用tasklist能列出所有的进程，和相应的信息。如果包含Mysql的开头的进程，一律杀死即可tskill能查杀进程，语法很简单：tskill 程序名！！ 切换命令行路径到Mysql的bin目录下我是一步一步退出在重新进入的。1234567PS">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-02-05T04:28:04.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码">
+<meta name="twitter:description" content="首先使用管理员权限登录CMD右键系统菜单–&amp;gt;选择Windows PowerShell(管理员)（A）启动管理员cmd 查看现有进程是否含有mysql使用tasklist能列出所有的进程，和相应的信息。如果包含Mysql的开头的进程，一律杀死即可tskill能查杀进程，语法很简单：tskill 程序名！！ 切换命令行路径到Mysql的bin目录下我是一步一步退出在重新进入的。1234567PS">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/02/05/Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码/" class="article-date">
+  	<time datetime="2021-02-05T03:37:13.010Z" itemprop="datePublished">2021-02-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+          
+<div class="counter-tag counter">
+    <span id="/2021/02/05/Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码">
+         &nbsp;
+        view
+    </span>
+</div>
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="首先使用管理员权限登录CMD"><a href="#首先使用管理员权限登录CMD" class="headerlink" title="首先使用管理员权限登录CMD"></a>首先使用管理员权限登录CMD</h2><p>右键系统菜单–&gt;选择Windows PowerShell(管理员)（A）启动管理员cmd</p>
+<h2 id="查看现有进程是否含有mysql"><a href="#查看现有进程是否含有mysql" class="headerlink" title="查看现有进程是否含有mysql"></a>查看现有进程是否含有mysql</h2><p>使用tasklist能列出所有的进程，和相应的信息。如果包含Mysql的开头的进程，一律杀死即可<br>tskill能查杀进程，语法很简单：tskill 程序名！！</p>
+<h2 id="切换命令行路径到Mysql的bin目录下"><a href="#切换命令行路径到Mysql的bin目录下" class="headerlink" title="切换命令行路径到Mysql的bin目录下"></a>切换命令行路径到Mysql的bin目录下</h2><p>我是一步一步退出在重新进入的。<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; cd ..</span><br><span class="line">PS C:\Windows&gt; cd ..</span><br><span class="line">PS C:\&gt; ls</span><br><span class="line">PS C:\&gt; cd <span class="string">'.\Program Files\'</span></span><br><span class="line">PS C:\Program Files&gt; cd .\MySQL\</span><br><span class="line">PS C:\Program Files\MySQL&gt; cd <span class="string">'.\MySQL Server 8.0\'</span></span><br><span class="line">PS C:\Program Files\MySQL\MySQL Server <span class="number">8.0</span>&gt; cd bin</span><br></pre></td></tr></table></figure></p>
+<h2 id="执行跳过权限认证的命令"><a href="#执行跳过权限认证的命令" class="headerlink" title="执行跳过权限认证的命令"></a>执行跳过权限认证的命令</h2><p>8版本与前面的版本不一样，语法上是有区别的，注意区分<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --console --skip-grant-tables --shared-memory</span><br></pre></td></tr></table></figure></p>
+<h3 id="错误及处理"><a href="#错误及处理" class="headerlink" title="错误及处理"></a>错误及处理</h3><p>我在运行的时候，出现了下面的错误，错误原因是 console没有安装<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2021</span>-<span class="number">02</span>-<span class="number">05</span>T02:<span class="number">45</span>:<span class="number">36.329602</span>Z <span class="number">0</span> [System] [MY-<span class="number">010116</span>] [Server] C:\Program Files\MySQL\MySQL Server <span class="number">8.0</span>\bin\mysqld.exe (mysqld <span class="number">8.0</span>.<span class="number">22</span>) starting as <span class="keyword">process</span> <span class="number">17040</span></span><br><span class="line"><span class="number">2021</span>-<span class="number">02</span>-<span class="number">05</span>T02:<span class="number">45</span>:<span class="number">36.332291</span>Z <span class="number">0</span> [Warning] [MY-<span class="number">010091</span>] [Server] Can<span class="string">'t create test file C:\Program Files\MySQL\MySQL Server 8.0\data\mysqld_tmp_file_case_insensitive_test.lower-test</span></span><br><span class="line"><span class="string">2021-02-05T02:45:36.332400Z 0 [Warning] [MY-010091] [Server] Can'</span>t create test file C:\Program Files\MySQL\MySQL Server <span class="number">8.0</span>\data\mysqld_tmp_file_case_insensitive_test.lower-test</span><br><span class="line"><span class="number">2021</span>-<span class="number">02</span>-<span class="number">05</span>T02:<span class="number">45</span>:<span class="number">36.332547</span>Z <span class="number">0</span> [ERROR] [MY-<span class="number">013276</span>] [Server] Failed to set datadir to <span class="string">'C:\Program Files\MySQL\MySQL Server 8.0\data\'</span> (OS errno: <span class="number">2</span> - No such file or directory)</span><br><span class="line"><span class="number">2021</span>-<span class="number">02</span>-<span class="number">05</span>T02:<span class="number">45</span>:<span class="number">36.346381</span>Z <span class="number">0</span> [ERROR] [MY-<span class="number">010119</span>] [Server] Aborting</span><br><span class="line"><span class="number">2021</span>-<span class="number">02</span>-<span class="number">05</span>T02:<span class="number">45</span>:<span class="number">36.346516</span>Z <span class="number">0</span> [System] [MY-<span class="number">010910</span>] [Server] C:\Program Files\MySQL\MySQL Server <span class="number">8.0</span>\bin\mysqld.exe: Shutdown complete (mysqld <span class="number">8.0</span>.<span class="number">22</span>)  MySQL Community Server - GPL.</span><br></pre></td></tr></table></figure></p>
+<p>下面就对这个错误进行处理哦！</p>
+<ul>
+<li>首先执行 <code>mysqld --initialize --user=mysql --console</code></li>
+<li>执行成功后执行<code>mysqld -install</code>  会提示<code>Service successfully installed.</code></li>
+<li>重新执行 <code>mysqld --console --skip-grant-tables --shared-memory</code> 即可。<br>这时候当前这个命令行就不可以使用了。<h2 id="使用管理员权限在重新开一个命令行"><a href="#使用管理员权限在重新开一个命令行" class="headerlink" title="使用管理员权限在重新开一个命令行"></a>使用管理员权限在重新开一个命令行</h2>进入到Mysql的安装目录执行<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Program Files\MySQL\MySQL Server <span class="number">8.0</span>\bin&gt; mysql</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这时候，就能成功的登录到mysql里面，我们来测试一下，是不是登录成功了</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br></pre></td></tr></table></figure>
+<p>可以发现我们已经登录成功。<br>然后执行下面的语句<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mysql;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show tables;</span><br></pre></td></tr></table></figure></p>
+<p>老的版本是执行<code>select user,host,password from user;</code> 但是会报错password是一个无效的字段。在mysql8.0中password已经被替代了<br>因此我们要执行<code>select user,host,authentication_string from user;</code><br>最后执行：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE mysql.user SET authentication_string=<span class="string">''</span> WHERE user=<span class="string">'root'</span> and host=<span class="string">'localhost'</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="关闭两个CMD-重启mysql"><a href="#关闭两个CMD-重启mysql" class="headerlink" title="关闭两个CMD 重启mysql"></a>关闭两个CMD 重启mysql</h2><p>我们关闭刚刚打开的两个管理员登录的cmd，然后在重新使用管理员权限打开一个cmd,输入</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; net start mysql</span><br><span class="line">MySQL 服务正在启动 .</span><br><span class="line">MySQL 服务已经启动成功。</span><br></pre></td></tr></table></figure>
+<p>启动成功之后，输入</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; mysql -u root</span><br></pre></td></tr></table></figure>
+<p>这时候，我们就进入到了mysql的界面了，在输入</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; ALTER USER <span class="string">'root'</span><span class="string">@'localhost' IDENTIFIED BY 'root';</span></span><br><span class="line"><span class="string">Query OK, 0 rows affected (0.01 sec)</span></span><br></pre></td></tr></table></figure>
+<p>这里的root 是我设置的测试用户名与密码，要根据自己的自行调整。</p>
+<h2 id="使用普通用户权限打开cmd"><a href="#使用普通用户权限打开cmd" class="headerlink" title="使用普通用户权限打开cmd"></a>使用普通用户权限打开cmd</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\ouc&gt;mysql -uroot -p</span><br></pre></td></tr></table></figure>
+<p>这样我们就可以使用新的密码成功的登录数据库了！</p>
+<h2 id="这里还是要提醒大家，尽量建立一个密码本，可以将密码都记录下来，这样就不用整天这么麻烦的因为这种小事情，捣鼓啦"><a href="#这里还是要提醒大家，尽量建立一个密码本，可以将密码都记录下来，这样就不用整天这么麻烦的因为这种小事情，捣鼓啦" class="headerlink" title="这里还是要提醒大家，尽量建立一个密码本，可以将密码都记录下来，这样就不用整天这么麻烦的因为这种小事情，捣鼓啦"></a>这里还是要提醒大家，尽量建立一个密码本，可以将密码都记录下来，这样就不用整天这么麻烦的因为这种小事情，捣鼓啦</h2>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/05/多线程实战之批处理一个文件夹下的文件总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          多线程实战之批处理一个文件夹下的文件总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/21/泛型总结与补充/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">泛型总结与补充</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码" data-title="Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码" data-url="http://yoursite.com/2021/02/05/Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码/" data-images="../../photo/head.jpg" data-content="Win10 系统MySQL8.0 忘记管理员密码，重新设置新的密码">
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

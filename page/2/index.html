@@ -191,6 +191,435 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-多线程基础总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/11/10/多线程基础总结/" class="article-date">
+  	<time datetime="2020-11-10T08:30:18.480Z" itemprop="datePublished">2020-11-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/10/多线程基础总结/">
+        多线程基础总结
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前有看过很多线程类的资料，但总是有一种雾里看花的感觉。基本的知识只能说是了解，但是基本的使用还有些困难。之前看了《JAVA编程思想》里面的介绍。感觉还是有些模糊，这里先对《疯狂java讲义》（这本书感觉应该是java入门级的扛把子吧！哈哈～）中的知识做一个整理吧！毕竟线程这块，就目前阶段用的还是比较少的，原因不是场景少，而是会用的人少。单线程的程序能力是有限的，很多工具用到了多线程，但是里面已经写好了，我们自然也就不关心了。例如：网络编程中的ServerSocket。这里先做一个知识点的整理，以后在抽时间做一些线程的项目加深一下理解。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p>进程可以广义的理解为电脑中的一个应用、一个程序。大多数操作系统都支持多进程并发运行，这给我们感觉是这些进程都在同时进行工作，但是实际上对于一个CPU而言，它在某个时间点只能进行一个程序，然后CPU不断的在这些进程之间轮换执行。</p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>线程是进程的执行单元，在一个进程中可以同时并发的处理多个任务。</p>
+<ul>
+<li>单线程<br>单线程就是顺序的执行一个执行流。</li>
+<li>多线程<br>多线程则是在一个可以包含多个执行流的程序中，多个顺序流之间互不干扰、独立并发的执行。<br><em>细节：（一个线程必须有一个父进程，线程之间可以拥有独立的堆栈，程序计数器和自己的局部变量，但是不用于独立的系统资源，线程之间的资源是共享的</em>）<h3 id="并行与并发"><a href="#并行与并发" class="headerlink" title="并行与并发"></a>并行与并发</h3></li>
+<li>并发<br>同一个时刻只能有一条指令执行，但是多个进程指令被快速的轮换执行，使得在宏观上具有多个进程同时执行的效果。</li>
+<li>并行<br>在同一个时刻，有多条指令在多个处理器上同时执行。<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3>线程之间共享系统分配给一个进程的虚拟空间，以及资源。<br>线程之间能够共享内存，但是进程之间不能共享内存。<br>系统创建进程时需要为该进程重新分配系统资源，但是线程的单价就很小，因此使用多线程来实现多任务并发比多进程的效率高。<br>（读到这里，我可能明白了，之前的一个疑惑。假设我同时有n个馒头，我可以开多个吃的线程，来消灭它。当然也可以重复开多个进程来消灭它。上述才是线程的真正优势）<h2 id="线程的创建和启动"><a href="#线程的创建和启动" class="headerlink" title="线程的创建和启动"></a>线程的创建和启动</h2>（之前有总结过一个，说实话忘了）<h3 id="类继承Thread"><a href="#类继承Thread" class="headerlink" title="类继承Thread"></a>类继承Thread</h3></li>
+<li>创建一个子类，继承Thread（extends Thread）</li>
+<li>重写类的run()方法，这就是告诉程序，我是干啥的。</li>
+<li><p>创建子类的实例，并调用start()方法来启动该线程。</p>
+<h3 id="实现Runnable接口（implement-Runnable）"><a href="#实现Runnable接口（implement-Runnable）" class="headerlink" title="实现Runnable接口（implement Runnable）"></a>实现Runnable接口（implement Runnable）</h3></li>
+<li><p>创建一个类实现Runnable接口创建线程类</p>
+</li>
+<li>重写run()方法</li>
+<li>创建一个实现类的实例（一次就好）</li>
+<li>以这个实例作为Thread的目标来创建Thread对象（new Thread(target)）</li>
+<li>调用线程的start()方法，来启动该线程。</li>
+</ul>
+<p><em>注意：进行多线程编程的时候，要记得java程序运行时默认的主线程，main()方法是主线程的线程执行体。</em></p>
+<h3 id="使用Callable-和-Future创建线程"><a href="#使用Callable-和-Future创建线程" class="headerlink" title="使用Callable 和 Future创建线程"></a>使用Callable 和 Future创建线程</h3><p>上面实现的Run方法都没有返回值，那么如何才能实现一个有返回值的方法呢<br>Java5 开始Java提供了一个Callable的接口，提供了一个call()方法可以作为线程的执行体。<em>可以有返回值 或者抛出异常</em><br>实现步骤如下：</p>
+<ul>
+<li>创建一个类实现Callable,实现call()方法，该call()方法作为线程的执行体，并且call()有返回值</li>
+<li>创建一个Callable实现类的实例，实现FutureTask类包装Callable对象，这个FutureTask对象(接口)封装了Callable对象的call()方法的返回值。<br>FutureTask<object> tast = new FutureTask<object>(实例类名);</object></object></li>
+<li>使用FutureTask对象作为Th re a d对象的target创建并启动新的线程</li>
+<li>调用FutureTask对象的get()方法来获得子线程执行结束后的返回值<h3 id="三种方式的对比"><a href="#三种方式的对比" class="headerlink" title="三种方式的对比"></a>三种方式的对比</h3>方式一 ： 实现Runable和实现Callable接口可以归纳为一种实现方式<br>方式二：继承Thread类</li>
+</ul>
+<h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><ul>
+<li>优势<br>1、可以继承其他的类<br>2、可以共享同一个target对象，非常适合多个相同的线程来处理同一份资源的情况</li>
+<li>劣势<br>编程稍微复杂，如果需要访问当前线程，必须使用Thread.currentThread()</li>
+</ul>
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><ul>
+<li>优势<br>代码简单，访问当前线程只需使用this</li>
+<li>劣势<br>线程已经继承了类，因此不能在继承其他父类</li>
+</ul>
+<h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h2><p>这一块对于以后做关于多线程的项目应该是非常重要的。<br>线程的生命周期主要分为一下五个方面：</p>
+<ol>
+<li>新建（New 使用new关键字创建对象，就是处于新建状态）、</li>
+<li>就绪（Runable 调用线程的start()方法，就处于就绪状态）、</li>
+<li>运行（run JVM里面的线程调度器 调度run方法执行就 处于运行状态）、</li>
+<li><p>阻塞(Blocked )、当线程运行后，这个线程几乎不会一直执行的，而是由底层的调度策略决定的（一般使用抢占式的方式，即线程争抢有限的执行资源)<br>线程阻塞的主要原因有：<br><code>线程调用sleep();线程调用了一个I/O方法;线程试图获得一个同步监视器；线程等待某个通知；程序调用了线程的suspend()方法（resume()恢复）将线程挂起</code></p>
+</li>
+<li><p>死亡(dead 线程结束处于死亡状态；stop()方法被调用；抛出异常)<br>当主线程结束后，其他线程并不会受影响，子线程跟主线程的地位是一样的<br><em>注意：不要直接调用重写的run()方法，直接调用方法会让程序直接运行一次后结束，不是以线程状态进行执行的；要调用线程的start（)方法。</em><br>线程的五个状态之间是可以相互转化的。<br><img src="https://img-blog.csdnimg.cn/20201104211709692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="线程的控制"><a href="#线程的控制" class="headerlink" title="线程的控制"></a>线程的控制</h2><h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><p>使用方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>  <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span>  <span class="title">Test</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(name);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++) &#123;</span><br><span class="line">			System.out.println(getName()+<span class="string">" "</span>+i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		<span class="comment">//启动一个子线程</span></span><br><span class="line">		<span class="keyword">new</span> Test(<span class="string">"新的线程"</span>).start();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++) &#123;</span><br><span class="line">			<span class="keyword">if</span>(i==<span class="number">20</span>) &#123;</span><br><span class="line">				Test te = <span class="keyword">new</span> Test(<span class="string">"join的线程"</span>);</span><br><span class="line">				te.start();</span><br><span class="line">				te.join();	</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(Thread.currentThread().getName()+<span class="string">" "</span>+i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行结果：<br>新的线程 15<br>main 19<br>….<br>join的线程 0<br>新的线程 24<br>join的线程 1<br>新的线程 25<br>…<br>join的线程 99<br>main 20</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">总结：从上述实验可以看出加入join线程的效果为，先是main主线程与新的线程抢占式执行，然后到main线程执行到19的时候，join的线程开始与新的线程交替执行，main线程等待join线程完全执行完毕后在继续执行。</span><br><span class="line">这是一个让一个线程等待另一个线程完成的方法。</span><br></pre></td></tr></table></figure>
+<h4 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h4><p>该类线程是在程序后台运行的，目的是为其他的线程提供服务的。例如jvm的垃圾回收机制就是后台线程，<em>后台线程在前台线程全部执行结束后会自动的死亡</em>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将一个线程设置为后台线程的方法为：</span><br><span class="line">setDaemon(<span class="keyword">true</span>)</span><br></pre></td></tr></table></figure>
+<p><em>注意：该方法必须设置在start()方法之前。</em></p>
+<h4 id="线程睡眠sleep（）"><a href="#线程睡眠sleep（）" class="headerlink" title="线程睡眠sleep（）"></a>线程睡眠sleep（）</h4><p>sleep(long mills) 让当前正在执行的线程暂停mills毫秒，并进入阻塞状态。</p>
+<h4 id="线程让步-yield"><a href="#线程让步-yield" class="headerlink" title="线程让步 yield"></a>线程让步 yield</h4><p>yield方法与sleep方法有点相似，该方法可以让程序停下来，但是不会阻塞该线程，而是让该线程进入到就绪状态，然后由线程调度器调度。当某个线程调用了yield方法之后，线程调度器又将其调度出来重新继续执行。<br>当该线程暂停后，只有优先级比当前线程高的线程或者同等级别的才可以获得执行的机会。<br>因此yield线程是将程序转化为就绪状态，因此也可能立刻获得执行的机会继续执行，比较难控制。</p>
+<h4 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h4><p>setPriority(int newPriority)<br>设置线程优先级<br>getPriority()<br>获得线程优先级</p>
+<p>线程优先级的范围为（1～10）高优先级的线程将会获得更多的执行机会。</p>
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><p>问题：当有两个进程并发修改同一个文件的时候就有可能造成异常<br>线程A访问资源D的时候 ，资源够用，但是A还没消耗资源；此时线程B也在请求D，资源显示够用！此时，A已经消耗了资源，已经不够B使用的了。从而出现错误。</p>
+<h3 id="同步代码块（监视器）"><a href="#同步代码块（监视器）" class="headerlink" title="同步代码块（监视器）"></a>同步代码块（监视器）</h3><p><strong>synchronized(obj){}</strong><br>同步代码块就像是一个锁，一个线程使用资源的时候，资源上锁，只有该线程使用结束后，其他线程才能访问。<br><em>注意：监视器的作用是阻止两个线程对同一个资源进行并发访问，因此，通常可能被并发访问的资源当作同步监视器。</em></p>
+<h3 id="同步方法"><a href="#同步方法" class="headerlink" title="同步方法"></a>同步方法</h3><p>使用同步方法可以非常便捷的实现线程安全的类，线程安全的类具有如下特征：</p>
+<ul>
+<li>该类的对象可以被多个线程安全的访问</li>
+<li>每个线程调用该对象的任意方法后都能得到正确的结果</li>
+<li>每个线程调用该类对象任意方法之后，该对象状态依然保持合理状态<br>上面的监视器在程序执行完成后会自动释放<h3 id="同步锁"><a href="#同步锁" class="headerlink" title="同步锁"></a>同步锁</h3>Java5 开始设计了更为强大的线程同步机制–显示的定义同步锁对象来实现同步。<br>每次只能有一个对象对Lock加锁，线程开始访问资源之前需要先获得Lock对象</li>
+</ul>
+<p>ReentrantLock(可重用锁) 通常可以显示地加锁、释放锁<br>使用的代码格式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"><span class="comment">//定义锁对象</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="comment">//需要保证线程安全的代码</span></span><br><span class="line">  &#125;<span class="keyword">finally</span></span><br><span class="line">  &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>线程之间互相等待对方释放锁</p>
+<h2 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h2><p>线程在程序中执行的时候，通常是透明的，程序通常很难控制线程的轮换执行，我们可以通过一些机制来保证线程协调运行。</p>
+<h3 id="使用传统的线程通信"><a href="#使用传统的线程通信" class="headerlink" title="使用传统的线程通信"></a>使用传统的线程通信</h3><p>传统的线程通信是指使用Object类的wait(),notify()和notifyAll()三个方法。这三个方法必须使用同步监视器来调用，也就是使用synchronized的锁对象。</p>
+<ul>
+<li>wait()<br>wait()方法是当前线程等待</li>
+<li>notify()<br>唤醒等待的线程，如果有多个线程，则随机的唤醒一个</li>
+<li>notifyAll()<br>唤醒所有等待的线程</li>
+</ul>
+<p>下面是使用实例：目的是保证取钱必须在存钱之后才能进行执行。<br>银行账户<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String accountNo;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> balance;</span><br><span class="line"><span class="comment">//表识账户中是否还有存款的标志</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">(String accountNo, <span class="keyword">double</span> balance)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">		<span class="keyword">this</span>.accountNo = accountNo;</span><br><span class="line">		<span class="keyword">this</span>.balance = balance;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getBalabce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.balance;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//设置取钱操作</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(<span class="keyword">double</span> drawA)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(!flag) &#123;</span><br><span class="line">				wait();</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">if</span>(balance&gt;=drawA) &#123;</span><br><span class="line">					balance -= drawA;</span><br><span class="line">					<span class="comment">//执行取钱操作</span></span><br><span class="line">					System.out.println(Thread.currentThread().getName()+<span class="string">"取钱"</span>+drawA);</span><br><span class="line">					flag = <span class="keyword">false</span>;</span><br><span class="line">					<span class="comment">//唤醒其他的线程</span></span><br><span class="line">					notifyAll();</span><br><span class="line">				&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">					flag = <span class="keyword">false</span>;</span><br><span class="line">					<span class="comment">//唤醒其他的线程</span></span><br><span class="line">					notifyAll();</span><br><span class="line">					System.out.println(<span class="string">"余额不足"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//设置存钱的操作</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">deposite</span><span class="params">(<span class="keyword">double</span> desm)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(flag) &#123;</span><br><span class="line">				wait();</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				System.out.println(Thread.currentThread().getName()+<span class="string">"存钱"</span>+desm);</span><br><span class="line">				balance+=desm;</span><br><span class="line">				flag = <span class="keyword">true</span>;</span><br><span class="line">				notifyAll();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>取钱线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DrawThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Account aco;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> drawacound;</span><br><span class="line">	</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">DrawThread</span><span class="params">(String name,Account aco, <span class="keyword">double</span> drawacound)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(name);</span><br><span class="line">		<span class="keyword">this</span>.aco = aco;</span><br><span class="line">		<span class="keyword">this</span>.drawacound = drawacound;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++) &#123;</span><br><span class="line">	aco.draw(drawacound);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>存钱线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DepositeThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Account account;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> maony;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DepositeThread</span><span class="params">(String name,Account account, <span class="keyword">double</span> maony)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(name);</span><br><span class="line">		<span class="keyword">this</span>.account = account;</span><br><span class="line">		<span class="keyword">this</span>.maony = maony;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++) &#123;</span><br><span class="line">		account.deposite(maony);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用Condition来控制线程的执行"><a href="#使用Condition来控制线程的执行" class="headerlink" title="使用Condition来控制线程的执行"></a>使用Condition来控制线程的执行</h3><p>如果没有使用synchionized来控制线程，而是使用lock对象，那么就不存在使用监视器的同步对象了。<br>java提供了一个Condition类来保持协调，使用Condition对象能够让那些获得lock对象，却无法继续执行的的线程释放Lock对象，也可以唤醒其他处于等待的线程。<br><code>Condition对象被绑定在Lock对象上，因此获得Co ndition对象可以通过调用Lock对象的newCondition()即可</code><br>这里的区别就是 隐式同步监视器使用的当前类，但是Condition使用的当前的Lock对象</p>
+<ul>
+<li>await()<br>对应隐式同步监视器上的wai t()方法</li>
+<li>signal()<br>对应于隐式同步监视器上的notify()方法</li>
+<li>signalAll()<br>对应于隐式同步监视器上的notifyAll()方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">private</span> Condition condition = lock.newCondition();</span><br><span class="line">	<span class="keyword">private</span> String accountNo;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> balance;</span><br><span class="line"><span class="comment">//表识账户中是否还有存款的标志</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">(String accountNo, <span class="keyword">double</span> balance)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">		<span class="keyword">this</span>.accountNo = accountNo;</span><br><span class="line">		<span class="keyword">this</span>.balance = balance;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getBalabce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.balance;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//设置取钱操作</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(<span class="keyword">double</span> drawA)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			lock.lock();</span><br><span class="line">			<span class="keyword">if</span>(!flag) &#123;</span><br><span class="line">				condition.await();</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">if</span>(balance&gt;=drawA) &#123;</span><br><span class="line">					balance -= drawA;</span><br><span class="line">					<span class="comment">//执行取钱操作</span></span><br><span class="line">					System.out.println(Thread.currentThread().getName()+<span class="string">"取钱"</span>+drawA);</span><br><span class="line">					flag = <span class="keyword">false</span>;</span><br><span class="line">					<span class="comment">//唤醒其他的线程</span></span><br><span class="line">					condition.signalAll();</span><br><span class="line">				&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">					flag = <span class="keyword">false</span>;</span><br><span class="line">					<span class="comment">//唤醒其他的线程</span></span><br><span class="line">					condition.signalAll();</span><br><span class="line">					System.out.println(<span class="string">"余额不足"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//设置存钱的操作</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">deposite</span><span class="params">(<span class="keyword">double</span> desm)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			lock.lock();</span><br><span class="line">			<span class="keyword">if</span>(flag) &#123;</span><br><span class="line">				condition.await();</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				System.out.println(Thread.currentThread().getName()+<span class="string">"存钱"</span>+desm);</span><br><span class="line">				balance+=desm;</span><br><span class="line">				flag = <span class="keyword">true</span>;</span><br><span class="line">				condition.signalAll();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出这部分的逻辑与上面的逻辑完全一样，只不过第一个是隐式的，第二个是显式的</p>
+<h3 id="使用阻塞队列控制线程通信"><a href="#使用阻塞队列控制线程通信" class="headerlink" title="使用阻塞队列控制线程通信"></a>使用阻塞队列控制线程通信</h3><p>Java5 提供了一个BlockingQueue接口，是Queue的接口，主要用途不是容器而是线程同步的工具。<code>有一个特性:当生产者向队列中放入元素的时候，如果队列已经满了，则该线程被阻塞；当消费者从队列中取出元素的时候，如果队列为空的时候，线程就被阻塞</code></p>
+<h4 id="队列支持的方法"><a href="#队列支持的方法" class="headerlink" title="队列支持的方法"></a>队列支持的方法</h4><ul>
+<li>队列尾部插入元素 add(),offer(),put()</li>
+<li>队列头部删除并返回元素 remove(),poll(),take()</li>
+<li>队列头部取出元素但不删除元素element()和peek()</li>
+</ul>
+<h4 id="五个实现类"><a href="#五个实现类" class="headerlink" title="五个实现类"></a>五个实现类</h4><ul>
+<li>ArrayBlockingQueue:基于数组的队列</li>
+<li>LinkedBlockingQueue:基于链表的队列</li>
+<li>PriorityBlockingQueue:并不是标准的队列，不是取出队列中存在时间最长的元素，而是队列中值最小的元素</li>
+<li>SynchronousQueue:同步队列。该队列的存取操作必须交替进行</li>
+<li>DelayQueue 要求集合元素都必须实现delay接口</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DrawThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">	<span class="comment">//消费者线程</span></span><br><span class="line">	<span class="keyword">private</span> BlockingQueue&lt;String&gt; bq;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DrawThread</span><span class="params">(BlockingQueue&lt;String&gt; bq)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">		<span class="keyword">this</span>.bq = bq;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">			System.out.println(getName()+<span class="string">"消费者准备消费集合元素"</span>);</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				Thread.sleep(<span class="number">200</span>);</span><br><span class="line">				bq.take();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(getName()+<span class="string">"消费完成："</span>+bq);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DepositeThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">   <span class="comment">//生产者线程</span></span><br><span class="line">	<span class="keyword">private</span> BlockingQueue&lt;String&gt; bq;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">DepositeThread</span><span class="params">(BlockingQueue&lt;String&gt; bq)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">super</span>();</span><br><span class="line">	<span class="keyword">this</span>.bq = bq;</span><br><span class="line">&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">			String [] strArr = <span class="keyword">new</span> String[] &#123;<span class="string">"java"</span>,<span class="string">"python"</span>,<span class="string">"spring"</span>&#125;;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">99999</span>;i++) &#123;</span><br><span class="line">				System.out.println(getName()+<span class="string">"生产者准备生产集合元素！"</span>);</span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					Thread.sleep(<span class="number">200</span>);</span><br><span class="line">					bq.put(strArr[i%<span class="number">3</span>]);</span><br><span class="line">				&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">					<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				System.out.println(getName()+<span class="string">"生产完成"</span>+bq);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		BlockingQueue&lt;String&gt; bq = <span class="keyword">new</span> ArrayBlockingQueue&lt;String&gt;(<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">new</span> DrawThread(bq).start();</span><br><span class="line">		<span class="keyword">new</span> DrawThread(bq).start();</span><br><span class="line">		<span class="keyword">new</span> DepositeThread(bq).start();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程组和未处理异常"><a href="#线程组和未处理异常" class="headerlink" title="线程组和未处理异常"></a>线程组和未处理异常</h2><p>Java使用ThreadGroup来表示线程，它可以对一批线程进行分类管理，Ja va允许程序直接对线程组进行控制。对线程组的控制相当于同时控制这一批线程。<br>默认情况下，子线程和创建它的父线程属于同一个线程组。<br>一旦线程加入了指定的组后，该线程将一直属于该线程组，直至线程死亡，线程运行中，不能改变线程的运行组。</p>
+<h3 id="Thread类提供了构造器来设置线程属于哪一个线程组"><a href="#Thread类提供了构造器来设置线程属于哪一个线程组" class="headerlink" title="Thread类提供了构造器来设置线程属于哪一个线程组"></a>Thread类提供了构造器来设置线程属于哪一个线程组</h3><ul>
+<li>Thread(ThreadGrounp group,Runable target):以target的run()方法作为线程执行体创建新的线程,属于group组。</li>
+<li>Thread(ThreadGrounp group,Runable target,String name):线程名为name</li>
+<li>Thread(ThreadGrounp group,String name) 创建新的线程，新线程的名字为name,属于group组</li>
+</ul>
+<p>提供了一个<code>getThreadGroup()</code>方法来获得线程属于的线程组。</p>
+<h3 id="ThreadGroup类提供了两个简单的构造器来创建实例"><a href="#ThreadGroup类提供了两个简单的构造器来创建实例" class="headerlink" title="ThreadGroup类提供了两个简单的构造器来创建实例"></a>ThreadGroup类提供了两个简单的构造器来创建实例</h3><ul>
+<li>ThreadGroup(String name) :以指定的线程组的名字来创建新的线程</li>
+<li>ThreadGroup(ThreadGroup parent,String name):以指定的名字，指定的父线程组创建一个新的线程组。<br>线程组的名字可以通过<code>getName()</code>方法来获取</li>
+</ul>
+<h3 id="ThreadGroup类提供了如下几个方法来操作整个线程组里的所有线程"><a href="#ThreadGroup类提供了如下几个方法来操作整个线程组里的所有线程" class="headerlink" title="ThreadGroup类提供了如下几个方法来操作整个线程组里的所有线程"></a>ThreadGroup类提供了如下几个方法来操作整个线程组里的所有线程</h3><ul>
+<li>int activeCount():返回此线程组中活动的线程的数目</li>
+<li>interrupt():中断此线程组中所有的线程</li>
+<li>isDaemon():判断该线程是否是后台线程组</li>
+<li>setDaemon(boolean daemon):把该线程组设置成后台线程组。</li>
+<li>setMaxPriority(int pri):设置线程组的最高优先级</li>
+</ul>
+<p>一个有用的异常处理方法<br>（这块用到的时候 在看吧！！！想到这里似乎也该复习复习异常处理这块嘞）</p>
+<ul>
+<li>void uncaughtExeption(Thread t,Throwable e)：该方法可以处理该线程组内的任意线程所抛出的未处理异常</li>
+</ul>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p>对于池的概念，应该都不是很陌生了。通俗的理解就是一个大的容器，线程池无疑就是装线程的容器。那么为什么需要线程池的存在呢？<br>程序创建一个新的线程本身就是一个成本比较高的操作，涉及与操作系统的交互。在这种情况下，使用线程池能够很好的提升性能，尤其是程序中需要创建大量的生存期很短的线程的时候，线程池启动的时候会初始化一批<code>Runable或者Callable的对象</code>，这类对象执行结束后也不会死亡，而是转为空闲状态。（线程池可以有效的控制 系统中并发线程的数量，当系统中包含大量的线程的时候，会导致系统性能的下降，线程池可以有效的控制系统中并发线程的数量）<br>下面是主要的线程池的创建方法：</p>
+<h3 id="返回ExecutorService"><a href="#返回ExecutorService" class="headerlink" title="返回ExecutorService"></a>返回ExecutorService</h3><ul>
+<li>newCachedThreadPool(int nThreads):创建一个可重用的，具有固定线程数量的线程池。</li>
+<li>newSingleThreadPool(int nThreads)：创建一个只有单线程的线程池</li>
+<li>new CachedThreadPool():创建一个具有缓存功能的线程池，系统根据需要创建线程，这些线程将会被缓存在线程池中<h3 id="返回一个ScheduledExecutorService"><a href="#返回一个ScheduledExecutorService" class="headerlink" title="返回一个ScheduledExecutorService"></a>返回一个ScheduledExecutorService</h3></li>
+<li>newScheduledThreadPool(int corePoolSize) 创建具有指定线程数的线程池，它可以指定延迟后执行线程任务</li>
+<li><p>newSingleThreadScheduledExecutor():创建只有一个线程的线程池，它可以在指定延迟后执行线程任务。</p>
+<p>操作线程池的方法，使用的时候直接查找开发javaAPI就可以了！</p>
+<h3 id="线程池的关闭"><a href="#线程池的关闭" class="headerlink" title="线程池的关闭"></a>线程池的关闭</h3><p>当用完一个线程池后，要对线程池进行关闭</p>
+</li>
+<li>shutdown()<br>调用这个方法，会让线程池不在接收新的任务，但是会将以前的任务执行完毕</li>
+<li>shutdownNow()<br>这个方法暂停所有的正在执行的任务，暂停正在等待的任务，并返回等待执行的任务列表</li>
+</ul>
+<h2 id="java7新增加的ForkJoinPool"><a href="#java7新增加的ForkJoinPool" class="headerlink" title="java7新增加的ForkJoinPool"></a>java7新增加的ForkJoinPool</h2><p>为了充分利用计算机硬件多CPU或者多核的优势，软件与硬件想使用。ForkJoinPool支持将一个任务拆分成多个“小任务”并行计算，再把多个“小任务”的结果合并成总的计算结果。</p>
+<h3 id="常用的构造器"><a href="#常用的构造器" class="headerlink" title="常用的构造器"></a>常用的构造器</h3><ul>
+<li>ForkJoinPool(int parallelism):创建一个包含p个并行线程的ForkjoinPool</li>
+<li>ForkJoinPool():以Runtime.availableProcessors()方法的返回值作为p参数来创建ForkJoinPool.</li>
+</ul>
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><ul>
+<li>submit(ForkJoinTask task)</li>
+<li>invoke(ForkJoinTask task)<h3 id="ForkJoinTask抽象类"><a href="#ForkJoinTask抽象类" class="headerlink" title="ForkJoinTask抽象类"></a>ForkJoinTask抽象类</h3></li>
+<li>RecursiveAction抽象子类：代表没有返回值的任务</li>
+<li>RecursiveTask 抽象子类：有返回值的任务<br> 返回值的结果使用Future<object> future 进行接收</object></li>
+</ul>
+<h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.RecursiveAction;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintTask</span> <span class="keyword">extends</span> <span class="title">RecursiveAction</span> </span>&#123;</span><br><span class="line">	<span class="comment">//每个小任务最多执行的次数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TH = <span class="number">50</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> start;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> end;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">PrintTask</span><span class="params">(<span class="keyword">int</span> start,<span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.start = start;</span><br><span class="line">		<span class="keyword">this</span>.end = end;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">compute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">if</span>(end - start &lt;TH) &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = start;i&lt;end;i++) &#123;</span><br><span class="line">				System.out.println(Thread.currentThread().getName()+<span class="string">"i的值为："</span>+i);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> middle = (start+end)/<span class="number">2</span>;</span><br><span class="line">			PrintTask left = <span class="keyword">new</span> PrintTask(start, middle);</span><br><span class="line">			PrintTask right = <span class="keyword">new</span> PrintTask(middle, end);</span><br><span class="line">			<span class="comment">//并行执行两个小任务</span></span><br><span class="line">			left.fork();</span><br><span class="line">			right.fork();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ForkJoinPool;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>  </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ForkJoinPool pool = <span class="keyword">new</span> ForkJoinPool();</span><br><span class="line">		pool.submit(<span class="keyword">new</span> PrintTask(<span class="number">0</span>, <span class="number">300</span>));</span><br><span class="line">		<span class="comment">//关于此方法</span></span><br><span class="line">		pool.awaitTermination(<span class="number">2</span>, TimeUnit.SECONDS);</span><br><span class="line">		pool.shutdown();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://blog.csdn.net/sheng_mu555/article/details/80552078" target="_blank" rel="noopener">awaitTermination连接</a><br>上述代码是将打印0-300的任务，分解成了两个小任务，分解后的任务调用fork()，进行并行执行。<br>…<br>‘ForkJoinPool-1-worker-3i的值为：211<br>ForkJoinPool-1-worker-3i的值为：212<br>ForkJoinPool-1-worker-7i的值为：95<br>ForkJoinPool-1-worker-0i的值为：241’<br>在我机器上的运行结果如上,最后的显示为0i - 7i ，我的电脑是4核的，单个cpu，不知为啥是7。后面的数字是没有顺序的，因为，分解后的程序是并行执行的。</p>
+<h2 id="线程相关类"><a href="#线程相关类" class="headerlink" title="线程相关类"></a>线程相关类</h2><h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal<t></t></h3><p>在共享资源处定一个ThreadLocal类就相当于为每一个线程都创建了一个线程的局部变量，每一个线程都可以独享自己的副本。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> ThreadLocal&lt;String&gt; local = <span class="keyword">new</span> ThreadLocal&lt;String&gt;();</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.local.set(name);</span><br><span class="line">		System.out.println(<span class="string">"+++++"</span>+local.get());</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getLocal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> local.get();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLocal</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.local.set(name);;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintTask</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Account account;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">PrintTask</span><span class="params">(String name,Account ac)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(name);</span><br><span class="line">		<span class="keyword">this</span>.account = ac;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i= <span class="number">0</span>;i&lt;<span class="number">100</span>;i++) &#123;</span><br><span class="line">			<span class="keyword">if</span>(i==<span class="number">20</span>) &#123;</span><br><span class="line">				account.setLocal(currentThread().getName());</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(account.getLocal()+<span class="string">"账户的i值"</span>+i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>  </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		<span class="comment">//启动两个线程 两个线程共享一个account</span></span><br><span class="line">		Account acc = <span class="keyword">new</span> Account(<span class="string">"初始名"</span>);</span><br><span class="line">		PrintTask pT = <span class="keyword">new</span> PrintTask(<span class="string">"线程A"</span>, acc);</span><br><span class="line">		PrintTask pt2 = <span class="keyword">new</span> PrintTask(<span class="string">"线程B"</span>, acc);</span><br><span class="line">		pT.start();</span><br><span class="line">		pt2.start();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到刚开始的第一行的输出初始名是因为初始化Ac count类的时候，执行的。但是后面在获取ThreadLocal名的时候就是null值了,直到i的值执行到20的时候，两个线程独自的将自己的ThreadLocal名修改成了自己的名字。<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+++++初始名</span><br><span class="line"><span class="literal">null</span>账户的i值<span class="number">0</span></span><br><span class="line"><span class="literal">null</span>账户的i值<span class="number">0</span></span><br><span class="line"><span class="literal">null</span>账户的i值<span class="number">1</span></span><br><span class="line">...</span><br><span class="line">线程B账户的i值<span class="number">23</span></span><br><span class="line"><span class="literal">null</span>账户的i值<span class="number">19</span></span><br><span class="line">线程A账户的i值<span class="number">20</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="包装线程不安全的类"><a href="#包装线程不安全的类" class="headerlink" title="包装线程不安全的类"></a>包装线程不安全的类</h3><p>我们所使用的LinkedList,ArrayList,HashSet,TreeSet,HashMap,TreeMap等都是线程不安全的。因此就需要把这些集合封装成线程安全的。<br>Collections提供的静态方法把这些集合包装成线程安全的集合，并返回<br>具体的方法就不详细介绍了。用到在说大体结构是：<br>static <t> Oject synchronizedObject(Object obj)</t></p>
+<h3 id="线程安全的集合类"><a href="#线程安全的集合类" class="headerlink" title="线程安全的集合类"></a>线程安全的集合类</h3><p>从java5开始，java.util.concurrent包下提供了大量的支持高并发访问的集合接口和实现类。</p>
+<ul>
+<li>以Concurrent开头的集合类：更实用于写操作</li>
+<li>以CopyOnWrite开头的集合类：更实用于读操作</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/11/10/多线程基础总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="多线程基础总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Servlet技术使用总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/11/10/Servlet技术使用总结/" class="article-date">
+  	<time datetime="2020-11-10T08:30:06.530Z" itemprop="datePublished">2020-11-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/10/Servlet技术使用总结/">
+        Servlet技术使用总结
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本科期间很久之前学的了,好久没使用了，感觉知识有一些遗忘了（可能这也是大多数编程人的困绕吧）！所以打算抽时间，在学习新知识的同时也对过往的知识进行一个回顾。整个记录的过程可能不像是开发的过程一样，仅作为一个笔记。想到哪里就写到哪里吧（随着技术的不断迭代有些内容可能有些老了）！随心情了～～～</p>
+<h2 id="如何开发一个Servlet"><a href="#如何开发一个Servlet" class="headerlink" title="如何开发一个Servlet"></a>如何开发一个Servlet</h2><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ul>
+<li>编写一个java类，继承HttpServlet</li>
+<li>重写doGet()和doPost()方法</li>
+<li>Servlet程序交给服务器运行<ul>
+<li>servlet程序的class码拷贝到WEB-INF/classes目录</li>
+<li>在web.xml文件中进行配置（使用Eclipse的时候，可能不存在，这时候就要直接创建一个servlet的程序，eclipse会自动的在内部给你配置好，在类中更改要访问的名字就可以了）<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置一个servlet --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- servlet的配置 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的内部名称，自定义。尽量有意义 --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>FirstServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的类全名： 包名+简单类名 --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>gz.itcast.a_servlet.FirstServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- servlet的映射配置 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>FirstServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的映射路径（访问servlet的名称） --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/first<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>如果是在Eclip se中将会是这样,我们在通过连接访问的时候就直接访问<code>/indexServlet</code>就可以了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Servlet implementation class indexServlet</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WebServlet</span>(<span class="string">"/indexServlet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">indexServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>访问的时候 <code>问次URL：  http://localhost:8080/项目名/indexServlet</code><br>tomcat服务器启动时，首先加载webapps中的每个web应用的web.xml配置文件</p>
+<ul>
+<li>http://   http协议</li>
+<li>localhost  到本地的hosts文件中查找是否存在该域名对应的IP地址127.0.0.1 ,如果使用其他服务器的话，就需要将这部分转换成服务器的地址</li>
+<li>8080 服务器的端口</li>
+<li>/项目名 这个是要与tomcat服务器的项目名进行对应的</li>
+<li>/indexServlet 我们要访问的servlet文件，资源名称</li>
+</ul>
+<p>整个的执行过程为：</p>
+<p>1）在项目的web.xml中查找是否有匹配的url-pattern的内容（/indexServlet）<br>2）如果找到匹配的url-pattern,则使用当前servlet-name的名称到web.xml文件中查询是否相同名称的servlet配置<br>3）如果找到，则取出对应的servlet配置信息中的servlet-class内容：<br>通过反射：a）构造FirstServlet的对象b）然后调用FirstServlet里面的方法</p>
+<h3 id="Servlet的映射路径"><a href="#Servlet的映射路径" class="headerlink" title="Servlet的映射路径"></a>Servlet的映射路径</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>FirstServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">  	<span class="comment">&lt;!-- servlet的映射路径（访问servlet的名称） --&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/first<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="精确匹配"><a href="#精确匹配" class="headerlink" title="精确匹配"></a>精确匹配</h4><table>
+<thead>
+<tr>
+<th>url-pattern</th>
+<th>浏览器输入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/first</td>
+<td><a href="http://localhost:8080/项目名/first" target="_blank" rel="noopener">http://localhost:8080/项目名/first</a></td>
+</tr>
+<tr>
+<td>/itcast/demo1</td>
+<td><a href="http://localhost:8080/项目名/itcast/demo1" target="_blank" rel="noopener">http://localhost:8080/项目名/itcast/demo1</a></td>
+</tr>
+</tbody>
+</table>
+<h4 id="模糊匹配"><a href="#模糊匹配" class="headerlink" title="模糊匹配"></a>模糊匹配</h4><table>
+<thead>
+<tr>
+<th>url-pattern</th>
+<th>浏览器输入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/*</td>
+<td><a href="http://localhost:8080/项目名/任意路径" target="_blank" rel="noopener">http://localhost:8080/项目名/任意路径</a></td>
+</tr>
+<tr>
+<td>/itcast/*</td>
+<td><a href="http://localhost:8080/项目名/itcast/任意路径" target="_blank" rel="noopener">http://localhost:8080/项目名/itcast/任意路径</a></td>
+</tr>
+<tr>
+<td>*.后缀名</td>
+<td><a href="http://localhost:8080/项目名/任意路径.后缀名" target="_blank" rel="noopener">http://localhost:8080/项目名/任意路径.后缀名</a></td>
+</tr>
+</tbody>
+</table>
+<p>注意：<br>        1）url-pattern要么以 / 开头，要么以<em>开头。  例如， itcast是非法路径。<br>        2）不能同时使用两种模糊匹配，例如 /itcast/</em>.do是非法路径<br>        3）当有输入的URL有多个servlet同时被匹配的情况下：<br>        3.1 精确匹配优先。（长的最像优先被匹配）<br>        3.2 以后缀名结尾的模糊url-pattern优先级最低！！！</p>
+<h3 id="缺省路径"><a href="#缺省路径" class="headerlink" title="缺省路径"></a>缺省路径</h3><p>servlet的缺省路径（<url-pattern>/</url-pattern>）是在tomcat服务器内置的一个路径。该路径对应的是一个DefaultServlet（缺省Servlet）。这个缺省的Servlet的作用是用于解析web应用的静态资源文件。<br>当我们提供了一个缺省路径的时候，那么服务器又该如何读取文件呢？</p>
+<ol>
+<li>到当前应用下的web.xml文件查找是否有匹配的url-pattern。</li>
+<li>如果没有匹配的url-pattern，则交给tomcat的内置的DefaultServlet处理</li>
+<li>DefaultServlet程序到项目应用的根目录下查找是存在一个名称为index.html的静态文件。</li>
+<li>如果找到该文件，则读取该文件内容，返回给浏览器。</li>
+<li>如果找不到该文件，则返回404错误页面<br><em>注意：所以不建议使用/或/</em>，因为Tomcat服务器会先找动态资源再找静态资源。如果是/或/<em>就不会再访问到静态资源，如果是/.html或者/.css等路径格式，那么这类静态资源就不会被访问到了，所以慎用/或/</em> 和静态资源的后缀*</li>
+</ol>
+<h2 id="Servlet的生命周期（重点）"><a href="#Servlet的生命周期（重点）" class="headerlink" title="Servlet的生命周期（重点）"></a>Servlet的生命周期（重点）</h2><p>Servlet的生命是由Tomcat控制的！！！！</p>
+<h3 id="Servlet的四个生命周期方法"><a href="#Servlet的四个生命周期方法" class="headerlink" title="Servlet的四个生命周期方法"></a>Servlet的四个生命周期方法</h3><ul>
+<li>构造方法： 创建servlet对象的时候调用。默认情况下，第一次访问servlet的时候创建servlet对象只调用1次。证明servlet对象在tomcat是单实例的。</li>
+<li>init方法： 创建完servlet对象的时候紧接着调用。只调用1次。</li>
+<li>service方法： 每次发出请求时调用。调用n次。</li>
+<li>destroy方法： 销毁servlet对象的时候调用。停止服务器或者重新部署web应用时销毁servlet对象，只调用1次。</li>
+</ul>
+<h4 id="Tomtcat内部代码运行："><a href="#Tomtcat内部代码运行：" class="headerlink" title="Tomtcat内部代码运行："></a>Tomtcat内部代码运行：</h4><pre><code>1）通过映射找到到servlet-class的内容，字符串： gz.itcast.a_servlet.FirstServlet
+2）通过反射构造FirstServlet对象
+    2.1 得到字节码对象
+                Class clazz = class.forName(&quot;gz.itcast.a_servlet.FirstServlet&quot;);
+    2.2 调用无参数的构造方法来构造对象
+                Object obj = clazz.newInstance();     ---1.servlet的构造方法被调用
+3）创建ServletConfig对象，通过反射调用init方法
+    3.1 得到方法对象
+                Method m = clazz.getDeclareMethod(&quot;init&quot;,ServletConfig.class);
+    3.2 调用方法
+                m.invoke(obj,config);             --2.servlet的init方法被调用
+4）创建request，response对象，通过反射调用service方法
+    4.1 得到方法对象
+                Methodm m =clazz.getDeclareMethod(&quot;service&quot;,HttpServletRequest.class,HttpServletResponse.class);
+    4.2 调用方法
+                m.invoke(obj,request,response);  --3.servlet的service方法被调用
+5）当tomcat服务器停止或web应用重新部署，通过反射调用destroy方法
+    5.1 得到方法对象
+                Method m = clazz.getDeclareMethod(&quot;destroy&quot;,null);
+    5.2 调用方法
+                m.invoke(obj,null);            --4.servlet的destroy方法被调用
+</code></pre><h3 id="Servlet的自动加载"><a href="#Servlet的自动加载" class="headerlink" title="Servlet的自动加载"></a>Servlet的自动加载</h3><p>默认情况下，第一个访问Servlet的时候创建Servlet对象，如果Servlet在进行init()的时候或者构造方法的时候，执行了太多的逻辑代码，那么会导致用户在第一次请求的时候，会加载比较慢！<br><strong><em>（‘我们可以通过改变一下访问对象的时机，将对象的创建的时机更改到加载Web应用的时候’）</em></strong><br>这个配置是在Servlet的配置文件中进行配置的！<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>LifeDemo<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>gz.itcast.c_life.LifeDemo<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 让servlet对象自动加载 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span>  注意： 整数值越大，创建优先级越低！！</span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="有参数的init方法和无参数的init方法"><a href="#有参数的init方法和无参数的init方法" class="headerlink" title="有参数的init方法和无参数的init方法"></a>有参数的init方法和无参数的init方法</h3><p>有参数的init方法是servlet的生命周期方法，一定会被tomcat服务器调用<br>注意：如果要编写初始代码，不需要覆盖有参数的init方法(默认调用无参的init方法）<br>无参数的init方法是servlet的编写初始化代码的方法。是Sun公司设计出来专门给开发者进行覆盖，然后在里面编写servlet的初始逻辑代码的方法。</p>
+<h3 id="Servlet的多线程并发问题"><a href="#Servlet的多线程并发问题" class="headerlink" title="Servlet的多线程并发问题"></a>Servlet的多线程并发问题</h3><p>如果多个线程同时访问了Servlet的共享对象（成员对象）则会引发线程安全问题。Servlet是单实例，多线程的。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
+<li>将共享数据进行加锁 ，是用synchronized 或者锁对象</li>
+<li>在使用过程中，尽量不要使用成员变量，或者共享资源<h3 id="ServletConfig对象"><a href="#ServletConfig对象" class="headerlink" title="ServletConfig对象"></a>ServletConfig对象</h3>ServletConfig对象: 主要是用于加载servlet的初始化参数。在一个web应用可以存在多个ServletConfig对象（一个Servlet对应一个ServletConfig对象）<br>操作方式：<br>可以通过调用init()方法进行获取，直接从有参数的init方法中得到！！<br>Servlet的参数只能由当前的Servlet获取！！<br>下面是我在doGet()方法中获取的该对象！！<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Enumeration&lt;String&gt; enum3 =   getServletConfig().getInitParameterNames();</span><br><span class="line">	 System.out.println(enum3.hasMoreElements());</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="ServletContext对象"><a href="#ServletContext对象" class="headerlink" title="ServletContext对象"></a>ServletContext对象</h3><p>ServletContext对象 ,叫做Servlet的上下文对象。表示一个当前的web应用环境。一个web应用中只有一个ServletContext对象。本身也是一个全局的域对象！<br>ServletContext对象的获取方式，目前我使用的主要有以下三种方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ServletContext context = getServletConfig().getServletContext();</span><br><span class="line">	 ServletContext context1 = getServletContext();</span><br><span class="line">	 ServletContext context2 = request.getServletContext();</span><br><span class="line">       System.out.println(context.equals(context1)); <span class="comment">//true</span></span><br><span class="line">       System.out.println(context.equals(context2)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<h4 id="ServletContext对象的核心API-作用"><a href="#ServletContext对象的核心API-作用" class="headerlink" title="ServletContext对象的核心API(作用)"></a>ServletContext对象的核心API(作用)</h4><pre><code>java.lang.String getContextPath()   --得到当前web应用的路径(用在请求重定向的路径中)
+
+java.lang.String getInitParameter(java.lang.String name)  --得到web应用的初始化参数
+java.util.Enumeration getInitParameterNames()  
+
+void setAttribute(java.lang.String name, java.lang.Object object) --域对象有关的方法
+java.lang.Object getAttribute(java.lang.String name)  
+void removeAttribute(java.lang.String name)  
+
+RequestDispatcher getRequestDispatcher(java.lang.String path)   --转发（类似于重定向）
+
+java.lang.String getRealPath(java.lang.String path)     --得到web应用的资源文件
+java.io.InputStream getResourceAsStream(java.lang.String path)  
+</code></pre><h4 id="域对象"><a href="#域对象" class="headerlink" title="域对象"></a>域对象</h4><p>作用是用于保存数据，获取数据。可以在不同的动态资源之间共享数据！！<br>数据的传递方式：</p>
+<ul>
+<li>通过传递参数的形式，共享数据。局限：只能传递字符串类型</li>
+<li>使用域对象 可以使用域对象共享数据，好处：可以共享任何类型的数据！！！！！<ul>
+<li>保存数据：void setAttribute(java.lang.String name, java.lang.Object object)                    </li>
+<li>获取数据： java.lang.Object getAttribute(java.lang.String name)  <ul>
+<li>删除数据： void removeAttribute(java.lang.String name)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="转发与重定向"><a href="#转发与重定向" class="headerlink" title="转发与重定向"></a>转发与重定向</h3><h4 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h4><p>代码使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.getRequestDispatcher(<span class="string">"/pingjiao.jsp"</span>).forward(request, response);</span><br></pre></td></tr></table></figure>
+<p>a）地址栏不会改变<br>b）转发只能转发到当前web应用内的资源<br>c）可以在转发过程中，可以把数据保存到request域对象中</p>
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p>代码使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.sendRedirect(request.getContextPath()+<span class="string">"/adminLogin.jsp"</span>);</span><br></pre></td></tr></table></figure>
+<p>a）地址栏会改变，变成重定向到地址。<br>b）重定向可以跳转到当前web应用，或其他web应用，甚至是外部域名网站。<br>c）不能再重定向的过程，把数据保存到request中。</p>
+<p><strong><em>结论： 如果要使用request域对象进行数据共享，只能用转发技术！！！</em></strong></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        
+<div class="counter-tag counter">
+    <span id="/2020/11/10/Servlet技术使用总结/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="Servlet技术使用总结">
+         &nbsp;
+        view
+    </span>
+</div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-青岛崂山区过去24小时气候变化可视化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1175,182 +1604,6 @@
         
 <div class="counter-tag counter">
     <span id="/2020/10/02/WebMagic框架实现对58同城就业信息的爬取/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="WebMagic框架实现对58同城就业信息的爬取">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-本机Mac建设Git记录" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/09/19/本机Mac建设Git记录/" class="article-date">
-  	<time datetime="2020-09-19T08:04:42.150Z" itemprop="datePublished">2020-09-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/19/本机Mac建设Git记录/">
-        本机Mac建设git记录《一》
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>首先，是在电脑上通过app store 安装Xcode.<br>在 Xcode中找到locations 这个 选项，可以发现有一个Command Line Tools 的工具。</p>
-<h2 id="创建本地仓库"><a href="#创建本地仓库" class="headerlink" title="创建本地仓库"></a>创建本地仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir learngit</span><br><span class="line">git init</span><br></pre></td></tr></table></figure>
-<p>我的这个安装目录是 /Users/gorge/learngit</p>
-<h2 id="查看git是否配置成功"><a href="#查看git是否配置成功" class="headerlink" title="查看git是否配置成功"></a>查看git是否配置成功</h2><p>git config –list</p>
-<h2 id="密钥的位置"><a href="#密钥的位置" class="headerlink" title="密钥的位置"></a>密钥的位置</h2><p>在gorge 下执行ls -al 查看是否存在 .ssh 目录</p>
-<h2 id="上传方式"><a href="#上传方式" class="headerlink" title="上传方式"></a>上传方式</h2><ul>
-<li>首先我们要将我们要进行管理的文件 移动到本地建立的文件夹</li>
-<li>在当前目录执行 <strong>git add [文件名]</strong> 将文件添加到本地仓库</li>
-<li>执行提交 <strong>git commit -m</strong> “文件描述” 命令 ，告诉系统文件提交到仓库</li>
-<li>将文件 直接提交到 远程仓库的命令是 <strong>git push origin master</strong> 命令进行提交</li>
-</ul>
-<p>本地文件夹是<strong>工作区</strong>，<em>.git</em>目录是<strong>版本库</strong><br>我们执行的添加操作实际上是指将信息添加到本地的工作区中的版本库中。<br><em>git add 操作将数据添加到暂存区。</em><br><em>git commit 操作提交更改，将内容添加到分支master</em></p>
-<h2 id="查看历史修改版本的命令"><a href="#查看历史修改版本的命令" class="headerlink" title="查看历史修改版本的命令"></a>查看历史修改版本的命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard  HEAD^</span><br></pre></td></tr></table></figure>
-<ul>
-<li>HEAD 表示当前版本</li>
-<li>^ 表示回退一个版本</li>
-<li>^^ 表示回退两个版本</li>
-<li>如果是多个版本的话可以是 HEAD~n</li>
-</ul>
-<p>或者执行git reset –hard  [id]</p>
-<h2 id="查看历史记录"><a href="#查看历史记录" class="headerlink" title="查看历史记录"></a>查看历史记录</h2><p>git log 用来查看提交记录<br>git reflog  用来查看你的每一次操作记录</p>
-<h2 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h2><h3 id="主要分为两种情况："><a href="#主要分为两种情况：" class="headerlink" title="主要分为两种情况："></a>主要分为两种情况：</h3><ol>
-<li>首先是在工作区的修改还没有提交到暂存区</li>
-</ol>
-<p>下面的命令会将文件的版本恢复为我们提交到分支的最新的版本。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- readme.txt</span><br></pre></td></tr></table></figure></p>
-<ol start="3">
-<li>在工作区进行了修改并且已经提交到暂存区</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD &lt;file&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p>为了提高操作的安全行，我们在操作的过程中可以使用<br>创建新的分支–执行操作<code></code>–合并分支 的过程。<br>我们通常使用的是一个分支master分支。但是对于git来说，分支的创建与合并是非常快速的。因此，我们为了操作的安全性，创建一个新的分支进行操作无疑是一个非常好的方法。</p>
-<p>执行创建分支<em>dev</em>，并且将当前工作转换到当前分支上面。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br></pre></td></tr></table></figure></p>
-<p>查看当前分支</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
-<p>在当前分支执行操作完成后，进行添加并提交</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;文件名&gt;</span><br><span class="line">git commit -m <span class="string">"文件描述"</span></span><br></pre></td></tr></table></figure>
-<p>分支的切换操作,master是我们的默认分支</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
-<p>或者<br>创建并且切换到新的分支<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git switch -c dev</span><br><span class="line">//切换到已有分支</span><br><span class="line">git switch master</span><br></pre></td></tr></table></figure></p>
-<p>将dev分支进行合并</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge dev</span><br></pre></td></tr></table></figure>
-<p>合并完成之后，新创建的分支就可以删除了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d dev</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2020/09/19/本机Mac建设Git记录/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="本机Mac建设git记录《一》">
-         &nbsp;
-        view
-    </span>
-</div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Normalized Discounted Cumulative Gain(NDCG)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/07/12/Normalized Discounted Cumulative Gain(NDCG)/" class="article-date">
-  	<time datetime="2020-07-12T08:33:05.548Z" itemprop="datePublished">2020-07-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/12/Normalized Discounted Cumulative Gain(NDCG)/">
-        NDCG
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>归一化则损累积增益<br>这个指标通常是用来衡量和评价搜索结果算法</p>
-<ol>
-<li>高关联度的结果比一般关联度的结果更影响最终的指标得分</li>
-<li>有高关联度的结果出现在更靠前的位置的时候，指标会越高<h2 id="累计增益CG"><a href="#累计增益CG" class="headerlink" title="累计增益CG"></a>累计增益CG</h2></li>
-</ol>
-<p>一个搜索结果相关性分数的总和，与顺序无关<br>指定位置P的CG为：<br><img src="https://img-blog.csdnimg.cn/20200709095732954.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>其中reli 表示 i这个位置上的相关度。</p>
-<h2 id="折损累计增益DCG"><a href="#折损累计增益DCG" class="headerlink" title="折损累计增益DCG"></a>折损累计增益DCG</h2><p>就是在每一个CG的结果上除以一个折损值，DCG在每个项目的得分乘上一个权值，该权值与位置成反关系，即位置越靠前，权值越大，目的是为了让排名越靠前的结果越能影响最后的结果。排序越往后，价值越低。<br><img src="https://img-blog.csdnimg.cn/20200709100512191.png" alt="在这里插入图片描述"><br>或者<br><img src="https://img-blog.csdnimg.cn/20200709100721635.png" alt="在这里插入图片描述"></p>
-<h2 id="归一化则损累计增益"><a href="#归一化则损累计增益" class="headerlink" title="归一化则损累计增益"></a>归一化则损累计增益</h2><p>由于搜索结果随着检索词的不同，返回的数量是不一致的。而DCG是一个累加的值，没法对两个不同的结果进行比较，所以需要进行一个归一化的处理。<br><img src="https://img-blog.csdnimg.cn/20200709101206431.png" alt="在这里插入图片描述"><br>IDCG 为理想情况下的最大的DCG值<br><img src="https://img-blog.csdnimg.cn/20200709101246215.png" alt="在这里插入图片描述"><br>其中|REL|表示结果按照相关性从大到小的顺序排序，取前P个结果组成的集合。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        
-<div class="counter-tag counter">
-    <span id="/2020/07/12/Normalized Discounted Cumulative Gain(NDCG)/" class="leancloud_visitors post-title-link" style="font-size: 12px" data-flag-title="NDCG">
          &nbsp;
         view
     </span>
