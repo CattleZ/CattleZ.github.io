@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Gorge</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这块知识一直感觉挺不好理解的，现有的介绍的文章感觉总结的不是很全，所以自己总结了一版！ 一、基本概念 BIO（Basic Input Output） ：就是传统的I/O操作，同步阻塞IO，当BufferReader 读取输入流中的数据的时候，如果没有读取到有效的数据，程序将在此处阻塞该线程的执行。这里的B有两个意思 一个是Basic 另一个意思为Block 翻译为阻塞。服务器实现模式为一个连接一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gorge">
+<meta property="og:url" content="http://yoursite.com/2021/03/28/三种I_O模型知识梳理/index.html">
+<meta property="og:site_name" content="Gorge">
+<meta property="og:description" content="这块知识一直感觉挺不好理解的，现有的介绍的文章感觉总结的不是很全，所以自己总结了一版！ 一、基本概念 BIO（Basic Input Output） ：就是传统的I/O操作，同步阻塞IO，当BufferReader 读取输入流中的数据的时候，如果没有读取到有效的数据，程序将在此处阻塞该线程的执行。这里的B有两个意思 一个是Basic 另一个意思为Block 翻译为阻塞。服务器实现模式为一个连接一个">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210322113007435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210322144153369.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210322144341179.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210322145242547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210322151509523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210322152054629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210323144745667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210323144614564.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2021032314521790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2021-03-28T12:56:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gorge">
+<meta name="twitter:description" content="这块知识一直感觉挺不好理解的，现有的介绍的文章感觉总结的不是很全，所以自己总结了一版！ 一、基本概念 BIO（Basic Input Output） ：就是传统的I/O操作，同步阻塞IO，当BufferReader 读取输入流中的数据的时候，如果没有读取到有效的数据，程序将在此处阻塞该线程的执行。这里的B有两个意思 一个是Basic 另一个意思为Block 翻译为阻塞。服务器实现模式为一个连接一个">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210322113007435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternative" href="/atom.xml" title="Gorge" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+      <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("your app_id", "your app_key");</script>
+<script src="/js/Counter.js"></script>
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">He Zhang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">欢迎呀</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+					        
+								<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+					        
+								<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">He Zhang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="../../photo/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">He Zhang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">欢迎呀</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="https://me.csdn.net/qq_39536716">CSDN</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="zhihu" target="_blank" href="/1660047480" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1660047480@qq.com" title="mail">mail</a>
+			        
+						<a class="qq" target="_blank" href="/1660047480@qq.com" title="qq">qq</a>
+			        
+						<a class="weibo" target="_blank" href="/1660047480@qq.com" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-三种I_O模型知识梳理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/03/28/三种I_O模型知识梳理/" class="article-date">
+  	<time datetime="2021-03-28T12:56:15.050Z" itemprop="datePublished">2021-03-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这块知识一直感觉挺不好理解的，现有的介绍的文章感觉总结的不是很全，所以自己总结了一版！</p>
+<h1 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h1><ul>
+<li><strong><em>BIO（Basic Input Output）</em></strong> ：就是传统的I/O操作，同步阻塞IO，当BufferReader 读取输入流中的数据的时候，如果没有读取到有效的数据，程序将在此处阻塞该线程的执行。这里的B有两个意思 一个是Basic 另一个意思为Block 翻译为阻塞。服务器实现模式为一个连接一个线程，即客户端有连接请求的时候，</li>
+<li><strong><em>NIO：(New Input Output)</em></strong>    ：同步非阻塞I/O，也可以翻译为Non-Block Input/Output,新的IO使用了不同的方式来处理输入/输出，新IO采用内存映射文件的方式来处理输入输出，新IO将文件或者文件的一段区域映射到内存中，这样就可以像访问内存一样来访问文件了。服务器实现模式为一个请求一个线程，客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有IO请求的时候才启动一个线程进行处理。用户进程也需要时不时的询问IO操作是否就绪，这需要用户进行不停的去询问。 </li>
+<li><strong><em>AIO：（Asynchronous Input Output</em></strong>）:异步非阻塞的IO操作，AIO是在Java7中引入了NIO的改进版NIO2,这是异步IO模型。异步能力最大的一个特点就是异步能力，是一种在读写操作结束之前允许进行其他操作的I/O操作。应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。</li>
+</ul>
+<h1 id="二、同步与异步，阻塞与非阻塞的理解"><a href="#二、同步与异步，阻塞与非阻塞的理解" class="headerlink" title="二、同步与异步，阻塞与非阻塞的理解"></a>二、同步与异步，阻塞与非阻塞的理解</h1><ul>
+<li>阻塞<br> 阻塞其实就是等待的意思，调用者发起请求如果不能立即拿到结果就一直等，等到结果完成。</li>
+<li>非阻塞<br>非阻塞就是调用者发起请求后会立即返回，没有等待的过程，但是要自己不断去检查是否已有结果。<ul>
+<li>同步<br>当前线程发起了一个调用或者请求，然后当前线程需要等待该调用结束返回结果才能继续往下进行其他操作。</li>
+<li>异步<br>当前线程发起了一个调用请求或请求，然后当前线程不需要等待调用的执行结果就可以继续往下执行。<br><strong>下面我们将阻塞与异步结合在一起进行理解一下：</strong><ul>
+<li>同步阻塞：你到饭馆点餐，然后在那里等着，还要一边喊：好了没！饭好了可以吃了。</li>
+<li>同步非阻塞：在饭馆点完餐，就去遛狗了，不过遛了一会，就回饭馆喊一声：好了没！</li>
+<li>异步阻塞： 在饭馆点完餐，就去遛狗了，遛狗的时候，饭馆给你打电话说饭做好了，让您亲自去拿。</li>
+<li>异步非阻塞： 在饭馆点完餐，就去遛狗了，遛狗的时候，饭馆给你打电话说饭做好了，饭馆打电话说，我们知道您的位置，一会给您送过去，安心遛狗就可以了。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="什么是I-O？"><a href="#什么是I-O？" class="headerlink" title="什么是I/O？"></a>什么是I/O？</h1><p>上面我们对阻塞/非阻塞，异步/同步进行了理解，下面在来了解一下什么是IO</p>
+<h2 id="计算机体系结构"><a href="#计算机体系结构" class="headerlink" title="计算机体系结构"></a>计算机体系结构</h2><p><img src="https://img-blog.csdnimg.cn/20210322113007435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="冯诺伊曼计算机的体系结构"><br>冯诺依曼的计算机体系结构分为输入设备，计算器，控制器，运算器以及输出设备，这里的IO指的就是 输入输出设备。<br>为了保证输入输出的安全性以及稳定性，一个进程的地址空间分为<code>用户空间</code>以及<code>内核空间</code>。</p>
+<ul>
+<li>用户空间 我们平时的应用程序都是运行在用户空间，是用户程序运行的地方。</li>
+<li>内核空间 内核空间才能进行系统级别的资源有关的操作，是内核代码的运行空间。<br>用户空间与内核空间是相互隔离的，我们想要进行IO操作是要依赖内核空间的能力，但是用户空间的程序是不能直接访问内核空间的，要执行IO操作的时候，<strong><em>由于没有执行权限就要发起系统调用请求来请求操作系统帮忙完成。</em></strong><br>我们常见的IO主要分为<code>磁盘IO（读写文件）</code> 与<code>网络IO（网络请求）</code><br>在应用程序的角度来看，我们的应用程序其实就是对操作系统的内核发起IO调用，操作系统负责的内核执行具体的IO操作。也就是说，我们的应用程序其实就是发起了Io操作而已，具体执行IO的还是操作系统的内核。<h1 id="NIO的基本概念理解"><a href="#NIO的基本概念理解" class="headerlink" title="NIO的基本概念理解"></a>NIO的基本概念理解</h1>关于IO的基本概念，我已经在另外一篇文章中进行了总结，这里只对NIO的几个关键词进行总结。<br>channel 与buffer是新IO中的两个核心对象。</li>
+<li>Channel (通道)<br> 通道是对传统输入输出系统的模拟，在NIO中，所有的数据都需要通过通道进行传输，Channel与传统的InputStream以及OutputStream的主要区别在与它提供了一个map方法，可以通过map方法直接将“一块数据”映射到内存中，这样就实现了传统的输入输出是面向流处理的，但是NIO是面向块处理的。而且通道不同于流的地方还在于通道是双向的，底层的操作系统的通道一般都是全双工的。代表连接到数据源的通道。</li>
+<li>Buffer(缓冲区)<br>Buffer可以理解成一个容器，它的本质是一个数组，发送到channel中的对象都被存放在Buffer中，从channel中读取的数据也必须先放在Buffer中。我们不能直接对channel进行操作，Buffer的主要作用就是用来与NIO进行交互的，数据是从通道中读入缓冲区，从缓冲区写入通道中的。<h3 id="channel-与Buffer的关系"><a href="#channel-与Buffer的关系" class="headerlink" title="channel 与Buffer的关系"></a>channel 与Buffer的关系</h3>channel 是通道的含义，数据不可以直接在channel上进行处理，必须要把数据读取到缓冲区Buffer中，从通道中读取数据到缓冲区中，从缓冲区写入数据到通道。<ul>
+<li>多路复用器 Selector 多路复用器<br>java NIO 三大基本组件Channel、Buffer、Selector，三大组件的关系<br>Selector 提供选择已经就绪的任务的能力。<br>Selector 轮询注册在其上的Channel,如果某个Channel发生多谢请求并且Channel就处于就绪状态，会被Selector轮询出来。然后通过SelectionKey可以获取就绪Channel集合，进行后续的I/O操作。一个Selector 可以同时轮询多个Channel，因为JDK使用了epoll()代替传统的select实现，所以就没有最大句柄1024/1024的限制，所以只需要一个线程负责轮询就可以接入成千上万的客户端。<br><img src="https://img-blog.csdnimg.cn/20210322144153369.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="selector与channel的关系"><br><img src="https://img-blog.csdnimg.cn/20210322144341179.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="channel与buffer的关系"><h1 id="三种常见的IO的理解"><a href="#三种常见的IO的理解" class="headerlink" title="三种常见的IO的理解"></a>三种常见的IO的理解</h1><h3 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h3><img src="https://img-blog.csdnimg.cn/20210322145242547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>同步阻塞模型中，应用程序发起read之后，会一直阻塞，直到内核将数据拷贝到用户空间。<h3 id="NIO-模型"><a href="#NIO-模型" class="headerlink" title="NIO 模型"></a>NIO 模型</h3>java中的NIO可以理解为I/O多路复用模型。<br><img src="https://img-blog.csdnimg.cn/20210322151509523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>NIO同步非阻塞，一个线程在同步的进行轮询检查，Selector 不断的轮询注册在其上的Channel，某个Channel 上面连续发生读写连接请求，这个Channel就处于就绪状态，被Selector轮询出来，然后通过SelectionKey就可以获取就绪Channel的集合，进行后续的操作。<br><img src="https://img-blog.csdnimg.cn/20210322152054629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="I/O多路复用操纵"><br>IO多路复用模型中，线程首先发起select调用，询问内核数据是否已经准备就绪，等内核把数据准备好了，用户线程再发起read调用，read调用的过程（数据从内核空间-&gt; 用户空间）还是阻塞的。<br><img src="https://img-blog.csdnimg.cn/20210323144745667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<h3 id="AIO模型"><a href="#AIO模型" class="headerlink" title="AIO模型"></a>AIO模型</h3><p><img src="https://img-blog.csdnimg.cn/20210323144614564.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>是在NIO的基础上引入异步通道的概念，实现异步非阻塞式的IO处理。AIO 不需要通过多路复用器对注册的通道进行轮询操作即可实现异步读写。NIO采用轮询的方式，一直在轮询的询问stream中的数据是否准备就绪，如果准备就绪就发起处理，但是AIO就不需要了，AIO框架在windows下使用windows IOCP技术，在Liunx下使用epoll多路复用技术模拟异步IO，即：应用程序向操作系统注册IO监听，然后继续做自己的事情。操作系统发生IO事件，并且准备好数据后，在主动的通知应用程序，触发相应的函数（这是以一种订阅者模式进行改造）。由于应用程序不是“轮询”方式而是订阅-通知方式，所以不在需要selector 轮询，由channel 通道直接到操作系统注册监听。</p>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><ul>
+<li>BIO<br>适用于连接数目比较少且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，编程比较复杂，程序简单易于理解。</li>
+<li>NIO<br>适用于连接数目比较多的情况下，并且连接比较短（轻操作）的架构。比如聊天服务器。</li>
+<li>AIO<br>适用于连接数目比较多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂<h1 id="调用总结"><a href="#调用总结" class="headerlink" title="调用总结"></a>调用总结</h1><img src="https://img-blog.csdnimg.cn/2021032314521790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTM2NzE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/03/30/Ad Hoc（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/03/28/2021年华为软件精英挑战赛总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="三种I_O模型知识梳理" data-title data-url="http://yoursite.com/2021/03/28/三种I_O模型知识梳理/" data-images="../../photo/head.jpg" data-content>
+    <div class="ds-share-inline">
+      <ul class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 Gorge
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
